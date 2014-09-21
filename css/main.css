@@ -1,0 +1,50 @@
+html, body{
+    height: 100%;
+}
+
+a, a:hover, a:visited {
+	color:white;
+	text-decoration:none;
+}
+
+h2 {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+}
+
+
+body {
+background-color: #9ADAFD;
+}
+
+.container {
+
+padding-left:0px;
+padding-right:0px;
+}
+
+
+.container-main {
+height:100%;
+
+}
+
+.row {
+height:100%;
+margin-left:0px;
+margin-right:0px;
+padding-left:0px;
+padding-right:0px;
+}
+
+.huge-button {
+color: white;
+font-weight:bold;
+margin-left:10%;
+margin-right:10%;
+text-align:center;
+padding-top:20%;
+padding-bottom:20%;
+margin-left:20px;
+margin-right:20px;
+}
