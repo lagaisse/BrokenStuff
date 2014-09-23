@@ -1,5 +1,8 @@
-<label>Nom: </label>
-<input type="text" ng-model="name" placeholder="nom de l'incident">
-<hr>
-<h1> {{name}}</h1>
-{{Report.name}}
+<form ng-submit="addReport()" >
+	<input type="text" placeholder="name" ng-model="newReport.name"/>
+	<textarea ng-model="newReport.description"/></textarea>
+	<input type="text" placeholder="location1" ng-model="newReport.location1"/>
+	<input type="text" placeholder="location2" ng-model="newReport.location2"/>
+	<input type="text" placeholder="geoloc" ng-model="newReport.geoloc"/>
+	<input type="submit" value="OK"/>
+<form>

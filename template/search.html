@@ -1,0 +1,6 @@
+<div ng-show="loading">Chargement ....</div>
+<div ng-hide="loading">
+<div ng-repeat ="report in reports">
+	<a href="#report/{{report.id}}">{{report.name}}</a>
+</div>
+</div>
