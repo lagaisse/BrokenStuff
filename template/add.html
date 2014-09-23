@@ -1,8 +1,24 @@
-<form ng-submit="addReport()" >
-	<input type="text" placeholder="name" ng-model="newReport.name"/>
-	<textarea ng-model="newReport.description"/></textarea>
-	<input type="text" placeholder="location1" ng-model="newReport.location1"/>
-	<input type="text" placeholder="location2" ng-model="newReport.location2"/>
-	<input type="text" placeholder="geoloc" ng-model="newReport.geoloc"/>
-	<input type="submit" value="OK"/>
-<form>
+<nav class="navbar" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+					<i class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand" href="#">back</a>
+		</div>
+	</div>
+</nav>
+
+<div class="container container-main">
+	<div class="row">
+		<div class="col-md-12">
+			<form ng-submit="addReport()" role="form">
+				<input class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
+				<textarea class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
+				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
+				<input class="form-control whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
+				<input class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
+			<form>
+		</div>
+	</div>
+</div>

@@ -9,18 +9,18 @@ app.controller("SearchController", function($scope, Report) {
 });
 	
 app.controller("AddController", function($scope, Report) {
-    $scope.loading=true;
     $scope.newReport={};
 
     $scope.addReport = function() {
-
-    Report.add($scope.newReport).then(function() {
-    		alert("ok");
-    	}, function(msg) {
-    		alert(msg);
-    	})
+        $scope.loading=true;
+        Report.add($scope.newReport).then(function() {
+        		$scope.loading=false;
+                $scope.newReport={};
+        	}, function(msg) {
+        		alert(msg);
+        	})
     }
-    $scope.newReport={};
+    
 });
 
 app.controller("ReportController", function($scope,Report,$routeParams) {

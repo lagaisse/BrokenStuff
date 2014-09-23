@@ -31,7 +31,7 @@ app.service('Report', function($http, $q){
     this.add = function(report){
         var deferred = $q.defer();
         var reportData={'need data':101,'other data':200}; //TODO
-        $http.post('./api/v1/reports/',reportData)
+        $http.post('./api/v1/reports/',report)
             .success(function(data, status){
                 deferred.resolve();
             })
