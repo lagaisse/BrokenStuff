@@ -1,4 +1,22 @@
-<h1>{{report.name}}</h1>
-{{report.description}}
-{{report.location}}
-<img src="{{report.picture}}"></img>
+<nav class="navbar" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+					<i class="fa fa-bars"></i>
+			</button>
+			<a class="navbar-brand" href="#search">back</a>
+		</div>
+	</div>
+</nav>
+
+<div class="container container-main">
+	<div class="row">
+		<div ng-show="loading">Chargement ....</div>
+		<div ng-hide="loading">
+			<div class="col-md-12"><h1>{{report.name}}</h1></div>
+			<div class="col-md-12">{{report.description}}</div>
+			<div ng-repeat="location in report.location" class="col-md-12">{{location}}</div>
+			<div  class="col-md-12"><img src="{{report.picture}}"></img></div>
+		</div>
+	</div>
+</div>
