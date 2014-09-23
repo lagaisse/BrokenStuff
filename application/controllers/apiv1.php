@@ -21,7 +21,8 @@ class Apiv1 extends REST_Controller
   {
       if(!$this->get('id'))
       {
-          $this->response(array('error' => 'Missing id'), 400);
+         $this->reports_list_get();
+        //  $this->response(array('error' => 'Missing id'), 400);
       }
 
       // $reports = $this->some_model->getSomething( $this->get('id') );
