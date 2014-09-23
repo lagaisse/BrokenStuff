@@ -670,6 +670,6 @@ FileETag None
 # ------------------------------------------------------------------------
 # Addition to remove index.php from url
 <IfModule mod_rewrite.c>
-    RewriteCond $1 !^(index\.php|js|bootstrap|css|angular|robots\.txt)
-    RewriteRule ^(.*)$ /BrokenStuff/index.php/$1 [L]
+    RewriteCond $1 !^(index\.php|js|bootstrap|css|angular|template|robots\.txt|app\.js)
+    RewriteRule ^(.*)$ /index.php/$1 [L]
 </IfModule>
