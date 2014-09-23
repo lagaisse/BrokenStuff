@@ -4,7 +4,7 @@ app.service('Report', function($http, $q){
 
     this.getReports = function() {
         var deferred = $q.defer();
-        $http.get('api/v1/reports.json')
+        $http.get('./api/v1/reports.json')
             .success(function(data, status){
                 this.reports=data.results;
                 deferred.resolve(this.reports);
@@ -17,7 +17,7 @@ app.service('Report', function($http, $q){
 
     this.getReport = function(id){
         var deferred = $q.defer();
-        $http.get('api/v1/report/id/'+id+'.json')
+        $http.get('./api/v1/reports/id/'+id+'.json')
             .success(function(data, status){
                 this.reports=data;
                 deferred.resolve(this.reports);
@@ -30,8 +30,8 @@ app.service('Report', function($http, $q){
 
     this.add = function(report){
         var deferred = $q.defer();
-        var reportData={};
-        $http.post('api/v1/report/',reportData)
+        var reportData={'need data':101,'other data':200}; //TODO
+        $http.post('./api/v1/reports/',reportData)
             .success(function(data, status){
                 deferred.resolve();
             })

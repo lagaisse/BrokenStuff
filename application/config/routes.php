@@ -41,6 +41,12 @@
 $route['default_controller'] = "application";
 $route['404_override'] = '';
 
+
+
+
+$route['api/v(:num)/reports/(:num)(.*)'] = 'apiv$1/reports/id/$2$3'; //GET OR PUT a report : implicit id call
+$route['api/v(:num)/reports.(.*)'] = 'apiv$1/reports_list.$2'; //GET list all reports
+
 $route['api/v(:num)/(:any)'] = 'apiv$1/$2';
 
 /* End of file routes.php */

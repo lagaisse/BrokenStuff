@@ -17,7 +17,7 @@ require APPPATH.'/libraries/REST_Controller.php';
 
 class Apiv1 extends REST_Controller
 {
-  function report_get()
+  function reports_get()
   {
       if(!$this->get('id'))
       {
@@ -72,7 +72,7 @@ class Apiv1 extends REST_Controller
       }
   }
 
-	function reports_get()
+	function reports_list_get()
   {
 
 
@@ -157,11 +157,22 @@ class Apiv1 extends REST_Controller
       }
   }
 
-  function report_put()
+  function reports_put()
   {
-    $this->response('', 200);
+    $this->response(array($this->request->body), 200);
   }
 
+  function reports_post()
+  {
+    
+    $this->response(array($this->request->body), 200);
+  }
+
+
+  public function send_get()
+  {
+    var_dump($this->_args);
+  }
 
 	public function send_post()
 	{
