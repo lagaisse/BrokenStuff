@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Api
+ * Api v1
  *
  * This is the report api to declare a broken stuff
  *
@@ -15,7 +15,7 @@
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
 require APPPATH.'/libraries/REST_Controller.php';
 
-class Api extends REST_Controller
+class Apiv1 extends REST_Controller
 {
     function report_get()
     {
