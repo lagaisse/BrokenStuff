@@ -12,10 +12,12 @@
         <link rel="stylesheet" href="css/main.css">
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.js"></script>      
 		<script src="app.js"></script>
+        <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
         <script src="js/controller/reports.js"></script>
+
 
     </head>
     <body>

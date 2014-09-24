@@ -1,4 +1,4 @@
-var app = angular.module('brokenstuff', ['ngRoute']);
+var app = angular.module('brokenstuff', ['ngRoute','geolocation']);
 
 app.config(['$routeProvider',
         function($routeProvider) {
@@ -27,4 +27,3 @@ app.config(['$routeProvider',
 app.controller("IndexController", function($scope) {
 	$scope.message="yoloindex";
 	});
-	
