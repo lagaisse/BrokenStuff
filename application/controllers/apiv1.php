@@ -60,7 +60,8 @@ class Apiv1 extends REST_Controller
                      'nb_vote_end'  => 1 )
       );
       
-      $report = @$reports[$this->get('id')];
+      $this->load->model('Report');
+      $report = $this->Report->get_report($this->get('id'));
       
       if($report)
       {
@@ -76,42 +77,14 @@ class Apiv1 extends REST_Controller
 	function reports_list_get()
   {
 
+    $this->load->model('Report');
+
+    $reports=$this->Report->get_reports();
+
 
       // $reports = $this->some_model->getSomething( $this->get('id') );
-/*     $reports = array(
-               array('id'           => 1, 
-                     'name'         => 'Automate de service HS', 
-                     'description'  => 'Automate de service HS', 
-                     'add_date'     => '2014-02-14T11:33:00+02:00', 
-                     'end_date'     => '', 
-                     'location'     => array('RER A','La Défense Grande Arche'), 
-                     'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                     'picture'      => 'http://lorempicsum.com/futurama/350/200/1',
-                     'status'       => 'open',
-                     'nb_vote_end'  => 100 ),
-               array('id'           => 2, 
-                     'name'         => 'Ecran d\'information RATP HS', 
-                     'description'  => 'Ecran d\'information RATP HS', 
-                     'add_date'     => '2014-09-15T19:55:00+02:00', 
-                     'end_date'     => '2014-09-17T19:55:00+02:00', 
-                     'location'     => array('RER A','La Défense Grande Arche'), 
-                     'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                     'picture'      => 'http://lorempicsum.com/futurama/255/200/5',
-                     'status'       => 'closed',
-                     'nb_vote_end'  => 1 ),      
-               array('id'           => 3, 
-                     'name'         => 'Portique bloqué', 
-                     'description'  => 'Portique bloqué', 
-                     'add_date'     => '2013-10-15T10:55:00+02:00', 
-                     'end_date'     => '2013-12-01T11:55:00+02:00', 
-                     'location'     => array('Ligne 1','Louvre Rivoli'), 
-                     'geolocation'  => array('longitude' => 2.3407199,'latitude' => 48.8609428),
-                     'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
-                     'status'       => 'closed',
-                     'nb_vote_end'  => 1 )
-  );*/
 
-     	$reports = array(
+ /*    	$reports = array(
                'metadata' => array('resultset' => array('count'=>3, 'offset'=>0, 'limit' => 3)),
                'results'  => array(
                              array('id'           => 1, 
@@ -144,12 +117,17 @@ class Apiv1 extends REST_Controller
                                    'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
                                    'status'       => 'closed',
                                    'nb_vote_end'  => 1 ))
-      );
+      );*/
 	
-    	
-      if($reports)
+    	$results= array(
+               'metadata' => array('resultset' => array('count'=>count($reports), 'offset'=>0, 'limit' => 3)),
+               'results'  => $reports
+               );
+
+
+      if($results)
       {
-          $this->response($reports, 200); // 200 being the HTTP response code
+          $this->response($results, 200); // 200 being the HTTP response code
       }
 
       else
@@ -165,8 +143,63 @@ class Apiv1 extends REST_Controller
 
   function reports_post()
   {
+
+    $this->load->model('Report');
+    foreach ($this->request->body as $key => $value) {
+      switch ($key) {
+        case 'name':
+          $report['name']=$value;
+          break;
+        case 'location1':
+          $report['location']=$value;
+          break;
+        case 'location2':
+          $report['location']=$value;
+          break;
+        case 'picture': //not reached
+         // $report['picture']=$this->_process_picture($value);
+          break;
+        
+        default:
+          # code...
+          break;
+      }
+    }
+
+    $the_id=$this->Report->new_report($report['name'],new DateTime('now'),48.233,2.342,'open',$report['location']);
+    if ($the_id)
+    {
+      $this->response(array('success' => $the_id), 200);      
+    }
+    else
+    {
+      $this->response(array('error' => 'insert failed'), 404);
+    }
+
+
+  }
+
+  function picture_post() //NOT TESTED
+  { 
+    $this->get('id');
+
+    $config['upload_path'] = './uploads/';
+    $config['allowed_types'] = 'gif|jpg|png';
+    $config['max_size'] = '100';
+    $config['max_width']  = '1024';
+    $config['max_height']  = '768';
     
-    $this->response(array($this->request->body), 200);
+    $this->load->library('upload', $config);
+
+    if ( ! $this->upload->do_upload())
+    {
+      $this->response(array('error' => 'No picture to upload'), 404);
+    }
+    else
+    {
+     $this->response(array('upload_data' => $this->upload->data()));
+    }
+
   }
 
 
