@@ -16,8 +16,10 @@
 				<input class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
 				<textarea class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
 				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
-				<input class="form-control whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
+				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
+				<input class="form-control btn btl-lg btn-default whitebox" type="file" capture="camera" accept="image/*" id="cameraInput" name="cameraInput" ng-model="newReport.picture">
 				<input type="hidden" ng-model="newReport.coords"/>
+				<input type="hidden" ng-model="newReport.datetime"/>
 				<input class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
 			<form>
 		</div>

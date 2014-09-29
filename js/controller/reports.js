@@ -18,6 +18,7 @@ app.controller("AddController", function($scope, Report, geolocation) {
     $scope.addReport = function() {
         $scope.loading=true;
         $scope.newReport.geolocation=$scope.coords;
+        $scope.newReport.datetime=Date.now();
         Report.add($scope.newReport).then(function() {
         		$scope.loading=false;
                 $scope.newReport={};
