@@ -17,6 +17,7 @@
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
         <script src="js/controller/reports.js"></script>
+        <script src="js/directive/picture.js"></script>
 
 
     </head>

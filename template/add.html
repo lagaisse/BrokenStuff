@@ -12,14 +12,15 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-md-12">
-			<form ng-submit="addReport()" role="form">
+			<div ng-show="newReport.id" ng-picture></div>
+			<form ng-hide="newReport.id" ng-submit="addReport()" role="form">
 				<input class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
 				<textarea class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
 				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
 				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
-				<input class="form-control btn btl-lg btn-default whitebox" type="file" capture="camera" accept="image/*" id="cameraInput" name="cameraInput" ng-model="newReport.picture">
 				<input type="hidden" ng-model="newReport.coords"/>
 				<input type="hidden" ng-model="newReport.datetime"/>
+				<input type="hidden" ng-model="newReport.id"/>
 				<input class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
 			<form>
 		</div>

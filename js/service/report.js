@@ -32,7 +32,8 @@ app.service('Report', function($http, $q){
         var deferred = $q.defer();
         $http.post('./api/v1/reports/',report)
             .success(function(data, status){
-                deferred.resolve();
+                console.log(data.success);
+                deferred.resolve(data);
             })
             .error(function(data, status){
                 deferred.reject('ca pue du cul');
