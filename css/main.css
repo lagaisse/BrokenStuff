@@ -94,3 +94,27 @@ background-image: none;
 border:0px;
 }
 
+.drop-zone {
+border : 2px dashed #CCC;
+min-height: 300px;
+background-color: #DDD;
+}
+
+.photo-form {
+background-color: #FFF;
+padding : 15px;
+}
+
+.file_upload {
+position: relative;
+overflow: hidden;
+}
+
+.desc-photo{
+margin-top:110px;
+margin-left:42%;
+}
+
+.fa-camera {
+color:#999;
+}

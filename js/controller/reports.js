@@ -39,3 +39,4 @@ app.controller("ReportController", function($scope,Report,$routeParams) {
             alert(msg);
     })
 });
+
