@@ -42,4 +42,18 @@ app.service('Report', function($http, $q){
 
     }
 
+    this.addPic = function(report){
+        var deferred = $q.defer();
+        $http.post('./upload/v1/pictures/',report)
+            .success(function(data, status){
+                console.log(data.success);
+                deferred.resolve(data);
+            })
+            .error(function(data, status){
+                deferred.reject('ca pue du cul');
+            })
+        return deferred.promise;
+
+    }
+
 })
