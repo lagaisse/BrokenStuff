@@ -26,6 +26,7 @@ class Report extends CI_Model {
     
     function get_reports()
     {
+        $this->load->database();
         $query = $this->db->get('Report', 10);
         $results = $query->result_array();
         foreach ($results as $row) {
@@ -46,7 +47,8 @@ class Report extends CI_Model {
 
     function new_report($name,$add_date,$geoloc_lat,$geoloc_long,$status,$place)
     {
-     $data = array(
+        $this->load->database();
+        $data = array(
                'r_name'         => $name ,
                'r_add_date'     => $add_date->format('Y-m-d H:i:s'),
                'r_geoloc_lat'   => $geoloc_lat,
@@ -54,13 +56,13 @@ class Report extends CI_Model {
                'r_status'       => $status,
                'lo_id'          => ''
             );   
-
-     $this->db->insert('Report',$data);
-     return $this->db->insert_id();
+        $this->db->insert('Report',$data);
+        return $this->db->insert_id();
     }
 
     function get_report($id)
     {
+        $this->load->database();
         $report = null;
 
         $query = $this->db->get_where('Report',array('r_id' => $id));
@@ -73,7 +75,7 @@ class Report extends CI_Model {
                 'add_date'      =>  $row['r_add_date'],
                 'end_date'      =>  $row['r_end_date'],
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $row['r_picture'],
+                'picture'       =>  'http://lorempicsum.com/futurama/350/200/1', //$row['r_picture'],
                 'status'        =>  $row['r_status'],
                 'nb_vote_end'   =>  $row['r_nb_vote_end'],
                 'location'      =>  array('RER A', 'La défense')
@@ -85,12 +87,14 @@ class Report extends CI_Model {
 
     function get_last_ten_entries()
     {
+        $this->load->database();
         $query = $this->db->get('entries', 10);
         return $query->result();
     }
 
     function insert_entry()
     {
+        $this->load->database();
         $this->title   = $_POST['title']; // please read the below note
         $this->content = $_POST['content'];
         $this->date    = time();
@@ -100,6 +104,7 @@ class Report extends CI_Model {
 
     function update_entry()
     {
+        $this->load->database();
         $this->title   = $_POST['title'];
         $this->content = $_POST['content'];
         $this->date    = time();

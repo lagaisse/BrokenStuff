@@ -44,7 +44,7 @@ app.service('Report', function($http, $q){
 
     this.addPic = function(report){
         var deferred = $q.defer();
-        $http.post('./upload/v1/pictures/',report)
+        $http.post('./api/v1/pictures/upload.json',report)
             .success(function(data, status){
                 console.log(data.success);
                 deferred.resolve(data);
@@ -55,5 +55,17 @@ app.service('Report', function($http, $q){
         return deferred.promise;
 
     }
+    this.addPicAlt = function(id, report){
+        var deferred = $q.defer();
+        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',report)
+            .success(function(data, status){
+                console.log(data.success);
+                deferred.resolve(data);
+            })
+            .error(function(data, status){
+                deferred.reject('ca pue du cul');
+            })
+        return deferred.promise;
 
+    }
 })

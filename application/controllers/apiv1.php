@@ -19,106 +19,67 @@ class Apiv1 extends REST_Controller
 {
   function reports_get()
   {
-      if(!$this->get('id'))
-      {
-         $this->reports_list_get();
-        //  $this->response(array('error' => 'Missing id'), 400);
-      }
+    if(!$this->get('id'))
+    {
+       $this->reports_list_get();
+      //  $this->response(array('error' => 'Missing id'), 400);
+    }
 
-      // $reports = $this->some_model->getSomething( $this->get('id') );
-      //"longitude":2.3775,"latitude":48.4186
-      $reports = array(
-          1 => array('id'           => 1, 
-                     'name'         => 'Automate de service HS', 
-                     'description'  => 'Automate de service HS', 
-                     'add_date'     => '2014-02-14T11:33:00+02:00', 
-                     'end_date'     => '', 
-                     'location'     => array('RER A','La Défense Grande Arche'), 
-                     'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                     'picture'      => 'http://lorempicsum.com/futurama/350/200/1',
-                     'status'       => 'open',
-                     'nb_vote_end'  => 100 ),
-          2 => array('id'           => 2, 
-                     'name'         => 'Ecran d\'information RATP HS', 
-                     'description'  => 'Ecran d\'information RATP HS', 
-                     'add_date'     => '2014-09-15T19:55:00+02:00', 
-                     'end_date'     => '2014-09-17T19:55:00+02:00', 
-                     'location'     => array('RER A','La Défense Grande Arche'), 
-                     'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                     'picture'      => 'http://lorempicsum.com/futurama/255/200/5',
-                     'status'       => 'closed',
-                     'nb_vote_end'  => 1 ),      
-          3 => array('id'           => 3, 
-                     'name'         => 'Portique bloqué', 
-                     'description'  => 'Portique bloqué', 
-                     'add_date'     => '2013-10-15T10:55:00+02:00', 
-                     'end_date'     => '2013-12-01T11:55:00+02:00', 
-                     'location'     => array('Ligne 1','Louvre Rivoli'), 
-                     'geolocation'  => array('longitude' => 2.3407199,'latitude' => 48.8609428),
-                     'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
-                     'status'       => 'closed',
-                     'nb_vote_end'  => 1 )
-      );
-      
-      $this->load->model('Report');
-      $report = $this->Report->get_report($this->get('id'));
-      
-      if($report)
-      {
-          $this->response($report, 200); // 200 being the HTTP response code
-      }
+    // $reports = $this->some_model->getSomething( $this->get('id') );
+    //"longitude":2.3775,"latitude":48.4186
+    $reports = array(
+        1 => array('id'           => 1, 
+                   'name'         => 'Automate de service HS', 
+                   'description'  => 'Automate de service HS', 
+                   'add_date'     => '2014-02-14T11:33:00+02:00', 
+                   'end_date'     => '', 
+                   'location'     => array('RER A','La Défense Grande Arche'), 
+                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
+                   'picture'      => 'http://lorempicsum.com/futurama/350/200/1',
+                   'status'       => 'open',
+                   'nb_vote_end'  => 100 ),
+        2 => array('id'           => 2, 
+                   'name'         => 'Ecran d\'information RATP HS', 
+                   'description'  => 'Ecran d\'information RATP HS', 
+                   'add_date'     => '2014-09-15T19:55:00+02:00', 
+                   'end_date'     => '2014-09-17T19:55:00+02:00', 
+                   'location'     => array('RER A','La Défense Grande Arche'), 
+                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
+                   'picture'      => 'http://lorempicsum.com/futurama/255/200/5',
+                   'status'       => 'closed',
+                   'nb_vote_end'  => 1 ),      
+        3 => array('id'           => 3, 
+                   'name'         => 'Portique bloqué', 
+                   'description'  => 'Portique bloqué', 
+                   'add_date'     => '2013-10-15T10:55:00+02:00', 
+                   'end_date'     => '2013-12-01T11:55:00+02:00', 
+                   'location'     => array('Ligne 1','Louvre Rivoli'), 
+                   'geolocation'  => array('longitude' => 2.3407199,'latitude' => 48.8609428),
+                   'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
+                   'status'       => 'closed',
+                   'nb_vote_end'  => 1 )
+    );
+    
+    $this->load->model('Report');
+    $report = $this->Report->get_report($this->get('id'));
+    
+    if($report)
+    {
+        $this->response($report, 200); // 200 being the HTTP response code
+    }
 
-      else
-      {
-          $this->response(array('error' => 'report could not be found'), 404);
-      }
+    else
+    {
+        $this->response(array('error' => 'report could not be found'), 404);
+    }
   }
 
 	function reports_list_get()
   {
-
     $this->load->model('Report');
 
     $reports=$this->Report->get_reports();
 
-
-      // $reports = $this->some_model->getSomething( $this->get('id') );
-
- /*    	$reports = array(
-               'metadata' => array('resultset' => array('count'=>3, 'offset'=>0, 'limit' => 3)),
-               'results'  => array(
-                             array('id'           => 1, 
-                                   'name'         => 'Automate de service HS', 
-                                   'description'  => 'Automate de service HS', 
-                                   'add_date'     => '2014-02-14T11:33:00+02:00', 
-                                   'end_date'     => '', 
-                                   'location'     => array('RER A','La Défense Grande Arche'), 
-                                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                                   'picture'      => 'http://lorempicsum.com/futurama/350/200/1',
-                                   'status'       => 'open',
-                                   'nb_vote_end'  => 100 ),
-              			         array('id'           => 2, 
-                                   'name'         => 'Ecran d\'information RATP HS', 
-                                   'description'  => 'Ecran d\'information RATP HS', 
-                                   'add_date'     => '2014-09-15T19:55:00+02:00', 
-                                   'end_date'     => '2014-09-17T19:55:00+02:00', 
-                                   'location'     => array('RER A','La Défense Grande Arche'), 
-                                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                                   'picture'      => 'http://lorempicsum.com/futurama/255/200/5',
-                                   'status'       => 'closed',
-                                   'nb_vote_end'  => 1 ),      
-                             array('id'           => 3, 
-                                   'name'         => 'Portique bloqué', 
-                                   'description'  => 'Portique bloqué', 
-                                   'add_date'     => '2013-10-15T10:55:00+02:00', 
-                                   'end_date'     => '2013-12-01T11:55:00+02:00', 
-                                   'location'     => array('Ligne 1','Louvre Rivoli'), 
-                                   'geolocation'  => array('longitude' => 2.3407199,'latitude' => 48.8609428),
-                                   'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
-                                   'status'       => 'closed',
-                                   'nb_vote_end'  => 1 ))
-      );*/
-	
     	$results= array(
                'metadata' => array('resultset' => array('count'=>count($reports), 'offset'=>0, 'limit' => 3)),
                'results'  => $reports
@@ -179,21 +140,21 @@ class Apiv1 extends REST_Controller
 
   }
 
-  function picture_post() //NOT TESTED
+  function pictures_post() //NOT TESTED
   { 
-    $this->get('id');
+    $this->get('id_reports');
 
-    $config['upload_path'] = './uploads/';
+    $config['upload_path'] = './';
     $config['allowed_types'] = 'gif|jpg|png';
-    $config['max_size'] = '100';
+/*    $config['max_size'] = '100';
     $config['max_width']  = '1024';
-    $config['max_height']  = '768';
+    $config['max_height']  = '768';*/
     
     $this->load->library('upload', $config);
 
     if ( ! $this->upload->do_upload())
     {
-      $this->response(array('error' => 'No picture to upload'), 404);
+      $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
     }
     else
     {
@@ -202,7 +163,75 @@ class Apiv1 extends REST_Controller
 
   }
 
+  function locations_get()
+  {
 
+   if(!$this->get('name'))
+   {
+    $this->location_list_get();
+    //  $this->response(array('error' => 'Missing id'), 400);
+   }
+   $locations = array(
+                    array(
+                      'id'           => 0x001, 
+                      'name'         => 'Ligne 1',
+                      'sublocation'  => array( 
+                        array('id'    => '0x001001',
+                              'name'  => 'La défense Grande arche'),
+                        array('id'    => '0x001002',
+                              'name'  => 'Esplanade de la Défense')
+                    )),
+                    array(
+                      'id'           => 0x002, 
+                      'name'         => 'Ligne 2',
+                      'sublocation'  => array( 
+                        array('id'    => '0x002001',
+                              'name'  => 'Station L2/1'),
+                        array('id'    => '0x002002',
+                              'name'  => 'Station L2/2')
+                    ))
+    );
+
+    $results= array(
+             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => 3)),
+             'results'  => $locations
+             );
+
+    if($results)
+    {
+        $this->response($results, 200); // 200 being the HTTP response code
+    }
+
+    else
+    {
+        $this->response(array('error' => 'location could not be found'), 404);
+    }
+  }
+
+  function location_list_get()
+  {
+    $locations = array(
+        array('id'           => 0x001, 
+              'name'         => 'Ligne 1'),
+        array('id'           => 0x002, 
+              'name'         => 'RER A')
+    );
+
+    $results= array(
+             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => 3)),
+             'results'  => $locations
+             );
+
+    if($results)
+    {
+        $this->response($results, 200); // 200 being the HTTP response code
+    }
+
+    else
+    {
+        $this->response(array('error' => 'location could not be found'), 404);
+    }
+  }
   public function send_get()
   {
     var_dump($this->_args);

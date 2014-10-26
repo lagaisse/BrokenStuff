@@ -4,7 +4,8 @@ app.directive('ngPicture', ['Report' , function(Report){
 		restrict: 'EA',
 		link: function ($scope, Element, attrs) {
 			$scope.addPicture = function() {
-				Report.addPic($scope.newPicture).then(function() {
+				Report.addPicAlt($scope.id, $scope.newPicture).then(function() {
+//				Report.addPic($scope.newPicture).then(function() {
 	        		$scope.loading=false;
 	                //$scope.newReport={};
 	        	}, function(msg) {
