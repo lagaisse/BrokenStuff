@@ -20,14 +20,17 @@ app.controller("AddController", function($scope, Report, geolocation) {
         $scope.loading=true;
         $scope.newReport.geolocation=$scope.coords;
         $scope.newReport.datetime=Date.now();
-        $scope.newReport.id=Report.add($scope.newReport).then(function() {
+        Report.add($scope.newReport).then(function(id) {
         		$scope.loading=false;
+                $scope.newReport.id=id;
                 //$scope.newReport={};
         	}, function(msg) {
         		alert(msg);
         	})
     }
-    
+
+
+
 });
 
 app.controller("ReportController", function($scope,Report,$routeParams) {
@@ -40,3 +43,20 @@ app.controller("ReportController", function($scope,Report,$routeParams) {
     })
 });
 
+app.controller("PictureController", function($scope,Report) {
+    console.log("coucou");
+    $scope.onFileSelect = function($files) {
+        console.log("coucou2");
+        //$files: an array of files selected, each file has name, size, and type.
+        for (var i = 0; i < $files.length; i++) {
+            var file = $files[i];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                console.log(reader.result);
+                $scope.newPicture.b64pic = reader.result;
+            }
+            
+        }
+    }
+});

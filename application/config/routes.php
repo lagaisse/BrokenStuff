@@ -43,10 +43,9 @@ $route['404_override'] = '';
 
 
 
-
+$route['api/v(:num)/reports/(:num)/pictures/upload(.*)'] = 'apiv$1/pictures/id_reports/$2'; //xx
 $route['api/v(:num)/reports/(:num)(.*)'] = 'apiv$1/reports/id/$2$3'; //GET OR PUT a report : implicit id call
 //$route['api/v(:num)/reports.(.*)'] = 'apiv$1/reports_list.$2'; //GET list all reports
-$route['api/v(:num)/reports/(:num)/pictures/upload(.*)'] = 'apiv$1/pictures/id_reports/$2'; //xx
 $route['api/v(:num)/reports/undefined/pictures/upload(.*)'] = 'apiv$1/pictures/id_reports/5'; //xx
 
 $route['api/v(:num)/locations/(.+)'] = 'apiv$1/locations/name/$2'; //location

@@ -97,7 +97,13 @@ border:0px;
 .drop-zone {
 border : 2px dashed #CCC;
 min-height: 300px;
+width:100%;
 background-color: #DDD;
+}
+
+.drop-img {
+width:100%;
+height:100%;
 }
 
 .photo-form {

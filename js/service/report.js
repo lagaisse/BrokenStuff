@@ -33,7 +33,7 @@ app.service('Report', function($http, $q){
         $http.post('./api/v1/reports/',report)
             .success(function(data, status){
                 console.log(data.success);
-                deferred.resolve(data);
+                deferred.resolve(data.success);
             })
             .error(function(data, status){
                 deferred.reject('ca pue du cul');
@@ -47,7 +47,7 @@ app.service('Report', function($http, $q){
         $http.post('./api/v1/pictures/upload.json',report)
             .success(function(data, status){
                 console.log(data.success);
-                deferred.resolve(data);
+                deferred.resolve(data.success);
             })
             .error(function(data, status){
                 deferred.reject('ca pue du cul');
@@ -55,17 +55,22 @@ app.service('Report', function($http, $q){
         return deferred.promise;
 
     }
-    this.addPicAlt = function(id, report){
+    this.addPicAlt = function(id, picture){
         var deferred = $q.defer();
-        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',report)
+        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',picture)
             .success(function(data, status){
                 console.log(data.success);
-                deferred.resolve(data);
+                deferred.resolve(data.success);
             })
             .error(function(data, status){
                 deferred.reject('ca pue du cul');
             })
         return deferred.promise;
 
+    }
+
+    this.onFileSelect = function(files) {
+        alert('pouet');
+    return true;
     }
 })

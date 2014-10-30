@@ -4,7 +4,7 @@ app.directive('ngPicture', ['Report' , function(Report){
 		restrict: 'EA',
 		link: function ($scope, Element, attrs) {
 			$scope.addPicture = function() {
-				Report.addPicAlt($scope.id, $scope.newPicture).then(function() {
+				Report.addPicAlt($scope.newReport.id, $scope.newPicture.b64pic).then(function() {
 //				Report.addPic($scope.newPicture).then(function() {
 	        		$scope.loading=false;
 	                //$scope.newReport={};
@@ -14,15 +14,15 @@ app.directive('ngPicture', ['Report' , function(Report){
 			}
 		},
 		replace: true,
-		template:'<div class="photo-form">'+
-				'		<form ng-submit="addPicture()" enctype="multipart/form-data" role="form2">'+
-					'	<div class="drop-zone">'+
+		template:'<div class="photo-form" ng-controller="PictureController">'+
+				'		<form ng-submit="addPicture()" role="form2">'+
+				'		<div class="drop-zone">'+
+				'		<img class="drop-img" ng-src="{{newPicture.b64pic}}"/>'+
 				'		<input type="hidden" ng-model="newPicture.idReport"/>'+
-//				'		<input class="form-control btn btl-lg btn-default whitebox" type="file" capture="camera" accept="image/*" id="cameraInput" name="cameraInput" ng-model="newPicture.picture">'+
-				'			<div class="file_upload">'+
-				'				<input type="file" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">'+
+				'			<div ng-hide="newPicture.b64pic" class="file_upload">'+
+				'				<input type="file" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">'+
 				'			</div>'+
-				'			<div class="desc-photo">'+
+				'			<div ng-hide="newPicture.b64pic" class="desc-photo">'+
 				'				<i class="fa fa-camera fa-5x"></i>'+
 				'			</div>'+
 				'	</div>'+
@@ -30,5 +30,27 @@ app.directive('ngPicture', ['Report' , function(Report){
 				'		</form>'+
 
 				'</div>'
+	}
+}]);
+
+app.directive('ngFileSelect',['$parse',"$timeout",function($parse,$timeout){
+	return function(scope, elem, attr){
+		var fn = $parse(attr['ngFileSelect']);
+		console.log(elem);
+		elem.bind('change', function(evt) {
+		var files = [], fileList, i;
+		fileList = evt.__files_ || evt.target.files;
+		if (fileList != null) {
+			for (i = 0; i < fileList.length; i++) {
+				files.push(fileList.item(i));
+			}
+		}
+		$timeout(function() {
+			fn(scope, {
+				$files : files,
+				$event : evt
+				});
+			});
+		});
 	}
 }]);
