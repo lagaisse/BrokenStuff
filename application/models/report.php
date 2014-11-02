@@ -75,7 +75,7 @@ class Report extends CI_Model {
                 'add_date'      =>  $row['r_add_date'],
                 'end_date'      =>  $row['r_end_date'],
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  'http://lorempicsum.com/futurama/350/200/1', //$row['r_picture'],
+                'picture'       =>  $row['r_picture']?$this->config->base_url() . $row['r_picture'] : 'http://lorempicsum.com/futurama/350/200/1',
                 'status'        =>  $row['r_status'],
                 'nb_vote_end'   =>  $row['r_nb_vote_end'],
                 'location'      =>  array('RER A', 'La défense')
@@ -84,6 +84,19 @@ class Report extends CI_Model {
         return $report;
     }
 
+    function update_report_picture($id, $picture)
+    {
+        $dir = 'uploads/'. uniqid() .'.jpeg';
+        imagejpeg($picture, FCPATH . $dir);
+
+        $this->load->database();
+        $report = null;
+        $data=array('r_picture'=> $dir);        
+        $this->db->where('r_id',$id);
+        $this->db->update('Report', $data); 
+
+        return $dir;
+    }
 
     function get_last_ten_entries()
     {

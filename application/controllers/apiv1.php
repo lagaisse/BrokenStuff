@@ -127,7 +127,7 @@ class Apiv1 extends REST_Controller
       }
     }
 
-    $the_id=$this->Report->new_report($report['name'],new DateTime('now'),48.233,2.342,'open',$report['location']);
+    $the_id=$this->Report->new_report($report['name'],new DateTime('now'),48.233,2.342,'open',isset($report['location'])?$report['location']:null);
     if ($the_id)
     {
       $this->response(array('success' => $the_id), 200);      
@@ -142,25 +142,42 @@ class Apiv1 extends REST_Controller
 
   function pictures_post() //NOT TESTED
   { 
-    $this->get('id_reports');
-
-    $config['upload_path'] = './';
-    $config['allowed_types'] = 'gif|jpg|png';
-/*    $config['max_size'] = '100';
-    $config['max_width']  = '1024';
-    $config['max_height']  = '768';*/
-    
-    $this->load->library('upload', $config);
-
-    if ( ! $this->upload->do_upload())
+    if (!$this->get('id_reports'))
     {
-      $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
+      $this->response(array('error' => 'missing report id'), 404);
     }
     else
     {
-     $this->response(array('upload_data' => $this->upload->data()));
-    }
+      
+//log_message('debug', 'Payload  : ' . file_get_contents('php://input'));
+//log_message('debug', 'Payload jsondecode : ' . json_decode(file_get_contents('php://input')));
+/*
+      if(!$this->post('data')) 
+      {
+        $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('data')), 404);
+      }
 
+      $data = base64_decode($this->post('data')); */
+      //$data = base64_decode(file_get_contents('php://input'));
+      $data = file_get_contents('php://input');
+      preg_match_all('#^data:image/([^;]+);base64,(.+)#', $data, $matches,PREG_PATTERN_ORDER);
+      log_message('debug', 'Payload mime : ' . $matches[1][0]);
+      $data=$matches[2][0];
+      $data = base64_decode($data); 
+
+      $picture = imagecreatefromstring($data);
+      if ($picture !== false) 
+      {
+        $this->load->model('Report');
+        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
+        imagedestroy($picture);
+        $this->response(array('success' => $url), 200);
+      }
+      else 
+      {
+        $this->response(array('error' => 'Cannot manage the picture', 'picture'=>$this->post('data')), 500);
+      }
+    }
   }
 
   function locations_get()
