@@ -57,7 +57,10 @@ app.service('Report', function($http, $q){
     }
     this.addPicAlt = function(id, picture){
         var deferred = $q.defer();
-        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',picture)
+        var postPic = {};
+        postPic.picture=picture;
+        postPic = JSON.stringify(postPic);
+        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',postPic)
             .success(function(data, status){
                 console.log(data.success);
                 deferred.resolve(data.success);
