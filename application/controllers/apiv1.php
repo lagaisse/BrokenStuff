@@ -140,7 +140,7 @@ class Apiv1 extends REST_Controller
 
   }
 
-  function pictures_post() //NOT TESTED
+  function pictures_post() 
   { 
     if (!$this->get('id_reports'))
     {
@@ -148,24 +148,21 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-      
-//log_message('debug', 'Payload  : ' . file_get_contents('php://input'));
-//log_message('debug', 'Payload jsondecode : ' . json_decode(file_get_contents('php://input')));
-/*
-      if(!$this->post('data')) 
+      if(!$this->post('picture')) 
       {
-        $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('data')), 404);
+        $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
       }
-
-      $data = base64_decode($this->post('data')); */
-      //$data = base64_decode(file_get_contents('php://input'));
-      $data = file_get_contents('php://input');
-      preg_match_all('#^data:image/([^;]+);base64,(.+)#', $data, $matches,PREG_PATTERN_ORDER);
+      
+      $data = $this->post('picture', false);
+            
+      if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
+      {
+        print_r($matches);
+        $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture'), 'retour' => $ret), 403);
+      } 
+      
       log_message('debug', 'Payload mime : ' . $matches[1][0]);
-      $data=$matches[2][0];
-      $data = base64_decode($data); 
-
-      $picture = imagecreatefromstring($data);
+      $picture =imagecreatefromstring(base64_decode($matches[2][0]));
       if ($picture !== false) 
       {
         $this->load->model('Report');
@@ -175,7 +172,7 @@ class Apiv1 extends REST_Controller
       }
       else 
       {
-        $this->response(array('error' => 'Cannot manage the picture', 'picture'=>$this->post('data')), 500);
+        $this->response(array('error' => 'Cannot manage the picture', 'picture' => $this->post('picture')), 500);
       }
     }
   }
