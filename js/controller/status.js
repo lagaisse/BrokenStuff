@@ -1,5 +1,5 @@
-app.controller('statusController', ['$scope',  
-    function ($scope) {
+app.controller('statusController', ['$scope', '$timeout',  
+    function ($scope, $timeout) {
         $scope.qStatus = "";
         $scope.$on('BeginStatus', function (event, args) {
             $scope.qStatus = args;
@@ -7,6 +7,13 @@ app.controller('statusController', ['$scope',
 
         $scope.$on("EndStatus", function (event) {
             $scope.qStatus = "";
+        });
+
+        $scope.$on('FlashStatus', function (event, args) {
+			$scope.qStatus = args;
+			$timeout(function(){
+                    $scope.qStatus = "";
+                }, 4000)
         });
     }
 ]);

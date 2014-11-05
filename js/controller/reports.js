@@ -3,8 +3,8 @@ app.controller("SearchController", function($scope,$rootScope, Report) {
 	$scope.reports=Report.getReports().then(function(reports){
         $rootScope.$broadcast("EndStatus");
         $scope.reports=reports;
-    }, function(msg) {
-            alert(msg);
+        }, function(reason) {
+            $rootScope.$broadcast("FlashStatus","error :"+reason);
     })
 });
 
@@ -29,10 +29,9 @@ app.controller("AddController", function($scope,$rootScope, Report, geolocation)
                 $scope.newReport.id=id;
                 $scope.newReport.reportForm=false;
                 $scope.newReport.pictureForm=true;
-                //$scope.newReport={};
-        	}, function(msg) {
-        		alert(msg);
-        	})
+        	}, function(reason) {
+            $rootScope.$broadcast("FlashStatus","error :"+reason);
+        })
     }
 });
 
@@ -41,12 +40,12 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
 	$scope.report=Report.getReport($routeParams.id).then(function(report){
         $rootScope.$broadcast("EndStatus");
         $scope.report=report;
-    }, function(msg) {
-            alert(msg);
+    }, function(reason) {
+            $rootScope.$broadcast("FlashStatus","error :"+reason);
     })
 });
 
-app.controller("PictureController", function($scope,Report) {
+app.controller("PictureController", function($scope, $rootScope, Report) {
     $scope.onFileSelect = function($files) {
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < $files.length; i++) {
@@ -58,10 +57,20 @@ app.controller("PictureController", function($scope,Report) {
                 $scope.newReport.b64pic = reader.result;
                 $scope.$apply();
             }
-            reader.progress = function() {
-
-
-            }
         }
+    }
+
+    $scope.addPicture = function(){
+        $rootScope.$broadcast("BeginStatus","posting");
+        Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
+            $scope.newReport.pictureUrl=pictureUrl;
+            $scope.newReport.reportForm=true;
+            $scope.newReport.pictureForm=true;
+            $scope.newReport.endOfProcess=true;
+            $("#uppic").attr("src",pictureUrl);
+            $rootScope.$broadcast("FlashStatus","Posted");
+        }, function(reason) {
+            $rootScope.$broadcast("FlashStatus","error :"+reason);
+        })
     }
 });

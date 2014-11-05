@@ -9,14 +9,31 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-md-12">
-			<div ng-show="newReport.pictureForm" ng-picture></div>
+
+			<div ng-show="newReport.pictureForm" class="photo-form" ng-controller="PictureController">
+				<form ng-submit="addPicture()" role="form2">
+					<div class="drop-zone">
+					<img class="drop-img" ng-hide="!newReport.pictureUrl" id="uppic" src=""/>
+					<img class="drop-img" ng-hide="newReport.pictureUrl" ng-if="newReport.b64pic" ng-src="{{newReport.b64pic}}"/>
+					<input type="hidden" ng-model="newPicture.idReport"/>
+						<div ng-hide="newReport.b64pic" class="file_upload">
+							<input type="file" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
+						</div>
+						<div ng-hide="newReport.b64pic" class="desc-photo">
+							<i class="fa fa-camera fa-5x"></i>
+						</div>
+				</div>
+					<input ng-hide="newReport.endOfProcess" ng-disabled="!newReport.b64pic" class="btn btn-success btn-lg btn-block" type="submit" value="Terminer"/>
+					</form>
+			</div>
+
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
 				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
 				<textarea ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
-				<select ng-model="newReport.location1" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox">
+				<select ng-model="newReport.location1" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
     				<option value="">Lieu 1</option>
 				</select>
-				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox">
+				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
     				<option value="">Lieu 2</option>
 				</select>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
