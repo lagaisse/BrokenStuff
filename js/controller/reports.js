@@ -73,4 +73,9 @@ app.controller("PictureController", function($scope, $rootScope, Report) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
         })
     }
+
+    $scope.selectFile = function()
+       {
+            $("#cameraInput").click();
+       }
 });

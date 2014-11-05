@@ -11,12 +11,9 @@
 
 <div class="container container-main">
 	<div class="row">
-		<div ng-show="loading">Chargement ....</div>
-		<div ng-hide="loading">
-			<div class="col-md-12"><h1>{{report.name}}</h1></div>
-			<div class="col-md-12">{{report.description}}</div>
-			<div ng-repeat="location in report.location" class="col-md-12">{{location}}</div>
-			<div  class="col-md-12"><img src="{{report.picture}}"></img></div>
-		</div>
+		<div class="col-md-12"><h1>{{report.name}}</h1></div>
+		<div class="col-md-12">{{report.description}}</div>
+		<div ng-repeat="location in report.location" class="col-md-12">{{location}}</div>
+		<div  class="col-md-12"><img src="{{report.picture}}"></img></div>
 	</div>
 </div>
