@@ -6,11 +6,13 @@ app.directive('ngPicture', ['Report' , function(Report){
 			$scope.addPicture = function() {
 //TODO : ajouter le broadcast pour le chargement
 //				$rootScope.$broadcast("BeginStatus","posting");
-				Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function() {
+				Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
 //					$rootScope.$broadcast("EndStatus");
+	                $scope.newReport.pictureUrl=pictureUrl;
 	                $scope.newReport.reportForm=true;
 	                $scope.newReport.pictureForm=true;
 	                $scope.newReport.endOfProcess=true;
+	                $("#uppic").attr("src",pictureUrl);
 	        	}, function(msg) {
 	        		alert(msg);
 	        	})
@@ -20,7 +22,8 @@ app.directive('ngPicture', ['Report' , function(Report){
 		template:'<div class="photo-form" ng-controller="PictureController">'+
 				'		<form ng-submit="addPicture()" role="form2">'+
 				'		<div class="drop-zone">'+
-				'		<img class="drop-img" ng-if="newReport.b64pic" ng-src="{{newReport.b64pic}}"/>'+
+				'		<img class="drop-img" ng-hide="!newReport.pictureUrl" id="uppic" src=""/>'+
+				'		<img class="drop-img" ng-hide="newReport.pictureUrl" ng-if="newReport.b64pic" ng-src="{{newReport.b64pic}}"/>'+
 				'		<input type="hidden" ng-model="newPicture.idReport"/>'+
 				'			<div ng-hide="newReport.b64pic" class="file_upload">'+
 				'				<input type="file" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">'+
