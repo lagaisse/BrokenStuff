@@ -74,4 +74,17 @@ app.service('Report', function($http, $q, $timeout){
 
     }
 
+    this.getLocations = function() {
+        var deferred = $q.defer();
+        $http.get('./api/v1/locations.json')
+            .success(function(data, status){
+                this.locations=data.results;
+                deferred.resolve(this.locations);
+            })
+            .error(function(data, status){
+                deferred.reject(status);
+            })
+        return deferred.promise;
+    };
+
 })

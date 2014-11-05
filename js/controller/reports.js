@@ -15,6 +15,11 @@ app.controller("AddController", function($scope,$rootScope, Report, geolocation)
       $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
     });
 
+    $scope.locations = [];
+    Report.getLocations().then(function(locations){
+        $scope.locations=locations;
+    })
+
     $scope.addReport = function() {
         $rootScope.$broadcast("BeginStatus","posting");
         $scope.newReport.geolocation=$scope.coords;
@@ -29,9 +34,6 @@ app.controller("AddController", function($scope,$rootScope, Report, geolocation)
         		alert(msg);
         	})
     }
-
-
-
 });
 
 app.controller("ReportController", function($scope, $rootScope, Report, $routeParams) {

@@ -10,11 +10,15 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div ng-show="newReport.pictureForm" ng-picture></div>
-			<form ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
+			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
 				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
 				<textarea ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
-				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
-				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
+				<select ng-model="newReport.location1" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox">
+    				<option value="">Lieu 1</option>
+				</select>
+				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox">
+    				<option value="">Lieu 2</option>
+				</select>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
