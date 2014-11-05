@@ -36,6 +36,17 @@ padding-left:0px;
 padding-right:0px;
 }
 
+.status {
+background-color: #EEE;
+color: #999;
+font-style: italic;
+position : absolute;
+width:100%;
+left:0 ;
+top: 0;
+z-index: -1;
+}
+
 .huge-button {
 color: white;
 font-weight:bold;

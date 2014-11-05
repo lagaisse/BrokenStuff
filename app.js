@@ -23,7 +23,5 @@ app.config(['$routeProvider',
 				;
         }]);
 
-
 app.controller("IndexController", function($scope) {
-	$scope.message="yoloindex";
-	});
+});

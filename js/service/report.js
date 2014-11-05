@@ -1,4 +1,4 @@
-app.service('Report', function($http, $q){
+app.service('Report', function($http, $q, $timeout){
 
     this.reports=false;
 
@@ -10,7 +10,7 @@ app.service('Report', function($http, $q){
                 deferred.resolve(this.reports);
             })
             .error(function(data, status){
-                deferred.reject('ca pue du cul');
+                deferred.reject(status);
             })
         return deferred.promise;
     };
@@ -23,7 +23,7 @@ app.service('Report', function($http, $q){
                 deferred.resolve(this.reports);
             })
             .error(function(data, status){
-                deferred.reject('ca pue du cul');
+                deferred.reject(status);
             })
         return deferred.promise;
     }
@@ -32,11 +32,13 @@ app.service('Report', function($http, $q){
         var deferred = $q.defer();
         $http.post('./api/v1/reports/',report)
             .success(function(data, status){
-                console.log(data.success);
-                deferred.resolve(data.success);
+                $timeout(function(){
+                    console.log(data.success);
+                    deferred.resolve(data.success);
+                }, 2000)
             })
             .error(function(data, status){
-                deferred.reject('ca pue du cul');
+                deferred.reject(status);
             })
         return deferred.promise;
 
@@ -47,10 +49,10 @@ app.service('Report', function($http, $q){
         $http.post('./api/v1/pictures/upload.json',report)
             .success(function(data, status){
                 console.log(data.success);
-                deferred.resolve(data.success);
+                deferred.resolve(data.success);                    
             })
             .error(function(data, status){
-                deferred.reject('ca pue du cul');
+                deferred.reject(status);
             })
         return deferred.promise;
 
@@ -66,14 +68,10 @@ app.service('Report', function($http, $q){
                 deferred.resolve(data.success);
             })
             .error(function(data, status){
-                deferred.reject('ca pue du cul');
+                deferred.reject(status);
             })
         return deferred.promise;
 
     }
 
-    this.onFileSelect = function(files) {
-        alert('pouet');
-    return true;
-    }
 })

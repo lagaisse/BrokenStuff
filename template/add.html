@@ -12,16 +12,16 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-md-12">
-			<div ng-show="newReport.id" ng-picture></div>
-			<form ng-hide="newReport.id" ng-submit="addReport()" role="form">
-				<input class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
-				<textarea class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
-				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
-				<input class="form-control line-bottom whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
-				<input type="hidden" ng-model="newReport.coords"/>
-				<input type="hidden" ng-model="newReport.datetime"/>
-				<input type="hidden" ng-model="newReport.id"/>
-				<input class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
+			<div ng-show="newReport.pictureForm" ng-picture></div>
+			<form ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
+				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
+				<textarea ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
+				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Lieu 1" ng-model="newReport.location1"/>
+				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Lieu 2" ng-model="newReport.location2"/>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
+				<input ng-hide="newReport.endOfProcess" class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
 			<form>
 		</div>
 	</div>

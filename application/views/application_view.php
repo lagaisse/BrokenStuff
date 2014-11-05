@@ -18,6 +18,7 @@
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
         <script src="js/controller/reports.js"></script>
+        <script src="js/controller/status.js"></script>
         <script src="js/directive/picture.js"></script>
 
 
@@ -26,7 +27,9 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
+    <div data-ng-controller="statusController">
+        <div ng-show="qStatus" class="status">{{qStatus}}</div>
+    </div>
 	<div ng-view></div>     
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
