@@ -106,6 +106,7 @@ class Apiv1 extends REST_Controller
   {
 
     $this->load->model('Report');
+    $report=array();
     foreach ($this->request->body as $key => $value) {
       switch ($key) {
         case 'name':
@@ -117,6 +118,11 @@ class Apiv1 extends REST_Controller
         case 'location2':
           $report['location']=$value;
           break;
+        case 'geolocation':
+          $report['geolocation']=$value;
+        case 'datetime':
+          $report['datetime']=(new DateTime())->setTimestamp( (int)( ((float) $value)/1000));
+          break;
         case 'picture': //not reached
          // $report['picture']=$this->_process_picture($value);
           break;
@@ -126,15 +132,23 @@ class Apiv1 extends REST_Controller
           break;
       }
     }
-
-    $the_id=$this->Report->new_report($report['name'],new DateTime('now'),48.233,2.342,'open',isset($report['location'])?$report['location']:null);
+    
+    $the_id=false;
+    if (isset($report['name'])) {
+      $the_id=$this->Report->new_report($report['name'],
+                                        isset($report['datetime'])? $report['datetime']:new DateTime('now'),
+                                        isset($report['geolocation'])? $report['geolocation']['latitude']:null,
+                                        isset($report['geolocation'])? $report['geolocation']['longitude']:null,
+                                        'open',
+                                        isset($report['location'])? $report['location']:"");
+    }
     if ($the_id)
     {
       $this->response(array('success' => $the_id), 200);      
     }
     else
     {
-      $this->response(array('error' => 'insert failed'), 404);
+      $this->response(array('error' => 'insert failed'), 500);
     }
 
 
@@ -185,29 +199,10 @@ class Apiv1 extends REST_Controller
     $this->location_list_get();
     //  $this->response(array('error' => 'Missing id'), 400);
    }
-   $locations = array(
-                    array(
-                      'id'           => 0x001, 
-                      'name'         => 'Ligne 1',
-                      'sublocation'  => array( 
-                        array('id'    => '0x001001',
-                              'name'  => 'La défense Grande arche'),
-                        array('id'    => '0x001002',
-                              'name'  => 'Esplanade de la Défense')
-                    )),
-                    array(
-                      'id'           => 0x002, 
-                      'name'         => 'Ligne 2',
-                      'sublocation'  => array( 
-                        array('id'    => '0x002001',
-                              'name'  => 'Station L2/1'),
-                        array('id'    => '0x002002',
-                              'name'  => 'Station L2/2')
-                    ))
-    );
 
+   $locations=null;
     $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => 3)),
+             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => count($locations))),
              'results'  => $locations
              );
 
@@ -231,8 +226,12 @@ class Apiv1 extends REST_Controller
               'name'         => 'RER A')
     );
 
+
+    $this->load->model('Location');
+    $locations = $this->Location->get_locations();
+
     $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => 3)),
+             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => count($locations))),
              'results'  => $locations
              );
 
