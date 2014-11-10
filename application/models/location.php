@@ -14,10 +14,10 @@
 
 class Location extends CI_Model {
 
-    var $title   = '';
-    var $content = '';
-    var $date    = '';
-    protected $_grp_sze=3;
+    var $title    = '';
+    var $content  = '';
+    var $date     = '';
+    var $grp_size = 3 ;
 
     function __construct()
     {
@@ -25,33 +25,71 @@ class Location extends CI_Model {
         parent::__construct();
     }
     
+    function get_locationFromPath($path)
+    {
+        $this->load->database();
+        $query = $this->db->query('SELECT * FROM location where lo_path=?',$path);
+
+        $location=array(); 
+
+        if($query->num_rows()>0)
+        {  
+            $row = $query->first_row('array');
+            
+            $query2 = $this->db->query('SELECT * FROM location where lo_path=? order by lo_name', $this->get_parent($row['lo_path']));
+            if($query2->num_rows()>0)
+            {  
+                $row2 = $query2->first_row('array');
+                $location = array(
+                        'id'            =>  $row['lo_path'],
+                        'name'          =>  $row['lo_name'],
+                        'parent'        =>  $row2['lo_name'],
+                        'geolocation'   =>  array('latitude' => $row['lo_geoloc_lat'],'longitude' => $row['lo_geoloc_long'])
+                    );
+            }
+        }
+        return $location;
+
+    }
+
     function get_locations()
     {
         $this->load->database();
-
+        //get all lines of transportation, which are level 2 in the table location : xxxyyy000
         $req  = 'SELECT *, SUBSTRING(lo_path,1,3) as path1, SUBSTRING(lo_path,4,3) as path2, SUBSTRING(lo_path,7,3) as path3 ';
-        $req .= ' FROM location where lo_path like "%000" and SUBSTRING(lo_path,4,3) > "000" order by path1';
+        $req .= ' FROM location where lo_path like "%000" and SUBSTRING(lo_path,4,3) > "000" order by lo_path';
         $query = $this->db->query($req);
 
         $locations=array();
         
         $results = $query->result_array();
         foreach ($results as $row) {
+            //for each line get the netwok it belongs to, level 1 in the table location : xxx000000
             $query2 = $this->db->query('SELECT * FROM location where lo_path=? order by lo_name', substr($row['lo_path'],0,3)."000000");
 
             if($query2->num_rows()>0)
             {
                 $row2 = $query2->first_row('array');
-
-                $query3 = $this->db->query('SELECT lo_path as id, lo_name as name FROM location where lo_path>? and lo_path<?', 
+                //for each line get the stations wich are in the location table like xxxyyy% or > xxxyyy000 and < xxxyyy(+1)000
+                $query3 = $this->db->query('SELECT * FROM location where lo_path>? and lo_path<?', 
                                             array($row['lo_path'],
                                                 str_pad(dechex(hexdec("0x".$row['lo_path']) + 0x1000),9,"0",STR_PAD_LEFT)));
 
+                $results3 = $query3->result_array();
+                
+                foreach ($results3 as $row3) {
+                    $sublocation[] = array(
+                                'id'            =>  $row3['lo_path'],
+                                'name'          =>  $row3['lo_name'],
+                                'geolocation'   =>  array('latitude' => $row3['lo_geoloc_lat'],'longitude' => $row3['lo_geoloc_long'])
+                        );
+                }
+
                 $locations[] = array(
-                    'id'            =>  $row['lo_code'],
+                    'id'            =>  $row['lo_path'],
                     'name'          =>  $row['lo_name'],
                     'parent'        =>  $row2['lo_name'],
-                    'sublocation'   =>  $query3->result_array()
+                    'sublocation'   =>  $sublocation
                 );
             }
            
@@ -81,87 +119,22 @@ class Location extends CI_Model {
     );*/
 
     }
-
-    function new_report($name,$add_date,$geoloc_lat,$geoloc_long,$status,$place)
+    
+    function get_parent($path)
     {
-        $this->load->database();
-        $data = array(
-               'r_name'         => $name ,
-               'r_add_date'     => $add_date->format('Y-m-d H:i:s'),
-               'r_geoloc_lat'   => $geoloc_lat,
-               'r_geoloc_long'  => $geoloc_long,
-               'r_status'       => $status,
-               'lo_id'          => ''
-            );   
-        $this->db->insert('Report',$data);
-        return $this->db->insert_id();
-    }
-
-    function get_report($id)
-    {
-        $this->load->database();
-        $report = null;
-
-        $query = $this->db->get_where('Report',array('r_id' => $id));
-        if($query->num_rows()>0)
-        {
-            $row = $query->first_row('array');
-            $report = array(
-                'id'            =>  $row['r_id'],
-                'name'          =>  $row['r_name'],
-                'add_date'      =>  $row['r_add_date'],
-                'end_date'      =>  $row['r_end_date'],
-                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $row['r_picture']?$this->config->base_url() . $row['r_picture'] : 'http://lorempicsum.com/futurama/350/200/1',
-                'status'        =>  $row['r_status'],
-                'nb_vote_end'   =>  $row['r_nb_vote_end'],
-                'location'      =>  array('RER A', 'La défense')
-            );
+        $splited_path=str_split($path,$this->grp_size);
+        $grp=count($splited_path);
+        $lvl=0;
+        foreach ($splited_path as $cle => $valeur) {
+        if ($valeur <> "000") $lvl++;
         }
-        return $report;
+        
+        if ($lvl<=1) {return $path;}
+
+        $parent = substr($path,0,($lvl-1)*$this->grp_size);
+        $parent  = str_pad($parent, $grp*$this->grp_size,"0");
+        return $parent;
     }
-
-    function update_report_picture($id, $picture)
-    {
-        $dir = 'uploads/'. uniqid() .'.jpeg';
-        imagejpeg($picture, FCPATH . $dir);
-
-        $this->load->database();
-        $report = null;
-        $data=array('r_picture'=> $dir);        
-        $this->db->where('r_id',$id);
-        $this->db->update('Report', $data); 
-
-        return $dir;
-    }
-
-    function get_last_ten_entries()
-    {
-        $this->load->database();
-        $query = $this->db->get('entries', 10);
-        return $query->result();
-    }
-
-    function insert_entry()
-    {
-        $this->load->database();
-        $this->title   = $_POST['title']; // please read the below note
-        $this->content = $_POST['content'];
-        $this->date    = time();
-
-        $this->db->insert('entries', $this);
-    }
-
-    function update_entry()
-    {
-        $this->load->database();
-        $this->title   = $_POST['title'];
-        $this->content = $_POST['content'];
-        $this->date    = time();
-
-        $this->db->update('entries', $this, array('id' => $_POST['id']));
-    }
-
 }
 
 

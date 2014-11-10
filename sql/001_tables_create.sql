@@ -32,20 +32,11 @@ CREATE TABLE `location` (
   `lo_geoloc_long` float DEFAULT NULL,
   `lo_path` char(9) DEFAULT NULL,
   PRIMARY KEY (`lo_id`),
-  UNIQUE KEY `LOPLACE` (`lo_code`,`lo_path`),
-  KEY `LOPATH` (`lo_path`) USING BTREE,
-  KEY `LOCODE` (`lo_code`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `LOPATH` (`lo_path`) USING BTREE,
+  KEY `LOCODE` (`lo_code`) USING BTREE,
+  KEY `LOPLACE` (`lo_code`,`lo_path`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=1112 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `location`
---
-
-LOCK TABLES `location` WRITE;
-/*!40000 ALTER TABLE `location` DISABLE KEYS */;
-/*!40000 ALTER TABLE `location` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `report`
@@ -64,22 +55,13 @@ CREATE TABLE `report` (
   `r_picture` varchar(255) DEFAULT NULL,
   `r_status` enum('open','closed') DEFAULT NULL,
   `r_nb_vote_end` int(11) DEFAULT NULL,
-  `lo_code` varchar(15) DEFAULT NULL,
+  `lo_path` char(9) DEFAULT NULL,
   PRIMARY KEY (`r_id`),
-  KEY `RELOCODE` (`lo_code`) USING BTREE,
   KEY `ENDDATE` (`r_end_date`) USING BTREE,
-  KEY `ADDDATE` (`r_add_date`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `ADDDATE` (`r_add_date`) USING BTREE,
+  KEY `RELOPATH` (`lo_path`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `report`
---
-
-LOCK TABLES `report` WRITE;
-/*!40000 ALTER TABLE `report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `report` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -90,4 +72,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-09 21:12:40
+-- Dump completed on 2014-11-10 13:57:38

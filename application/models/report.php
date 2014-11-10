@@ -27,9 +27,12 @@ class Report extends CI_Model {
     function get_reports()
     {
         $this->load->database();
+        $this->load->model('Location');
+
         $query = $this->db->get('report');
         $results = $query->result_array();
         foreach ($results as $row) {
+
             $reports[] = array(
                 'id'            =>  $row['r_id'],
                 'name'          =>  $row['r_name'],
@@ -39,7 +42,7 @@ class Report extends CI_Model {
                 'picture'       =>  $row['r_picture'],
                 'status'        =>  $row['r_status'],
                 'nb_vote_end'   =>  $row['r_nb_vote_end'],
-                'location'      =>  array('RER A', 'La défense')
+                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }        
         return $reports;
@@ -54,21 +57,28 @@ class Report extends CI_Model {
                'r_geoloc_lat'   => $geoloc_lat,
                'r_geoloc_long'  => $geoloc_long,
                'r_status'       => $status,
-               'lo_code'        => ''
+               'lo_path'        => $place
             );   
-        $this->db->insert('Report',$data);
+        $this->db->insert('report',$data);
         return $this->db->insert_id();
     }
 
     function get_report($id)
     {
         $this->load->database();
+        $this->load->model('Location');
+
         $report = null;
 
-        $query = $this->db->get_where('Report',array('r_id' => $id));
+        //get the report from the report table where id =$id
+        $query = $this->db->query('select * from report where r_id=?', $id);
         if($query->num_rows()>0)
         {
             $row = $query->first_row('array');
+
+            //get the location of the report from the location table where path = report_path
+            
+
             $report = array(
                 'id'            =>  $row['r_id'],
                 'name'          =>  $row['r_name'],
@@ -78,7 +88,7 @@ class Report extends CI_Model {
                 'picture'       =>  $row['r_picture']?$this->config->base_url() . $row['r_picture'] : 'http://lorempicsum.com/futurama/350/200/1',
                 'status'        =>  $row['r_status'],
                 'nb_vote_end'   =>  $row['r_nb_vote_end'],
-                'location'      =>  array('RER A', 'La défense')
+                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }
         return $report;
