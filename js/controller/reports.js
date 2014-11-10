@@ -45,7 +45,7 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
     })
 });
 
-app.controller("PictureController", function($scope, $rootScope, Report) {
+app.controller("PictureController", function($scope, $rootScope, $timeout, Report) {
     $scope.onFileSelect = function($files) {
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < $files.length; i++) {
@@ -55,7 +55,6 @@ app.controller("PictureController", function($scope, $rootScope, Report) {
             reader.onload = function() {
                 console.log(reader.result);
                 $scope.newReport.b64pic = reader.result;
-                $scope.$apply();
             }
         }
     }
@@ -75,6 +74,8 @@ app.controller("PictureController", function($scope, $rootScope, Report) {
 
     $scope.selectFile = function()
        {
+        $timeout(function() {
             $("#cameraInput").click();
+        }, 0);
        }
 });
