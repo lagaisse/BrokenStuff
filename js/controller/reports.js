@@ -67,7 +67,6 @@ app.controller("PictureController", function($scope, $rootScope, Report) {
             $scope.newReport.reportForm=true;
             $scope.newReport.pictureForm=true;
             $scope.newReport.endOfProcess=true;
-            $("#uppic").attr("src",pictureUrl);
             $rootScope.$broadcast("FlashStatus","Posted");
         }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
