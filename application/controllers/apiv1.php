@@ -194,13 +194,14 @@ class Apiv1 extends REST_Controller
   function locations_get()
   {
 
-   if(!$this->get('name'))
+   if(!$this->get('id'))
    {
     $this->location_list_get();
     //  $this->response(array('error' => 'Missing id'), 400);
    }
 
-   $locations=null;
+    $this->load->model('Location');
+    $locations = $this->Location->get_locationFromPath("".$this->get('id'));
     $results= array(
              'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => count($locations))),
              'results'  => $locations

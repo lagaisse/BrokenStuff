@@ -31,6 +31,7 @@ class Location extends CI_Model {
         $query = $this->db->query('SELECT * FROM location where lo_path=?',$path);
 
         $location=array(); 
+        $sublocation=array();
 
         if($query->num_rows()>0)
         {  
@@ -40,13 +41,31 @@ class Location extends CI_Model {
             if($query2->num_rows()>0)
             {  
                 $row2 = $query2->first_row('array');
-                $location = array(
-                        'id'            =>  $row['lo_path'],
-                        'name'          =>  $row['lo_name'],
-                        'parent'        =>  $row2['lo_name'],
-                        'geolocation'   =>  array('latitude' => $row['lo_geoloc_lat'],'longitude' => $row['lo_geoloc_long'])
+            }
+            //for each line get the stations wich are in the location table like xxxyyy% or > xxxyyy000 and < xxxyyy(+1)000
+            // TODO Tidy this !
+            $nextpathinline = "".str_pad("1",(strlen($row['lo_path'])/$this->grp_size - $this->get_depth($row['lo_path'])) * ($this->grp_size+1),"0", STR_PAD_RIGHT);
+            $query3 = $this->db->query('SELECT * FROM location where lo_path>? and lo_path<?', 
+                                        array($row['lo_path'],
+                                            str_pad(dechex(hexdec("0x".$row['lo_path']) +  hexdec("0x".$nextpathinline)),9,"0",STR_PAD_LEFT)));
+                                            
+
+            $results3 = $query3->result_array();
+            
+            foreach ($results3 as $row3) {
+                $sublocation[] = array(
+                            'id'            =>  $row3['lo_path'],
+                            'name'          =>  $row3['lo_name'],
+                            'geolocation'   =>  array('latitude' => $row3['lo_geoloc_lat'],'longitude' => $row3['lo_geoloc_long'])
                     );
             }
+            $location = array(
+                    'id'            =>  $row['lo_path'],
+                    'name'          =>  $row['lo_name'],
+                    'parent'        =>  $row2['lo_name'],
+                    'geolocation'   =>  array('latitude' => $row['lo_geoloc_lat'],'longitude' => $row['lo_geoloc_long']),
+                    'sublocation'   =>  $sublocation
+                );
         }
         return $location;
 
@@ -70,26 +89,10 @@ class Location extends CI_Model {
             if($query2->num_rows()>0)
             {
                 $row2 = $query2->first_row('array');
-                //for each line get the stations wich are in the location table like xxxyyy% or > xxxyyy000 and < xxxyyy(+1)000
-                $query3 = $this->db->query('SELECT * FROM location where lo_path>? and lo_path<?', 
-                                            array($row['lo_path'],
-                                                str_pad(dechex(hexdec("0x".$row['lo_path']) + 0x1000),9,"0",STR_PAD_LEFT)));
-
-                $results3 = $query3->result_array();
-                
-                foreach ($results3 as $row3) {
-                    $sublocation[] = array(
-                                'id'            =>  $row3['lo_path'],
-                                'name'          =>  $row3['lo_name'],
-                                'geolocation'   =>  array('latitude' => $row3['lo_geoloc_lat'],'longitude' => $row3['lo_geoloc_long'])
-                        );
-                }
-
                 $locations[] = array(
                     'id'            =>  $row['lo_path'],
                     'name'          =>  $row['lo_name'],
-                    'parent'        =>  $row2['lo_name'],
-                    'sublocation'   =>  $sublocation
+                    'parent'        =>  $row2['lo_name']
                 );
             }
            
@@ -119,20 +122,27 @@ class Location extends CI_Model {
     );*/
 
     }
-    
-    function get_parent($path)
+
+
+    function get_depth($path)
     {
         $splited_path=str_split($path,$this->grp_size);
-        $grp=count($splited_path);
         $lvl=0;
         foreach ($splited_path as $cle => $valeur) {
-        if ($valeur <> "000") $lvl++;
+            if ($valeur <> "000") $lvl++;
         }
         
+        return $lvl;
+    }
+
+
+    function get_parent($path)
+    {
+        $lvl = $this->get_depth($path);
         if ($lvl<=1) {return $path;}
 
         $parent = substr($path,0,($lvl-1)*$this->grp_size);
-        $parent  = str_pad($parent, $grp*$this->grp_size,"0");
+        $parent  = str_pad($parent, strlen($path),"0");
         return $parent;
     }
 }
