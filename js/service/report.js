@@ -87,4 +87,17 @@ app.service('Report', function($http, $q, $timeout){
         return deferred.promise;
     };
 
+    this.getSubLocations = function(id) {
+        var deferred = $q.defer();
+        $http.get('./api/v1/locations/'+id+'.json')
+            .success(function(data, status){
+                this.sublocations=data.results.sublocation;
+                deferred.resolve(this.sublocations);
+            })
+            .error(function(data, status){
+                deferred.reject(status);
+            })
+        return deferred.promise;
+    };
+
 })

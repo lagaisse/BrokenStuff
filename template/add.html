@@ -29,10 +29,10 @@
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
 				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" type="text" placeholder="Nom" ng-model="newReport.name"/>
 				<textarea ng-disabled="newReport.endOfProcess" class="form-control line-bottom whitebox" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
-				<select ng-model="newReport.location1" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
+				<select ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
     				<option value="">Lieu 1</option>
 				</select>
-				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in locations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
+				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in sublocations" class="form-control line-bottom whitebox" ng-disabled="newReport.endOfProcess">
     				<option value="">Lieu 2</option>
 				</select>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>

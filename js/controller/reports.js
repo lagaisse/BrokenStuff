@@ -8,7 +8,7 @@ app.controller("SearchController", function($scope,$rootScope, Report) {
     })
 });
 
-app.controller("AddController", function($scope,$rootScope, Report, geolocation) {
+app.controller("AddController", function($scope,$rootScope, $timeout, Report, geolocation) {
     $scope.newReport={};
 
     geolocation.getLocation().then(function(data){
@@ -16,6 +16,7 @@ app.controller("AddController", function($scope,$rootScope, Report, geolocation)
     });
 
     $scope.locations = [];
+    $scope.sublocations = [];
     Report.getLocations().then(function(locations){
         $scope.locations=locations;
     })
@@ -33,6 +34,15 @@ app.controller("AddController", function($scope,$rootScope, Report, geolocation)
             $rootScope.$broadcast("FlashStatus","error :"+reason);
         })
     }
+
+    $scope.populateSub = function(text)
+       {
+        $timeout(function() {
+            Report.getSubLocations(text).then(function(sublocations){
+                    $scope.sublocations=sublocations;
+                })
+        }, 0);
+       }
 });
 
 app.controller("ReportController", function($scope, $rootScope, Report, $routeParams) {
