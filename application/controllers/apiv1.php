@@ -220,14 +220,6 @@ class Apiv1 extends REST_Controller
 
   function location_list_get()
   {
-    $locations = array(
-        array('id'           => 0x001, 
-              'name'         => 'Ligne 1'),
-        array('id'           => 0x002, 
-              'name'         => 'RER A')
-    );
-
-
     $this->load->model('Location');
     $locations = $this->Location->get_locations();
 
