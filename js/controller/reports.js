@@ -55,7 +55,7 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
     })
 });
 
-app.controller("PictureController", function($scope, $rootScope, $timeout, Report) {
+app.controller("PictureController", function($scope, $rootScope, $timeout, $location, Report) {
     $scope.onFileSelect = function($files) {
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < $files.length; i++) {
@@ -76,7 +76,8 @@ app.controller("PictureController", function($scope, $rootScope, $timeout, Repor
             $scope.newReport.reportForm=true;
             $scope.newReport.pictureForm=true;
             $scope.newReport.endOfProcess=true;
-            $rootScope.$broadcast("FlashStatus","Posted");
+            $rootScope.$broadcast("EndStatus");
+            $location.path("/");
         }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
         })

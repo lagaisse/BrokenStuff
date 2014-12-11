@@ -2,9 +2,7 @@ app.controller('statusController', ['$scope', '$timeout',
     function ($scope, $timeout) {
         $scope.qStatus = "";
         $scope.$on('BeginStatus', function (event, args) {
-            $timeout(function(){
-                    $scope.qStatus = args;
-                }, 1000)
+             $scope.qStatus = args;
         });
 
         $scope.$on("EndStatus", function (event) {
@@ -15,7 +13,7 @@ app.controller('statusController', ['$scope', '$timeout',
 			$scope.qStatus = args;
 			$timeout(function(){
                     $scope.qStatus = "";
-                }, 4000)
+                }, 2000)
         });
     }
 ]);
