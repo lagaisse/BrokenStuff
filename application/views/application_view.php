@@ -28,8 +28,9 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <div data-ng-controller="statusController">
-        <div ng-show="qStatus" class="status">{{qStatus}}</div>
+    <div data-ng-controller="statusController" class="status">
+        <div ng-show="qStatus" >{{qStatus}}</div>
+        <i ng-show="qStatus" class=" fa fa-5x fa-spinner fa-spin"></i>
     </div>
 	<div ng-view></div>     
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
