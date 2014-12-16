@@ -6,12 +6,19 @@
 	</div>
 </nav>
 <div class="container">
-	<div class="row">
-		<div ng-show="loading">Chargement ....</div>
-		<div ng-hide="loading">
-		<div ng-repeat ="report in reports" ><a href="#report/{{report.id}}"><div class="list-item">
-			{{report.name}}
-		</div></a></div>
+		<div ng-hide="loading"></div>
+	<div class="row white">
+		<div ng-repeat ="report in reports" class="col-xs-6">
+			<a href="#report/{{report.id}}">
+				<div class="list-item">
+					<div class="item">
+					<div class="img-item">
+						<img ng-show="report.picture" class="test" src="{{report.picture}}"></img>
+						<div class="text">{{report.name}}</div>
+					</div>
+				</div>
+				</div>
+			</a>
 		</div>
 	</div>
 </div>

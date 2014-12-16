@@ -18,6 +18,10 @@ body {
 background-color: #9ADAFD;
 }
 
+.navbar {
+margin-bottom:0px;
+}
+
 .container {
 padding-left:0px;
 padding-right:0px;
@@ -30,8 +34,8 @@ height:100%;
 
 .row {
 height:100%;
-margin-left:0px;
-margin-right:0px;
+margin-left:1px;
+margin-right:1px;
 padding-left:0px;
 padding-right:0px;
 }
@@ -62,16 +66,48 @@ margin-left:20px;
 margin-right:20px;
 }
 
+.white {
+background-color: #FFF;
+}
+
 .list-item {
-border-bottom: 1px solid #CCC;
+padding-top:1px;
+padding-bottom:1px;
+margin-left:1px;
+margin-right:1px;
+margin-top:1px;
+margin-bottom:1px;
+padding-left:1px;
+padding-right:1px;
+max-height:10em;
+min-height:10em;
+background-image:url(stripes.jpg);
+background-repeat: repeat-x;
+}
+
+.col-xs-6 , .col-md-12{
+padding-left:0px;
+padding-right:0px;	
+}
+
+.img-item{
+height: 100%;
+width: 100%;
+}
+
+.test {
+width: 100%;
+}
+
+.text {
+position: absolute;
+top:2em;
+left: 1.2em;
+z-index: 2;
 font-family: 'Roboto', sans-serif;
 font-weight: 400;
-text-align: center;
-font-size: 22px;
-padding-top:25px;
-padding-bottom:25px;
-margin-left:20px;
-margin-right:20px;
+font-size: 1.4em;
+text-shadow: black 1px 2px;
 }
 
 .form-control , .form-control:focus{
