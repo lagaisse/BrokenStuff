@@ -24,12 +24,19 @@ class Report extends CI_Model {
         parent::__construct();
     }
     
-    function get_reports()
+    function get_reports($since_id, $reports_count)
     {
         $this->load->database();
         $this->load->model('Location');
+        $reports=null;
+        $param=array();
 
-        $query = $this->db->get('report');
+        $sql  = 'select * from report';
+        if ($since_id) {$sql .= ' where r_id>=?'; $param[]=$since_id;}
+        if ($reports_count) {$sql .= ' LIMIT ?'; $param[]=$reports_count;}
+
+
+        $query = $this->db->query($sql, $param);
         $results = $query->result_array();
         foreach ($results as $row) {
 

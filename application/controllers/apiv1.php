@@ -21,80 +21,39 @@ class Apiv1 extends REST_Controller
   {
     if(!$this->get('id'))
     {
-       $this->reports_list_get();
-      //  $this->response(array('error' => 'Missing id'), 400);
+      $this->reports_list_get();
     }
-
-    // $reports = $this->some_model->getSomething( $this->get('id') );
-    //"longitude":2.3775,"latitude":48.4186
-    $reports = array(
-        1 => array('id'           => 1, 
-                   'name'         => 'Automate de service HS', 
-                   'description'  => 'Automate de service HS', 
-                   'add_date'     => '2014-02-14T11:33:00+02:00', 
-                   'end_date'     => '', 
-                   'location'     => array('RER A','La Défense Grande Arche'), 
-                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                   'picture'      => 'http://lorempicsum.com/futurama/350/200/1',
-                   'status'       => 'open',
-                   'nb_vote_end'  => 100 ),
-        2 => array('id'           => 2, 
-                   'name'         => 'Ecran d\'information RATP HS', 
-                   'description'  => 'Ecran d\'information RATP HS', 
-                   'add_date'     => '2014-09-15T19:55:00+02:00', 
-                   'end_date'     => '2014-09-17T19:55:00+02:00', 
-                   'location'     => array('RER A','La Défense Grande Arche'), 
-                   'geolocation'  => array('longitude' => 2.2418684,'latitude' => 48.8911407),
-                   'picture'      => 'http://lorempicsum.com/futurama/255/200/5',
-                   'status'       => 'closed',
-                   'nb_vote_end'  => 1 ),      
-        3 => array('id'           => 3, 
-                   'name'         => 'Portique bloqué', 
-                   'description'  => 'Portique bloqué', 
-                   'add_date'     => '2013-10-15T10:55:00+02:00', 
-                   'end_date'     => '2013-12-01T11:55:00+02:00', 
-                   'location'     => array('Ligne 1','Louvre Rivoli'), 
-                   'geolocation'  => array('longitude' => 2.3407199,'latitude' => 48.8609428),
-                   'picture'      => 'http://lorempicsum.com/futurama/627/200/3',
-                   'status'       => 'closed',
-                   'nb_vote_end'  => 1 )
-    );
-    
     $this->load->model('Report');
     $report = $this->Report->get_report($this->get('id'));
-    
     if($report)
     {
-        $this->response($report, 200); // 200 being the HTTP response code
+      $this->response($report, 200); // 200 being the HTTP response code
     }
-
     else
     {
-        $this->response(array('error' => 'report could not be found'), 404);
+      $this->response(array('error' => 'report could not be found'), 404);
     }
   }
 
-	function reports_list_get()
+  function reports_list_get()
   {
+    $since_id  = ($this->get('since_id')?$this->get('since_id'):null);
+    $reports_count = ($this->get('count')&&is_numeric($this->get('count'))?(int)$this->get('count'):30);
+
     $this->load->model('Report');
-
-    $reports=$this->Report->get_reports();
-
-    	$results= array(
+    $reports=$this->Report->get_reports($since_id,$reports_count);
+    $results= array(
                'metadata' => array('resultset' => array('count'=>count($reports), 'offset'=>0, 'limit' => 3)),
                'results'  => $reports
                );
-
-
-      if($results)
-      {
-          $this->response($results, 200); // 200 being the HTTP response code
-      }
-
-      else
-      {
-          $this->response(array('error' => 'No report in database'), 404);
-      }
+    if($results)
+    {
+      $this->response($results, 200); // 200 being the HTTP response code
+    }
+    else
+    {
+      $this->response(array('error' => 'No report in database'), 404);
+    }
   }
 
   function reports_put()
