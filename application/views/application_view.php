@@ -32,7 +32,10 @@
         <div ng-show="qStatus" >{{qStatus}}</div>
         <i ng-show="qStatus" class=" fa fa-5x fa-spinner fa-spin"></i>
     </div>
-	<div ng-view></div>     
+    <div id="view"></div> 
+	
+    <div ng-view></div>
+
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
 

@@ -22,9 +22,16 @@ background-color: #9ADAFD;
 margin-bottom:0px;
 }
 
+.container>.navbar-header {
+margin-left:0px;
+margin-right:0px;
+}
+
 .container {
 padding-left:0px;
 padding-right:0px;
+margin-left:0px;
+margin-right:0px;
 }
 
 
@@ -45,13 +52,20 @@ text-align: center;
 background-color: #333;
 color: #999;
 font-style: italic;
-position : absolute;
-left:40% ;
+position : fixed;
+left:45% ;
 top: 35%;
 z-index: 100;
-padding-left: 4px;
-padding-right: 4px;
-border-radius: 10px;
+
+}
+
+.waiting {
+z-index: 99;
+background-color: #000;
+opacity: 0.5;
+width: 100%;
+height: 100%;
+position:fixed;
 }
 
 .huge-button {
@@ -83,9 +97,10 @@ max-height:10em;
 min-height:10em;
 background-image:url(stripes.jpg);
 background-repeat: repeat-x;
+border-radius: 5px;
 }
 
-.col-xs-6 , .col-md-12{
+.col-xs-6 , .col-xs-12, .col-md-12{
 padding-left:0px;
 padding-right:0px;	
 }
@@ -173,4 +188,8 @@ margin-left:42%;
 
 .fa-camera {
 color:#999;
+}
+
+.more {
+width: 100%
 }
