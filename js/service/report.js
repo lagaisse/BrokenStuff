@@ -2,9 +2,28 @@ app.service('Report', function($http, $q, $timeout){
 
     this.reports=false;
 
-    this.getReports = function() {
+    this.getReports = function(count,since_id) {
+        var firstattr=true;
+        var separation='';
         var deferred = $q.defer();
-        $http.get('./api/v1/reports.json')
+        var endpoint = './api/v1/reports.json';
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof since_id != "undefined") {
+            endpoint=endpoint+separation+'since_id='+since_id;
+            firstattr=false;
+        }
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof count != "undefined") {
+            endpoint=endpoint+separation+'count='+count;
+        }
+
+        $http.get(endpoint)
             .success(function(data, status){
                 this.reports=data.results;
                 deferred.resolve(this.reports);

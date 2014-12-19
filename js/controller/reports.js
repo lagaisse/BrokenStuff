@@ -1,11 +1,24 @@
 app.controller("SearchController", function($scope,$rootScope, Report) {
-    $rootScope.$broadcast("BeginStatus","loading");
-	$scope.reports=Report.getReports().then(function(reports){
-        $rootScope.$broadcast("EndStatus");
+    var count=30;
+
+    $scope.lastid=0;
+	$scope.reports=Report.getReports(count).then(function(reports){
         $scope.reports=reports;
+        $scope.lastid=reports[reports.length-1].id;
         }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
     })
+
+    $scope.moreReports = function(lastid){
+        $rootScope.$broadcast("BeginStatus","Recherche");
+        Report.getReports(count,lastid).then(function(reports){
+            $scope.lastid=reports[reports.length-1].id;
+            $scope.reports = $scope.reports.concat(reports);
+            $rootScope.$broadcast("EndStatus");
+        }, function(reason) {
+            $rootScope.$broadcast("FlashStatus","error :"+reason);
+    })
+    }
 });
 
 app.controller("AddController", function($scope,$rootScope, $timeout, Report, geolocation) {
@@ -22,7 +35,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
     })
 
     $scope.addReport = function() {
-        $rootScope.$broadcast("BeginStatus","posting");
+        $rootScope.$broadcast("BeginStatus","Chargement");
         $scope.newReport.geolocation=$scope.coords;
         $scope.newReport.datetime=Date.now();
         Report.add($scope.newReport).then(function(id) {
@@ -31,7 +44,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
                 $scope.newReport.reportForm=false;
                 $scope.newReport.pictureForm=true;
         	}, function(reason) {
-            $rootScope.$broadcast("FlashStatus","error :"+reason);
+            $rootScope.$broadcast("FlashStatus","erreur :"+reason);
         })
     }
 
@@ -46,9 +59,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
 });
 
 app.controller("ReportController", function($scope, $rootScope, Report, $routeParams) {
-    $rootScope.$broadcast("BeginStatus","loading");
 	$scope.report=Report.getReport($routeParams.id).then(function(report){
-        $rootScope.$broadcast("EndStatus");
         $scope.report=report;
     }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
