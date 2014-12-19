@@ -1,24 +1,26 @@
 <nav class="navbar" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">back</a>
+			<a class="navbar-brand" href="#">&lt; Retour</a>
 		</div>
 	</div>
 </nav>
 <div class="container">
 		<div ng-hide="loading"></div>
 	<div class="row white">
-		<div ng-repeat ="report in reports" class="col-xs-6">
+		<div ng-repeat ="report in reports" class="col-xs-12">
 			<a href="#report/{{report.id}}">
 				<div class="list-item">
 					<div class="item">
-					<div class="img-item">
-						<img ng-show="report.picture" class="test" src="{{report.picture}}"></img>
-						<div class="text">{{report.name}}</div>
+						<div class="img-item">
+							<img ng-show="report.picture" class="test" src="{{report.picture}}"></img>
+							<div class="text">{{report.name}}</div>
+						</div>
 					</div>
-				</div>
+
 				</div>
 			</a>
 		</div>
+	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>
 	</div>
 </div>
