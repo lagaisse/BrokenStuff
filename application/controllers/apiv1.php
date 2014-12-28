@@ -12,6 +12,9 @@
  * @link		http://kevin.lagaisse.fr
 */
 
+//@TODO : data validation with form validator
+
+
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
 require APPPATH.'/libraries/REST_Controller.php';
 
@@ -21,8 +24,16 @@ class Apiv1 extends REST_Controller
   {
     if(!$this->get('id'))
     {
-      $this->reports_list_get();
+      if(!$this->get('latitude') || !$this->get('longitude')) {
+        $this->reports_list_get();
+      }
+      else {
+        $this->reports_geo_get();
+      }
+
     }
+
+    //default fallback : return report with id
     $this->load->model('Report');
     $report = $this->Report->get_report($this->get('id'));
     if($report)
@@ -43,10 +54,10 @@ class Apiv1 extends REST_Controller
     $this->load->model('Report');
     $reports=$this->Report->get_reports($since_id,$reports_count);
     $results= array(
-               'metadata' => array('resultset' => array('count'=>count($reports), 'offset'=>0, 'limit' => 3)),
+               'metadata' => array('resultset' => array('count'=>count($reports))),
                'results'  => $reports
                );
-    if($results)
+    if($reports)
     {
       $this->response($results, 200); // 200 being the HTTP response code
     }
@@ -55,6 +66,30 @@ class Apiv1 extends REST_Controller
       $this->response(array('error' => 'No report in database'), 404);
     }
   }
+
+  function reports_geo_get()
+  {
+
+    //@TODO manage data filtering
+    $this->load->model('Report');
+    $reports=$this->Report->get_report_bygeo( $this->get('latitude'),
+                                              $this->get('longitude'),
+                                              $this->get('distance'));
+    $results= array(
+               'metadata' => array('resultset' => array('count'=>count($reports))),
+               'results'  => $reports
+               );
+    if($reports)
+    {
+      $this->response($results, 200); // 200 being the HTTP response code
+    }
+    else
+    {
+      $this->response(array('error' => 'No report in database with this parameters'), 404);
+    }
+  }
+
+
 
   function reports_put()
   {
@@ -156,13 +191,12 @@ class Apiv1 extends REST_Controller
    if(!$this->get('id'))
    {
     $this->location_list_get();
-    //  $this->response(array('error' => 'Missing id'), 400);
    }
 
     $this->load->model('Location');
     $locations = $this->Location->get_locationFromPath("".$this->get('id'));
     $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => count($locations))),
+             'metadata' => array('resultset' => array('count'=>count($locations))),
              'results'  => $locations
              );
 
@@ -183,7 +217,7 @@ class Apiv1 extends REST_Controller
     $locations = $this->Location->get_locations();
 
     $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations), 'offset'=>0, 'limit' => count($locations))),
+             'metadata' => array('resultset' => array('count'=>count($locations))),
              'results'  => $locations
              );
 
@@ -197,19 +231,5 @@ class Apiv1 extends REST_Controller
         $this->response(array('error' => 'location could not be found'), 404);
     }
   }
-  public function send_get()
-  {
-    var_dump($this->_args);
-  }
 
-	public function send_post()
-	{
-		var_dump($this->request->body);
-	}
-
-
-	public function send_put()
-	{
-		var_dump($this->put('foo'));
-	}
 }

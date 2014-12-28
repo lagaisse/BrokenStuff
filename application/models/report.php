@@ -65,8 +65,9 @@ class Report extends CI_Model {
                'r_geoloc_long'  => $geoloc_long,
                'r_status'       => $status,
                'lo_path'        => $place
-            );   
-        $this->db->insert('report',$data);
+            );
+        $sql = $this->db->insert_string('report', $data);
+        $this->db->query($sql);
         return $this->db->insert_id();
     }
 
@@ -101,46 +102,82 @@ class Report extends CI_Model {
         return $report;
     }
 
+
+    function get_report_bygeo($latitude, $longitude, $distance)
+    {
+        $this->load->database();
+        $this->load->model('Location');
+        $reports= null;
+
+        $rayon_terre= 6371; //km
+        //$lat_orig= deg2rad(49); //49 degré, Paris latitude 
+        $lat_deg_len= 2 * pi() * $rayon_terre / 360; //360 degré
+        //$lon_deg_len= $lat_deg_len * cos($lat_orig);
+
+        //fuzzy search zone using rectangle
+        $lat_bound_l= $latitude - ($distance/$lat_deg_len);
+        $lat_bound_r= $latitude + ($distance/$lat_deg_len);
+
+        $lon_bound_l= $longitude-$distance/abs(cos(deg2rad($latitude))*$lat_deg_len);
+        $lon_bound_r= $longitude+$distance/abs(cos(deg2rad($latitude))*$lat_deg_len);
+
+        $sql=<<<SQL
+                SELECT report.*,
+                        {$rayon_terre} * 2 * ASIN(SQRT( 
+                                POWER(SIN(({$latitude} -abs(loc.lo_geoloc_lat)) * pi()/180 / 2), 2) +
+                                COS({$latitude} * pi()/180) * COS(abs(loc.lo_geoloc_lat) * pi()/180) * 
+                                POWER(SIN(({$longitude} -loc.lo_geoloc_long) * pi()/180 / 2), 2) 
+                            )) as distance 
+                FROM location loc, report
+                WHERE 1
+                and report.lo_path = loc.lo_path
+                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
+                and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r}
+                having distance < {$distance} ORDER BY distance limit 10;
+SQL;
+//simplify the way to calculate the geo reports as it is located in a city and its suburbs only
+// but less precise, more data is selected
+// example : cergy prefecture => Louvres Rivoli
+//           google maps measure : ~27,24km !!
+//           XQL : ~19,6km       :(
+//           SQL : ~27.329154km  !!
+/*        $sql=<<<XQL
+                SELECT report.*
+                FROM location loc, report
+                WHERE 1
+                and report.lo_path = loc.lo_path
+                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
+                and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r};
+XQL;*/
+
+        $query = $this->db->query($sql);
+        $results = $query->result_array();
+        foreach ($results as $row) {
+            $reports[] = array(
+                'id'            =>  $row['r_id'],
+                'name'          =>  $row['r_name'],
+                'add_date'      =>  $row['r_add_date'],
+                'end_date'      =>  $row['r_end_date'],
+                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
+                'picture'       =>  $row['r_picture'],
+                'status'        =>  $row['r_status'],
+                'nb_vote_end'   =>  $row['r_nb_vote_end'],
+                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
+            );
+        }        
+        return $reports;
+    }
+
     function update_report_picture($id, $picture)
     {
         $dir = 'uploads/'. uniqid() .'.jpeg';
         imagejpeg($picture, FCPATH . $dir);
-
         $this->load->database();
-        $report = null;
-        $data=array('r_picture'=> $dir);        
-        $this->db->where('r_id',$id);
-        $this->db->update('Report', $data); 
-
+        $this->db->query('update report set r_picture=? where r_id=?', array($dir,$id));
         return $dir;
     }
 
-    function get_last_ten_entries()
-    {
-        $this->load->database();
-        $query = $this->db->get('entries', 10);
-        return $query->result();
-    }
 
-    function insert_entry()
-    {
-        $this->load->database();
-        $this->title   = $_POST['title']; // please read the below note
-        $this->content = $_POST['content'];
-        $this->date    = time();
-
-        $this->db->insert('entries', $this);
-    }
-
-    function update_entry()
-    {
-        $this->load->database();
-        $this->title   = $_POST['title'];
-        $this->content = $_POST['content'];
-        $this->date    = time();
-
-        $this->db->update('entries', $this, array('id' => $_POST['id']));
-    }
 
 }
 
