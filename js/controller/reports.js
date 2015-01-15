@@ -1,13 +1,25 @@
-app.controller("SearchController", function($scope,$rootScope, Report) {
-    var count=30;
-
+app.controller("SearchController", function($scope,$rootScope, Report, geolocation) {
+    var count=30; // search reeport count 
+    var radius=30; // search reports inside this radius area 
     $scope.lastid=0;
-	$scope.reports=Report.getReports(count).then(function(reports){
-        $scope.reports=reports;
-        $scope.lastid=reports[reports.length-1].id;
-        }, function(reason) {
-            $rootScope.$broadcast("FlashStatus","error :"+reason);
-    })
+    $scope.coords={};
+
+    geolocation.getLocation().then(function(data,scope){
+        $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
+        $scope.reports=Report.getReportsByGeoloc(count,$scope.coords.longitude,$scope.coords.latitude,radius).then(function(reports){
+            $scope.reports=reports;
+            $scope.lastid=reports[reports.length-1].id;
+            }, function(reason) {
+                $rootScope.$broadcast("FlashStatus","error :"+reason);
+        })
+    } , function(reason,scope){
+        $scope.reports=Report.getReports(count).then(function(reports){
+            $scope.reports=reports;
+            $scope.lastid=reports[reports.length-1].id;
+            }, function(reason) {
+                $rootScope.$broadcast("FlashStatus","error :"+reason);
+        })
+    });
 
     $scope.moreReports = function(lastid){
         $rootScope.$broadcast("BeginStatus","Recherche");

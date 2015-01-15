@@ -34,6 +34,63 @@ app.service('Report', function($http, $q, $timeout){
         return deferred.promise;
     };
 
+    this.getReportsByGeoloc = function(count,longitude,latitude,radius,since_id) {
+        var firstattr=true;
+        var separation='';
+        var deferred = $q.defer();
+        var endpoint = './api/v1/reports.json';
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof since_id != "undefined") {
+            endpoint=endpoint+separation+'since_id='+since_id;
+            firstattr=false;
+        }
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof count != "undefined") {
+            endpoint=endpoint+separation+'count='+count;
+            firstattr=false;
+        }
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof count != "undefined") {
+            endpoint=endpoint+separation+'longitude='+longitude;
+            firstattr=false;
+        }
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof count != "undefined") {
+            endpoint=endpoint+separation+'latitude='+latitude;
+            firstattr=false;
+        }
+
+        if (firstattr) separation='?';
+        else
+            separation='&';
+        if (typeof count != "undefined") {
+            endpoint=endpoint+separation+'distance='+radius;
+            firstattr=false;
+        }
+
+        $http.get(endpoint)
+            .success(function(data, status){
+                this.reports=data.results;
+                deferred.resolve(this.reports);
+            })
+            .error(function(data, status){
+                deferred.reject(status);
+            })
+        return deferred.promise;
+    };
+
     this.getReport = function(id){
         var deferred = $q.defer();
         $http.get('./api/v1/reports/id/'+id+'.json')
