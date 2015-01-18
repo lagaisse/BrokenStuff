@@ -1,16 +1,26 @@
-<nav class="navbar" role="navigation">
-	<div class="container">
+<nav class="navbar shadow-z-1" role="navigation">
+	<div class="container-header">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#search">&lt; Retour</a>
+			<a class="navbar-brand" href="#search"><i class="mdi-navigation-arrow-back"  style="line-height: 30px;"></i></a>
+			<div class="navbar-brand">Search</div>
+		</div>
+	</div>
+	<div class="item-full">
+		<div class="img-item">
+			<img ng-show="report.picture" class="test" ng-src="{{report.picture}}"></img>
+			<div class="text-full">{{report.name}}</div>
 		</div>
 	</div>
 </nav>
-
-<div class="container container-main">
+<div class="container">
 	<div class="row">
-		<div class="col-md-12"><h1>{{report.name}}</h1></div>
-		<div class="col-md-12">{{report.description}}</div>
-		<div ng-repeat="location in report.location" class="col-md-12">{{location}}</div>
-		<div  class="col-md-12"><img src="{{report.picture}}"></img></div>
+		<div class="col-md-12"><div class="note">Note</div>{{report.description}}</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="note">Locations</div>
+			<div ng-repeat="location in report.location">{{location}}</div>
+		</div>
 	</div>
 </div>

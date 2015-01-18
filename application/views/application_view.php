@@ -8,12 +8,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/main.css">
-		<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+<!--         <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
+ -->		<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.js"></script>      
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="dist/css/material.min.css">
+        <link rel="stylesheet" href="css/main.css">
 		<script src="app.js"></script>
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
@@ -40,6 +41,8 @@
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
 
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="dist/js/material.js"></script>
 	<script src="js/main.js"></script>
+
     </body>
 </html>

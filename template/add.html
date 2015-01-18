@@ -1,11 +1,12 @@
-<nav class="navbar" role="navigation">
-	<div class="container">
+<nav class="navbar shadow-z-1" role="navigation">
+	<div class="container-header">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#">&lt; Retour</a>
+			<a class="navbar-brand" href="#"><i class="mdi-navigation-close"  style="line-height: 30px;"></i></a>
+			<div class="navbar-brand">Nouvel incident</div>
 		</div>
 	</div>
 </nav>
-<div class="container container-main">
+<div class="container">
 	<div class="row">
 		<div class="col-md-12">
 
@@ -21,8 +22,10 @@
 							<i class="fa fa-camera fa-5x"></i>
 						</div>
 				</div>
-					<input ng-hide="newReport.endOfProcess" ng-disabled="!newReport.b64pic" class="btn btn-success btn-lg btn-block" type="submit" value="Terminer"/>
+				<div class="right">
+					<input ng-hide="newReport.endOfProcess" ng-disabled="!newReport.b64pic" class="btn btn-primary" type="submit" value="ENREGISTRER"/>
 					</form>
+				</div>
 			</div>
 
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
@@ -37,7 +40,9 @@
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
-				<input ng-hide="newReport.endOfProcess" class="btn btn-success btn-lg btn-block" type="submit" value="OK"/>
+				<div class="right">
+					<input ng-hide="newReport.endOfProcess" class="btn btn-primary" type="submit" value="SUIVANT"/>
+				</div>
 			<form>
 		</div>
 	</div>
