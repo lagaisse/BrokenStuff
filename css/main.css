@@ -70,14 +70,17 @@ font-size: 1.3em;
 	padding-bottom:3px;
 }
 
+.btn {
+font-weight: 700;
+}
+
 .btn-bottom {
 position : fixed;
 bottom: 16px;
 right: 16px;
 z-index: 100;
+font-weight:400;
 }
-
-
 
 .row {
 height:100%;
@@ -203,10 +206,6 @@ border-bottom:1px solid #CCC;
 
 .whitebox {
 background-color: #FFF;
-}
-
-.btn {
-font-weight: 700;
 }
 
 .right {
