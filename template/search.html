@@ -10,15 +10,27 @@
 	<div ng-hide="loading"></div>
 	<a href="#add" class="btn btn-fab btn-raised  btn-bottom btn-material-red mdi-content-add"></a>
 	<div class="row">
-		<div ng-repeat ="report in reports" class="col-xs-12 list-item shadow-z-2">
+		<div ng-repeat ="report in reports" class="col-xs-12 card shadow-z-2">
+			<div class="list-item">
 			<a href="#report/{{report.id}}">
 				<div class="item">
+					<div class="text">{{report.name}}</div>
 						<div class="img-item">
 							<img ng-show="report.picture" class="test" ng-src="{{report.picture}}"></img>
-							<div class="text">{{report.name}}</div>
+							
 						</div>
 				</div>
 			</a>
+			</div>
+			<div class="card-body">
+				<div class="card-body-info">{{report.location.name}}
+				</div>
+				<div  class="card-body-desc">{{report.description}}
+				</div>
+				</div>
+				<hr>
+				<div class="card-body-actions"><a href="" class="btn btn-flat btn-primary">CONFIRM</a>
+			</div>
 		</div>
 <!-- 	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>
  -->	
