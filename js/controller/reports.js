@@ -73,6 +73,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
 app.controller("ReportController", function($scope, $rootScope, Report, $routeParams) {
 	$scope.report=Report.getReport($routeParams.id).then(function(report){
         $scope.report=report;
+        console.log(report);
     }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
     })
@@ -100,7 +101,7 @@ app.controller("PictureController", function($scope, $rootScope, $timeout, $loca
             $scope.newReport.pictureForm=true;
             $scope.newReport.endOfProcess=true;
             $rootScope.$broadcast("EndStatus");
-            $location.path("/");
+            $location.path("/search");
         }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error :"+reason);
         })

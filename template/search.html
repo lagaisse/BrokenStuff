@@ -1,8 +1,8 @@
-<nav class="navbar shadow-z-3" role="navigation">
+<nav class="navbar navbar-material-lime shadow-z-1" role="navigation">
 	<div class="container-header">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#"><i class="mdi-navigation-arrow-back"  style="line-height: 30px;"></i></a>
-			<div class="navbar-brand">Search</div>
+			<div class="navbar-brand title">Recherche</div>
 		</div>
 	</div>
 </nav>
@@ -13,23 +13,23 @@
 		<div ng-repeat ="report in reports" class="col-xs-12 card shadow-z-2">
 			<div class="list-item">
 			<a href="#report/{{report.id}}">
-				<div class="item">
-					<div class="text">{{report.name}}</div>
+				<div class="item material-lime-300">
+					<div class="text display1">{{report.name}}</div>
 						<div class="img-item">
-							<img ng-show="report.picture" class="test" ng-src="{{report.picture}}"></img>
+							<img ng-show="report.picture" ng-src="{{report.picture}}"></img>
 							
 						</div>
 				</div>
 			</a>
 			</div>
 			<div class="card-body">
-				<div class="card-body-info">{{report.location.name}}
+				<div class="card-body-info subhead">{{report.location.parent}} - {{report.location.name}}
 				</div>
 				<div  class="card-body-desc">{{report.description}}
 				</div>
 				</div>
 				<hr>
-				<div class="card-body-actions"><a href="" class="btn btn-flat btn-primary">CONFIRM</a>
+				<div class="card-body-actions"><a href="" class="button btn btn-material-lime btn-flat btn-primary">CONFIRM</a>
 			</div>
 		</div>
 <!-- 	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>
