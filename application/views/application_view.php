@@ -41,7 +41,7 @@
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
 
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- <script src="dist/js/material.js"></script> -->
+    
 	<script src="js/main.js"></script>
 
     </body>

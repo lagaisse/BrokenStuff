@@ -10,6 +10,9 @@
 	<div ng-hide="loading"></div>
 	<a href="#add" class="btn btn-fab btn-raised  btn-bottom btn-material-red mdi-content-add"></a>
 	<div class="row">
+	<div ng-hide="reports">
+		<p>Cette fonction necessite l'activation de la géolocalisation. </p>
+	</div>
 		<div ng-repeat ="report in reports" class="col-xs-12 card shadow-z-2">
 			<div class="list-item">
 			<a href="#report/{{report.id}}">

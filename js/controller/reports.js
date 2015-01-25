@@ -13,12 +13,13 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
                 $rootScope.$broadcast("FlashStatus","error :"+reason);
         })
     } , function(reason,scope){
-        $scope.reports=Report.getReports(count).then(function(reports){
+/*        $scope.reports=Report.getReports(count).then(function(reports){
             $scope.reports=reports;
             $scope.lastid=reports[reports.length-1].id;
             }, function(reason) {
                 $rootScope.$broadcast("FlashStatus","error :"+reason);
-        })
+        })*/
+        
     });
 
     $scope.moreReports = function(lastid){
@@ -34,7 +35,10 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
 });
 
 app.controller("AddController", function($scope,$rootScope, $timeout, Report, geolocation) {
+    $('head').append('<script src="js/forms.js"></script>');
+    //$('head').append('<script src="dist/js/material.js"></script>');
     $scope.newReport={};
+
 
     geolocation.getLocation().then(function(data){
       $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};

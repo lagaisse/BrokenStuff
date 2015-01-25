@@ -9,6 +9,27 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
+			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
+				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input" type="text" ng-model="newReport.name"/></div>
+				<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
+				<div class="field"><label class="field-label">Ligne</label>
+				<select ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess">
+<!--     				<option value="">Lieu 1</option>
+ -->				</select>
+ 				</div>
+				<div class="field"><label class="field-label">Gare</label>
+				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in sublocations" class="field-input" ng-disabled="newReport.endOfProcess">
+<!--     				<option value="">Lieu 2</option>
+ -->				</select>
+ 				</div>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
+				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
+				<div class="right">
+					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="SUIVANT"/>
+				</div>
+			<form>
+
 			<div ng-show="newReport.pictureForm" class="photo-form" ng-controller="PictureController">
 				<form ng-submit="addPicture()" role="form2">
 					<div class="drop-zone material-lime-100" ng-click="selectFile()">
@@ -26,25 +47,7 @@
 					</form>
 				</div>
 			</div>
-
-			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
-				<input ng-disabled="newReport.endOfProcess" class="form-control line-bottom display1" type="text" placeholder="Intitulé" ng-model="newReport.name"/>
-				<textarea ng-disabled="newReport.endOfProcess" class="form-control line-bottom normal" placeholder="Ajoutez un commentaire" ng-model="newReport.description"/></textarea>
-				<div class="caption">Ligne</div>
-				<select ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="form-control line-bottom normal" ng-disabled="newReport.endOfProcess">
-<!--     				<option value="">Lieu 1</option>
- -->				</select>
-				<div class="caption">Gare</div>
-				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in sublocations" class="form-control line-bottom normal" ng-disabled="newReport.endOfProcess">
-<!--     				<option value="">Lieu 2</option>
- -->				</select>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
-				<div class="right">
-					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="SUIVANT"/>
-				</div>
-			<form>
+			
 		</div>
 	</div>
 </div>
