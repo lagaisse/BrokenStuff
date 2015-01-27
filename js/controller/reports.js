@@ -57,8 +57,18 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
         Report.add($scope.newReport).then(function(id) {
                 $rootScope.$broadcast("EndStatus");
                 $scope.newReport.id=id;
-                $scope.newReport.reportForm=false;
-                $scope.newReport.pictureForm=true;
+
+                $rootScope.$broadcast("BeginStatus","posting");
+                Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
+                    $scope.newReport.pictureUrl=pictureUrl;
+                    $scope.newReport.endOfProcess=true;
+                    $rootScope.$broadcast("EndStatus");
+                    $location.path("/search");
+                }, function(reason) {
+                    $rootScope.$broadcast("FlashStatus","error :"+reason);
+                })
+
+
         	}, function(reason) {
             $rootScope.$broadcast("FlashStatus","erreur :"+reason);
         })
@@ -84,31 +94,19 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
 });
 
 app.controller("PictureController", function($scope, $rootScope, $timeout, $location, Report) {
-    $scope.onFileSelect = function($files) {
+    $rootScope.onFileSelect = function($files) {
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < $files.length; i++) {
             var file = $files[i];
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function() {
-                console.log(reader.result);
-                $scope.newReport.b64pic = reader.result;
+                $timeout(function() {
+                    $scope.newReport.b64pic = reader.result;
+                    console.log($scope.newReport);
+                }, 0);
             }
         }
-    }
-
-    $scope.addPicture = function(){
-        $rootScope.$broadcast("BeginStatus","posting");
-        Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
-            $scope.newReport.pictureUrl=pictureUrl;
-            $scope.newReport.reportForm=true;
-            $scope.newReport.pictureForm=true;
-            $scope.newReport.endOfProcess=true;
-            $rootScope.$broadcast("EndStatus");
-            $location.path("/search");
-        }, function(reason) {
-            $rootScope.$broadcast("FlashStatus","error :"+reason);
-        })
     }
 
     $scope.selectFile = function()
