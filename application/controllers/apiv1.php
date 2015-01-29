@@ -46,7 +46,7 @@ class Apiv1 extends REST_Controller
     }
   }
 
-    function vote_post()
+    function vote_get()
   {
     if(!$this->get('id'))
     {
