@@ -48,7 +48,7 @@ class Report extends CI_Model {
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
                 'picture'       =>  $row['r_picture'],
                 'status'        =>  $row['r_status'],
-                'nb_vote_end'   =>  $row['r_nb_vote_end'],
+                'nb_vote'       =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }        
@@ -64,7 +64,8 @@ class Report extends CI_Model {
                'r_geoloc_lat'   => $geoloc_lat,
                'r_geoloc_long'  => $geoloc_long,
                'r_status'       => $status,
-               'lo_path'        => $place
+               'lo_path'        => $place,
+               'r_nb_vote'      => 1
             );
         $sql = $this->db->insert_string('report', $data);
         $this->db->query($sql);
@@ -95,7 +96,7 @@ class Report extends CI_Model {
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
                 'picture'       =>  $row['r_picture']?$this->config->base_url() . $row['r_picture'] : 'http://lorempicsum.com/futurama/350/200/1',
                 'status'        =>  $row['r_status'],
-                'nb_vote_end'   =>  $row['r_nb_vote_end'],
+               'nb_vote'        =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }
@@ -161,11 +162,22 @@ XQL;*/
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
                 'picture'       =>  $row['r_picture'],
                 'status'        =>  $row['r_status'],
-                'nb_vote_end'   =>  $row['r_nb_vote_end'],
+                'nb_vote'       =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }        
         return $reports;
+    }
+
+    function vote_report($id)
+    {
+        $this->load->database();
+        $this->db->query('update report set r_nb_vote = ifnull(r_nb_vote,0) + 1 where r_id=?', $id);
+
+        if ($this->db->affected_rows() > 0) //report exists
+        {
+            return $this->get_report($id);
+        } 
     }
 
     function update_report_picture($id, $picture)

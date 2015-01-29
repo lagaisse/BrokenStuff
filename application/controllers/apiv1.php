@@ -46,6 +46,27 @@ class Apiv1 extends REST_Controller
     }
   }
 
+    function vote_get()
+  {
+    if(!$this->get('id'))
+    {
+      $this->response(array('error' => 'Give me an id to vote'), 404);
+    }
+    else
+    {
+      $this->load->model('Report');
+      $report = $this->Report->vote_report($this->get('id'));
+      if($report)
+      {
+        $this->response($report, 200); // 200 being the HTTP response code
+      }
+      else
+      {
+        $this->response(array('error' => 'report could not be found'), 404);
+      }
+    }
+  }
+
   function reports_list_get()
   {
     $since_id  = ($this->get('since_id')?$this->get('since_id'):null);
