@@ -13,6 +13,8 @@
 */
 
 //@TODO : data validation with form validator
+//@TODO : image cropping & resizing
+//@TODO : vote multicall protection
 
 
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
@@ -20,11 +22,25 @@ require APPPATH.'/libraries/REST_Controller.php';
 
 class Apiv1 extends REST_Controller
 {
+
+  protected function validate_data($group='')
+  {
+    if ($this->_args) 
+    {
+      $this->load->library('form_validation');
+      $_POST=$this->_args;
+      if ($this->form_validation->run($group) == FALSE)
+      {
+        $this->response(array('error' => $this->form_validation->error_array()), 500);
+      }
+    }
+  }
+
   function reports_get()
   {
     if(!$this->get('id'))
     {
-      if(!$this->get('latitude') || !$this->get('longitude')) {
+      if(!$this->get('latitude') && !$this->get('longitude') && !$this->get('distance')) {
         $this->reports_list_get();
       }
       else {
@@ -33,6 +49,7 @@ class Apiv1 extends REST_Controller
 
     }
 
+    $this->validate_data('apiv1/reports_get');
     //default fallback : return report with id
     $this->load->model('Report');
     $report = $this->Report->get_report($this->get('id'));
@@ -46,8 +63,14 @@ class Apiv1 extends REST_Controller
     }
   }
 
-    function vote_get()
+
+  function vote_get()
   {
+    $this->vote_post();
+  }
+  function vote_post()
+  {
+    $this->validate_data('apiv1/reports_get');
     if(!$this->get('id'))
     {
       $this->response(array('error' => 'Give me an id to vote'), 404);
@@ -69,8 +92,10 @@ class Apiv1 extends REST_Controller
 
   function reports_list_get()
   {
+    $this->validate_data('apiv1/reports_list_get');
+
     $since_id  = ($this->get('since_id')?$this->get('since_id'):null);
-    $reports_count = ($this->get('count')&&is_numeric($this->get('count'))?(int)$this->get('count'):30);
+    $reports_count = ($this->get('count')?(int)$this->get('count'):30);
 
     $this->load->model('Report');
     $reports=$this->Report->get_reports($since_id,$reports_count);
@@ -91,7 +116,8 @@ class Apiv1 extends REST_Controller
   function reports_geo_get()
   {
 
-    //@TODO manage data filtering
+    $this->validate_data('apiv1/reports_geo_get');
+
     $this->load->model('Report');
     $reports=$this->Report->get_report_bygeo( $this->get('latitude'),
                                               $this->get('longitude'),
