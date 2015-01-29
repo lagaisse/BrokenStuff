@@ -34,6 +34,18 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
     }
 });
 
+app.controller("VoteController", function($scope, Report) {
+
+    $scope.vote = function(report_id) {
+        Report.vote(report_id).then(function(data){
+            $scope.$parent.report.nb_vote++;
+        }, function(reason) {
+            console.log("bug");
+        })
+       }
+
+    });
+
 app.controller("AddController", function($scope,$rootScope, $timeout, Report, geolocation) {
     $('head').append('<script src="js/forms.js"></script>');
     //$('head').append('<script src="dist/js/material.js"></script>');

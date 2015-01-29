@@ -30,9 +30,9 @@
 				</div>
 				<div  class="card-body-desc">{{report.description}}
 				</div>
-				</div>
-				<hr>
-				<div class="card-body-actions"><a href="" class="button btn btn-material-lime btn-flat btn-primary">CONFIRM</a>
+			</div>
+			<hr>
+			<div class="card-body-actions" ng-controller="VoteController"><span href="" class="button btn btn-material-lime btn-flat btn-primary" ng-click="vote(report.id)">CONFIRM</span>{{report.nb_vote}}
 			</div>
 		</div>
 <!-- 	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>

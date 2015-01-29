@@ -111,13 +111,27 @@ app.service('Report', function($http, $q, $timeout){
                 $timeout(function(){
                     console.log(data.success);
                     deferred.resolve(data.success);
-                }, 2000)
+                }, 0)
             })
             .error(function(data, status){
                 deferred.reject(status);
             })
         return deferred.promise;
 
+    }
+
+    this.vote = function(id){
+        var deferred = $q.defer();
+        $http.post('./api/v1/reports/'+id+'/vote.json')
+            .success(function(data, status){
+                $timeout(function(){
+                    deferred.resolve(data.success);
+                }, 0)
+            })
+            .error(function(data, status){
+                deferred.reject(status);
+            })
+        return deferred.promise;
     }
 
     this.addPic = function(report){
