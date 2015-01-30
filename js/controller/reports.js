@@ -39,6 +39,7 @@ app.controller("VoteController", function($scope, Report) {
     $scope.vote = function(report_id) {
         Report.vote(report_id).then(function(data){
             $scope.$parent.report.nb_vote++;
+            $("#action_"+report_id).addClass("disabled");
         }, function(reason) {
             console.log("bug");
         })
@@ -46,16 +47,14 @@ app.controller("VoteController", function($scope, Report) {
 
     });
 
-app.controller("AddController", function($scope,$rootScope, $timeout, Report, geolocation) {
+app.controller("AddController", function($scope,$rootScope, $timeout, $location, Report, geolocation) {
     $('head').append('<script src="js/forms.js"></script>');
-    //$('head').append('<script src="dist/js/material.js"></script>');
     $scope.newReport={};
 
-
-    geolocation.getLocation().then(function(data){
+/*    geolocation.getLocation().then(function(data){
       $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
     });
-
+*/
     $scope.locations = [];
     $scope.sublocations = [];
     Report.getLocations().then(function(locations){
@@ -68,18 +67,24 @@ app.controller("AddController", function($scope,$rootScope, $timeout, Report, ge
         $scope.newReport.datetime=Date.now();
         Report.add($scope.newReport).then(function(id) {
                 $rootScope.$broadcast("EndStatus");
-                $scope.newReport.id=id;
-
-                $rootScope.$broadcast("BeginStatus","posting");
-                Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
-                    $scope.newReport.pictureUrl=pictureUrl;
+                if ($scope.newReport.b64pic){
+                    $scope.newReport.id=id;
+                    $rootScope.$broadcast("BeginStatus","posting");
+                    Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
+                        $scope.newReport.pictureUrl=pictureUrl;
+                        $scope.newReport.endOfProcess=true;
+                        $rootScope.$broadcast("EndStatus");
+                        $location.path("/search");
+                    }, function(reason) {
+                        $rootScope.$broadcast("FlashStatus","error :"+reason);
+                    })
+                }
+                else
+                {
                     $scope.newReport.endOfProcess=true;
                     $rootScope.$broadcast("EndStatus");
                     $location.path("/search");
-                }, function(reason) {
-                    $rootScope.$broadcast("FlashStatus","error :"+reason);
-                })
-
+                }
 
         	}, function(reason) {
             $rootScope.$broadcast("FlashStatus","erreur :"+reason);

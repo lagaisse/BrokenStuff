@@ -28,11 +28,13 @@
 			<div class="card-body">
 				<div class="card-body-info subhead">{{report.location.parent}} - {{report.location.name}}
 				</div>
+				<div class="card-body-info subhead">{{report.nb_vote}} votes
+				</div>
 				<div  class="card-body-desc">{{report.description}}
 				</div>
 			</div>
 			<hr>
-			<div class="card-body-actions" ng-controller="VoteController"><span href="" class="button btn btn-material-lime btn-flat btn-primary" ng-click="vote(report.id)">CONFIRM</span>{{report.nb_vote}}
+			<div class="card-body-actions" ng-controller="VoteController"><span href="" class="button btn btn-material-lime btn-flat btn-primary" id="action_{{report.id}}" ng-click="vote(report.id)">CONFIRM</span>
 			</div>
 		</div>
 <!-- 	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>

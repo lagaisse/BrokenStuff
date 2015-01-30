@@ -160,7 +160,7 @@ app.service('Report', function($http, $q, $timeout){
             .error(function(data, status){
                 deferred.reject(status);
             })
-        return deferred.promise;
+    return deferred.promise;
 
     }
 
