@@ -25,20 +25,21 @@ class Apiv1 extends REST_Controller
 
   protected function validate_data($group='')
   {
-    if ($this->_args) 
-    {
+/*    if ($this->_args) 
+    {*/
       $this->load->library('form_validation');
       $_POST=$this->_args;
+      $_POST[]=uniqid();
       if ($this->form_validation->run($group) == FALSE)
       {
         $this->response(array('error' => $this->form_validation->error_array()), 500);
       }
-    }
+    /*}*/
   }
 
   function reports_get()
   {
-    if(!$this->get('id'))
+    if($this->get('id')==null)
     {
       if(!$this->get('latitude') && !$this->get('longitude') && !$this->get('distance')) {
         $this->reports_list_get();
@@ -71,7 +72,7 @@ class Apiv1 extends REST_Controller
   function vote_post()
   {
     $this->validate_data('apiv1/reports_get');
-    if(!$this->get('id'))
+    if($this->get('id')==null)
     {
       $this->response(array('error' => 'Give me an id to vote'), 404);
     }
@@ -187,7 +188,7 @@ class Apiv1 extends REST_Controller
                                         'open',
                                         isset($report['location'])? $report['location']:"");
     }
-    if ($the_id)
+    if ($the_id!=null)
     {
       $this->response(array('success' => $the_id), 200);      
     }
@@ -204,17 +205,22 @@ class Apiv1 extends REST_Controller
 
     $this->validate_data('apiv1/pictures_post');
 
-    if(!$this->post('picture')) 
+    if($this->post('picture')==null) 
     {
-      $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
+      $this->response(array('error' => 'picture field is required'), 500);
     }
+    if($this->get('id_reports')==null) 
+    {
+      $this->response(array('error' => 'id field is required'), 500);
+    }
+
     
     $data = $this->post('picture', false);
           
     if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
     {
-      print_r($matches);
-      $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture'), 'retour' => $ret), 403);
+      //print_r($matches);
+      $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture')), 403);
     } 
     
     log_message('debug', 'Payload mime : ' . $matches[1][0]);
@@ -222,9 +228,19 @@ class Apiv1 extends REST_Controller
     if ($picture !== false) 
     {
       $this->load->model('Report');
-      $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
-      imagedestroy($picture);
-      $this->response(array('success' => $url), 200);
+      //check if reports exists
+      $report = $this->Report->get_report($this->get('id_reports'));
+      if ($report)
+      {
+        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
+        imagedestroy($picture);
+        $this->response(array('success' => $url), 200);
+      }
+      else
+      {
+        imagedestroy($picture);
+        $this->response(array('error' => 'report not found'), 404);
+      }
     }
     else 
     {
@@ -236,7 +252,7 @@ class Apiv1 extends REST_Controller
   function locations_get()
   {
 
-    if(!$this->get('id'))
+    if($this->get('id')==null)
     {
       $this->location_list_get();
     }
@@ -249,11 +265,10 @@ class Apiv1 extends REST_Controller
              'results'  => $locations
              );
 
-    if($results)
+    if($locations)
     {
         $this->response($results, 200); // 200 being the HTTP response code
     }
-
     else
     {
         $this->response(array('error' => 'location could not be found'), 404);
@@ -270,14 +285,14 @@ class Apiv1 extends REST_Controller
              'results'  => $locations
              );
 
-    if($results)
+    if($locations)
     {
         $this->response($results, 200); // 200 being the HTTP response code
     }
 
     else
     {
-        $this->response(array('error' => 'location could not be found'), 404);
+        $this->response(array('error' => 'locations could not be found'), 404);
     }
   }
 

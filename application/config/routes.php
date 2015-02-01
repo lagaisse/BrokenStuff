@@ -50,7 +50,7 @@ $route['api/v([0-9]+)/reports/id/(.*)'] = 'apiv$1/reports/id/$2';
 //requests using implicit id
 $route['api/v([0-9]+)/reports/([^/]+)/pictures/upload(.*)'] = 'apiv$1/pictures/id_reports/$2$3'; //post picture for a report
 $route['api/v([0-9]+)/reports/([^/]+)/vote(.*)'] = 'apiv$1/vote/id/$2$3'; //vote for a report
-$route['api/v([0-9]+)/reports/([^/]+)(.*)'] = 'apiv$1/reports/id/$2$3'; //GET OR PUT a report : implicit id call
+$route['api/v([0-9]+)/reports/([^/]+)'] = 'apiv$1/reports/id/$2'; //GET OR PUT a report : implicit id call
 $route['api/v([0-9]+)/reports(.*)'] = 'apiv$1/reports$2';  //POST a report or GET report list [full or geo]
 
 //$route['api/v([0-9]+)/reports.(.*)'] = 'apiv$1/reports_list.$2'; //GET list of all reports
@@ -59,12 +59,12 @@ $route['api/v([0-9]+)/reports(.*)'] = 'apiv$1/reports$2';  //POST a report or GE
 $route['api/v(:num)/locations/id/(.*)'] = 'apiv$1/locations/id/$2'; //location
 
 //requests using implicit id location
-$route['api/v(:num)/locations/([^/]+)(.*)'] = 'apiv$1/locations/id/$2$3'; //location
+$route['api/v(:num)/locations/([^/]+)'] = 'apiv$1/locations/id/$2'; //location
 $route['api/v(:num)/locations(.*)'] = 'apiv$1/locations$2'; //(futur POST) GET a list of location
 
 
 
-$route['api/v(:num)/(:any)'] = 'apiv$1/$2';
+//$route['api/v(:num)/(:any)'] = 'apiv$1/$2';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
