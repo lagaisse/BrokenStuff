@@ -94,8 +94,8 @@ class Apiv1 extends REST_Controller
   {
     $this->validate_data('apiv1/reports_list_get');
 
-    $since_id  = ($this->get('since_id')?$this->get('since_id'):null);
-    $reports_count = ($this->get('count')?(int)$this->get('count'):30);
+    $since_id  = (($this->get('since_id')!=null)?$this->get('since_id'):null);
+    $reports_count = (($this->get('count')!=null)?(int)$this->get('count'):30);
 
     $this->load->model('Report');
     $reports=$this->Report->get_reports($since_id,$reports_count);
@@ -121,7 +121,9 @@ class Apiv1 extends REST_Controller
     $this->load->model('Report');
     $reports=$this->Report->get_report_bygeo( $this->get('latitude'),
                                               $this->get('longitude'),
-                                              $this->get('distance'));
+                                              $this->get('distance'),
+                                              $this->get('start'), 
+                                              $this->get('count'));
     $results= array(
                'metadata' => array('resultset' => array('count'=>count($reports))),
                'results'  => $reports
@@ -145,6 +147,8 @@ class Apiv1 extends REST_Controller
 
   function reports_post()
   {
+
+    $this->validate_data('apiv1/reports_post');
 
     $this->load->model('Report');
     $report=array();
@@ -197,49 +201,47 @@ class Apiv1 extends REST_Controller
 
   function pictures_post() 
   { 
-    if (!$this->get('id_reports'))
+
+    $this->validate_data('apiv1/pictures_post');
+
+    if(!$this->post('picture')) 
     {
-      $this->response(array('error' => 'missing report id'), 404);
+      $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
     }
-    else
+    
+    $data = $this->post('picture', false);
+          
+    if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
     {
-      if(!$this->post('picture')) 
-      {
-        $this->response(array('error' => 'No picture to upload', 'picture'=>$this->post('picture')), 404);
-      }
-      
-      $data = $this->post('picture', false);
-            
-      if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
-      {
-        print_r($matches);
-        $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture'), 'retour' => $ret), 403);
-      } 
-      
-      log_message('debug', 'Payload mime : ' . $matches[1][0]);
-      $picture =imagecreatefromstring(base64_decode($matches[2][0]));
-      if ($picture !== false) 
-      {
-        $this->load->model('Report');
-        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
-        imagedestroy($picture);
-        $this->response(array('success' => $url), 200);
-      }
-      else 
-      {
-        $this->response(array('error' => 'Cannot manage the picture', 'picture' => $this->post('picture')), 500);
-      }
+      print_r($matches);
+      $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture'), 'retour' => $ret), 403);
+    } 
+    
+    log_message('debug', 'Payload mime : ' . $matches[1][0]);
+    $picture =imagecreatefromstring(base64_decode($matches[2][0]));
+    if ($picture !== false) 
+    {
+      $this->load->model('Report');
+      $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
+      imagedestroy($picture);
+      $this->response(array('success' => $url), 200);
     }
+    else 
+    {
+      $this->response(array('error' => 'Cannot manage the picture', 'picture' => $this->post('picture')), 500);
+    }
+    
   }
 
   function locations_get()
   {
 
-   if(!$this->get('id'))
-   {
-    $this->location_list_get();
-   }
+    if(!$this->get('id'))
+    {
+      $this->location_list_get();
+    }
 
+    $this->validate_data('apiv1/location_get');
     $this->load->model('Location');
     $locations = $this->Location->get_locationFromPath("".$this->get('id'));
     $results= array(
@@ -280,5 +282,3 @@ class Apiv1 extends REST_Controller
   }
 
 }
-
-?>

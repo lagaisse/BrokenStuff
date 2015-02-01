@@ -104,7 +104,7 @@ class Report extends CI_Model {
     }
 
 
-    function get_report_bygeo($latitude, $longitude, $distance)
+    function get_report_bygeo($latitude, $longitude, $distance, $start, $count)
     {
         $this->load->database();
         $this->load->model('Location');
@@ -122,6 +122,15 @@ class Report extends CI_Model {
         $lon_bound_l= $longitude-$distance/abs(cos(deg2rad($latitude))*$lat_deg_len);
         $lon_bound_r= $longitude+$distance/abs(cos(deg2rad($latitude))*$lat_deg_len);
 
+
+        $sql_count="";
+        if ($start!=null||$count!=null)
+        {
+            $sql_count ="limit ";
+            $sql_count.=(($start!=null)?"".$start.",":"0,");
+            $sql_count.=(($count!=null)?$count:"30");
+        }
+
         $sql=<<<SQL
                 SELECT report.*,
                         {$rayon_terre} * 2 * ASIN(SQRT( 
@@ -134,7 +143,7 @@ class Report extends CI_Model {
                 and report.lo_path = loc.lo_path
                 and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
                 and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r}
-                having distance < {$distance} ORDER BY distance limit 10;
+                having distance < {$distance} ORDER BY distance {$sql_count};
 SQL;
 //simplify the way to calculate the geo reports as it is located in a city and its suburbs only
 // but less precise, more data is selected
@@ -193,5 +202,3 @@ XQL;*/
 
 }
 
-
-?>

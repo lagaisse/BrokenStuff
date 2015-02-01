@@ -125,5 +125,3 @@ class Location extends CI_Model {
     }
 }
 
-
-?>
