@@ -155,6 +155,9 @@ class Apiv1 extends REST_Controller
         case 'name':
           $report['name']=$value;
           break;
+        case 'description':
+          $report['description']=$value;
+          break;
         case 'location1':
           $report['location']=$value;
           break;
@@ -179,6 +182,7 @@ class Apiv1 extends REST_Controller
     $the_id=false;
     if (isset($report['name'])) {
       $the_id=$this->Report->new_report($report['name'],
+                                        $report['description'],
                                         isset($report['datetime'])? $report['datetime']:new DateTime('now'),
                                         isset($report['geolocation'])? $report['geolocation']['latitude']:null,
                                         isset($report['geolocation'])? $report['geolocation']['longitude']:null,

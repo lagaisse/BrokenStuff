@@ -35,31 +35,20 @@ class Report extends CI_Model {
         if ($since_id) {$sql .= ' and r_id>=?'; $param[]=$since_id;}
         if ($reports_count) {$sql .= ' LIMIT ?'; $param[]=$reports_count;}
 
-
         $query = $this->db->query($sql, $param);
         $results = $query->result_array();
         foreach ($results as $row) {
-
-            $reports[] = array(
-                'id'            =>  $row['r_id'],
-                'name'          =>  $row['r_name'],
-                'add_date'      =>  $row['r_add_date'],
-                'end_date'      =>  $row['r_end_date'],
-                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $this->picture_build_path($row['r_picture']), //$this->picture_build_path(str_replace(array('uploads/','.jpeg'),"",$row['r_picture'])),
-                'status'        =>  $row['r_status'],
-                'nb_vote'       =>  $row['r_nb_vote'],
-                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
-            );
+            $reports[] = $this->report_format($row);
         }        
         return $reports;
     }
 
-    function new_report($name,$add_date,$geoloc_lat,$geoloc_long,$status,$place)
+    function new_report($name,$desc,$add_date,$geoloc_lat,$geoloc_long,$status,$place)
     {
         $this->load->database();
         $data = array(
                'r_name'         => $name ,
+               'r_desc'         => $desc,
                'r_add_date'     => $add_date->format('Y-m-d H:i:s'),
                'r_geoloc_lat'   => $geoloc_lat,
                'r_geoloc_long'  => $geoloc_long,
@@ -86,19 +75,7 @@ class Report extends CI_Model {
             $row = $query->first_row('array');
 
             //get the location of the report from the location table where path = report_path
-            
-
-            $report = array(
-                'id'            =>  $row['r_id'],
-                'name'          =>  $row['r_name'],
-                'add_date'      =>  $row['r_add_date'],
-                'end_date'      =>  $row['r_end_date'],
-                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $this->picture_build_path($row['r_picture']),
-                'status'        =>  $row['r_status'],
-                'nb_vote'        =>  $row['r_nb_vote'],
-                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
-            );
+            $report = $this->report_format($row);
         }
         return $report;
     }
@@ -163,17 +140,7 @@ XQL;*/
         $query = $this->db->query($sql);
         $results = $query->result_array();
         foreach ($results as $row) {
-            $reports[] = array(
-                'id'            =>  $row['r_id'],
-                'name'          =>  $row['r_name'],
-                'add_date'      =>  $row['r_add_date'],
-                'end_date'      =>  $row['r_end_date'],
-                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $this->picture_build_path($row['r_picture']),
-                'status'        =>  $row['r_status'],
-                'nb_vote'       =>  $row['r_nb_vote'],
-                'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
-            );
+            $reports[] = $this->report_format($row);
         }        
         return $reports;
     }
@@ -206,7 +173,7 @@ XQL;*/
            $dst_res = $this->picture_crop($picture, $top, $left, $width, $height);
            if ($dst_res==false) {$dst_res=$picture;}
         }
-        $dst_tbn = $this->picture_thumbnails($dst_res);
+        $dst_tbn = $this->picture_thumbnail($dst_res);
         if ($dst_tbn==false) {$dst_btn=$picture;}
         
         $rets=10 * $rets + (int)@imagejpeg($dst_res, FCPATH . $dir_res );
@@ -228,6 +195,8 @@ XQL;*/
 
         return false;
     }
+
+
     function picture_build_path($image_name='')
     {
         if ($image_name=='')
@@ -262,7 +231,7 @@ XQL;*/
                               'height'=> $height));
     }
 
-    function picture_thumbnails($picture) 
+    function picture_thumbnail($picture) 
     {
          //calculate thumb size
         $ow = imagesx($picture);
