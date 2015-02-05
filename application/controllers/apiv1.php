@@ -25,8 +25,6 @@ class Apiv1 extends REST_Controller
 
   protected function validate_data($group='')
   {
-/*    if ($this->_args) 
-    {*/
       $this->load->library('form_validation');
       $_POST=$this->_args;
       $_POST[]=uniqid();
@@ -34,7 +32,6 @@ class Apiv1 extends REST_Controller
       {
         $this->response(array('error' => $this->form_validation->error_array()), 500);
       }
-    /*}*/
   }
 
   function reports_get()
@@ -205,10 +202,11 @@ class Apiv1 extends REST_Controller
 
     $this->validate_data('apiv1/pictures_post');
     $data = $this->post('picture', false);
-     $top=0;
-     $left=0;
-     $width=0;
-     $height=0;
+    $crop = $this->post('crop');
+    $top   =$crop['top'];
+    $left  =$crop['left'];
+    $width =$crop['width'];
+    $height=$crop['height'];
 
 // DEBUT DE A supprimer au passage à CodeIgniter 3 de form_validation
     if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)

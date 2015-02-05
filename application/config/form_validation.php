@@ -89,6 +89,26 @@ $config = array(
             'field' => 'picture',
             'label' => 'picture',
             'rules' => 'required|image_base64|image_data_base64|valid_base64'
+            ),
+        array(
+            'field' => 'crop[top]',
+            'label' => 'top position',
+            'rules' => 'is_natural'
+            ),
+        array(
+            'field' => 'crop[left]',
+            'label' => 'left position',
+            'rules' => 'is_natural'
+            ),
+        array(
+            'field' => 'crop[width]',
+            'label' => 'width',
+            'rules' => 'is_natural'
+            ),
+        array(
+            'field' => 'crop[height]',
+            'label' => 'height',
+            'rules' => 'is_natural'
             )
         ),
     'apiv1/location_get' => array(
