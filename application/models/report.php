@@ -31,8 +31,8 @@ class Report extends CI_Model {
         $reports=null;
         $param=array();
 
-        $sql  = 'select * from report';
-        if ($since_id) {$sql .= ' where r_id>=?'; $param[]=$since_id;}
+        $sql  = 'select * from report where r_status="open"';
+        if ($since_id) {$sql .= ' and r_id>=?'; $param[]=$since_id;}
         if ($reports_count) {$sql .= ' LIMIT ?'; $param[]=$reports_count;}
 
 
@@ -46,7 +46,7 @@ class Report extends CI_Model {
                 'add_date'      =>  $row['r_add_date'],
                 'end_date'      =>  $row['r_end_date'],
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $row['r_picture'],
+                'picture'       =>  $this->picture_build_path($row['r_picture']), //$this->picture_build_path(str_replace(array('uploads/','.jpeg'),"",$row['r_picture'])),
                 'status'        =>  $row['r_status'],
                 'nb_vote'       =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
@@ -94,9 +94,9 @@ class Report extends CI_Model {
                 'add_date'      =>  $row['r_add_date'],
                 'end_date'      =>  $row['r_end_date'],
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $row['r_picture']?$this->config->base_url() . $row['r_picture'] : 'http://lorempicsum.com/futurama/350/200/1',
+                'picture'       =>  $this->picture_build_path($row['r_picture']),
                 'status'        =>  $row['r_status'],
-               'nb_vote'        =>  $row['r_nb_vote'],
+                'nb_vote'        =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
             );
         }
@@ -169,7 +169,7 @@ XQL;*/
                 'add_date'      =>  $row['r_add_date'],
                 'end_date'      =>  $row['r_end_date'],
                 'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                'picture'       =>  $row['r_picture'],
+                'picture'       =>  $this->picture_build_path($row['r_picture']),
                 'status'        =>  $row['r_status'],
                 'nb_vote'       =>  $row['r_nb_vote'],
                 'location'      =>  $this->Location->get_locationFromPath($row['lo_path'])
@@ -189,13 +189,107 @@ XQL;*/
         } 
     }
 
-    function update_report_picture($id, $picture)
+    function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
     {
-        $dir = 'uploads/'. uniqid() .'.jpeg';
-        imagejpeg($picture, FCPATH . $dir);
-        $this->load->database();
-        $this->db->query('update report set r_picture=? where r_id=?', array($dir,$id));
-        return $dir;
+        $image_name = uniqid() ;
+        $dir_orig = 'uploads/'. $image_name .'_orig.jpeg';
+        $dir_tbn  = 'uploads/'. $image_name .'_tn.jpeg';
+        $dir_res  = 'uploads/'. $image_name .'.jpeg';
+        $dst_res = $picture;
+        $rets=0;
+        $retd=0;
+        $rets=1  * $rets + (int)@imagejpeg($picture, FCPATH . $dir_orig );
+
+        //log_message('debug', 'Image resize toussa : ' . '');
+        if($width!=0&&$height!=0)
+        {
+           $dst_res = $this->picture_crop($picture, $top, $left, $width, $height);
+           if ($dst_res==false) {$dst_res=$picture;}
+        }
+        $dst_tbn = $this->picture_thumbnails($dst_res);
+        if ($dst_tbn==false) {$dst_btn=$picture;}
+        
+        $rets=10 * $rets + (int)@imagejpeg($dst_res, FCPATH . $dir_res );
+        $rets=10 * $rets + (int)@imagejpeg($dst_tbn, FCPATH . $dir_tbn );
+        $retd=1  * $retd + (int)@imagedestroy($picture);
+        $retd=10 * $retd + (int)@imagedestroy($dst_res); //fails if no crop
+        $retd=10 * $retd + (int)@imagedestroy($dst_tbn);
+
+        if (($rets+$retd)<222)
+        {
+            log_message('error', 'Picture : '.$image_name.'- Storage code : '.$rets.'- Destroy code : '.$retd.'');
+        }
+        if ($rets>1)
+        {//we have at least one image stored
+            $this->load->database();
+            $this->db->query('update report set r_picture=? where r_id=?', array($image_name,$id));
+            return $dir_res;
+        }
+
+        return false;
+    }
+    function picture_build_path($image_name='')
+    {
+        if ($image_name=='')
+        {
+            return null;
+        }
+        $path = array(  'original' => 'uploads/'. $image_name .'_orig.jpeg',
+                        'proceeded' => 'uploads/'. $image_name .'.jpeg',
+                        'thumbnail' => 'uploads/'. $image_name .'_tn.jpeg');
+        return $path;
+    }
+
+    function picture_crop($picture, $top=0, $left=0, $width=0, $height=0) 
+    {
+        if($width==0||$height==0)
+        {
+            return false;
+        }
+         //calculate thumb size
+        $ow = imagesx($picture);
+        $oh = imagesy($picture);
+
+        if($top+$height>=$oh||$left+$width>=$ow)
+        {
+            return false;
+        }
+        //resize and copy image
+        return imagecrop($picture, 
+                        array('x'     => $left,
+                              'y'     => $top,
+                              'width' => $width,
+                              'height'=> $height));
+    }
+
+    function picture_thumbnails($picture) 
+    {
+         //calculate thumb size
+        $ow = imagesx($picture);
+        $oh = imagesy($picture);
+        $maxh = 600;
+        $maxw = 800; 
+        $new_h = $oh;
+        $new_w = $ow;
+
+        if($oh > $maxh || $ow > $maxw){
+           $new_h = ($oh > $ow) ? $maxh : $oh*($maxw/$ow);
+           $new_w = $new_h/$oh*$ow;
+        }
+        //create dst image
+        $dst_img = ImageCreateTrueColor($new_w,$new_h);
+        //resize and copy image
+        $ret=imagecopyresampled( $dst_img  , 
+                            $picture  , 
+                            0         , 
+                            0         ,
+                            0         , 
+                            0         , 
+                            $new_w    , 
+                            $new_h    , 
+                            $ow       , 
+                            $oh       );
+        return ($ret?$dst_img:false);
     }
 
 

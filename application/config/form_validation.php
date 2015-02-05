@@ -88,7 +88,7 @@ $config = array(
         array(
             'field' => 'picture',
             'label' => 'picture',
-            'rules' => 'required'
+            'rules' => 'required|image_base64|image_data_base64|valid_base64'
             )
         ),
     'apiv1/location_get' => array(

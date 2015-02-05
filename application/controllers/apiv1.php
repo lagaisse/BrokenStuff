@@ -204,27 +204,24 @@ class Apiv1 extends REST_Controller
   { 
 
     $this->validate_data('apiv1/pictures_post');
-
-    if($this->post('picture')==null) 
-    {
-      $this->response(array('error' => 'picture field is required'), 500);
-    }
-    if($this->get('id_reports')==null) 
-    {
-      $this->response(array('error' => 'id field is required'), 500);
-    }
-
-    
     $data = $this->post('picture', false);
-          
+     $top=0;
+     $left=0;
+     $width=0;
+     $height=0;
+
+// DEBUT DE A supprimer au passage à CodeIgniter 3 de form_validation
     if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
     {
       //print_r($matches);
       $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture')), 403);
-    } 
+    }
     
     log_message('debug', 'Payload mime : ' . $matches[1][0]);
-    $picture =imagecreatefromstring(base64_decode($matches[2][0]));
+    $data = $matches[2][0];
+// FIN DE A supprimer au passage à CodeIgniter 3 de form_validation
+
+    $picture = @imagecreatefromstring(base64_decode($data)); //remove error
     if ($picture !== false) 
     {
       $this->load->model('Report');
@@ -232,15 +229,14 @@ class Apiv1 extends REST_Controller
       $report = $this->Report->get_report($this->get('id_reports'));
       if ($report)
       {
-        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'),$picture);
-        imagedestroy($picture);
+        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'), $picture, $top, $left, $width, $height);
         $this->response(array('success' => $url), 200);
       }
       else
       {
-        imagedestroy($picture);
         $this->response(array('error' => 'report not found'), 404);
       }
+      //@imagedestroy($picture); //done in the model processing
     }
     else 
     {
