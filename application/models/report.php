@@ -156,12 +156,28 @@ XQL;*/
         } 
     }
 
+    function report_format($row)
+    {
+        return array(
+                    'id'            =>  $row['r_id'],
+                    'name'          =>  $row['r_name'],
+                    'description'   =>  $row['r_desc'],
+                    'add_date'      =>  $row['r_add_date'],
+                    'end_date'      =>  $row['r_end_date'],
+                    'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
+                    'picture'       =>  $this->picture_build_path($row['r_picture']),
+                    'status'        =>  $row['r_status'],
+                    'nb_vote'       =>  $row['r_nb_vote'],
+                    'location'      =>  $this->Location->get_locationFromPath($row['lo_path']));
+    }
+
     function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
     {
         $image_name = uniqid() ;
-        $dir_orig = 'uploads/'. $image_name .'_orig.jpeg';
-        $dir_tbn  = 'uploads/'. $image_name .'_tn.jpeg';
-        $dir_res  = 'uploads/'. $image_name .'.jpeg';
+        $path=$this->picture_build_path($image_name);
+        $dir_orig = $path['original'];
+        $dir_tbn  = $path['thumbnail'];
+        $dir_res  = $path['proceeded'];
         $dst_res = $picture;
         $rets=0;
         $retd=0;
@@ -260,8 +276,6 @@ XQL;*/
                             $oh       );
         return ($ret?$dst_img:false);
     }
-
-
 
 }
 
