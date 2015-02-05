@@ -117,6 +117,36 @@ background-color: #80CBC4;
 margin-top:8px;
 }
 
+.snackbar-container {
+position: fixed;
+left: 0;
+bottom: 0;
+width: 100%;
+}
+
+.snackbar.snackbar-opened {
+height: 48px;
+margin-bottom: 0px;
+}
+
+.snackbar{
+border-radius: 0px;
+}
+
+.snackbar2 {
+font-size: 14px;
+font-family: 'Roboto', sans-serif;
+text-align: top;
+
+
+
+padding-left: 24px;
+padding-top: 16px;
+padding-bottom: 12px;
+padding-right: 24px;
+background-color: #323232 ;
+}
+
 i {
 font-size: 1.3em;
 }
@@ -138,11 +168,14 @@ font-size:15em;
 /*font-weight: 700;*/
 }
 
-.btn-bottom {
+.bottom {
 position : fixed;
 bottom: 16px;
 right: 16px;
-z-index: 100;
+z-index: 100;  
+}
+
+.btn-bottom {
 font-weight:400;
 }
 
@@ -181,7 +214,7 @@ z-index: 100;
 
 .waiting {
 z-index: 99;
-background-color: #000;
+background-color: #FFF;
 opacity: 0.5;
 width: 100%;
 height: 100%;

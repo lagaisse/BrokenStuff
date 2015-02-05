@@ -29,13 +29,18 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <div data-ng-controller="statusController" class="status">
-        <div ng-show="qStatus" >{{qStatus}}</div>
+<!--     <div data-ng-controller="statusController" class="status">
+        <div ng-show="qStatus" ></div>
         <i ng-show="qStatus" class=" fa fa-5x fa-spinner fa-spin"></i>
-    </div>
+    </div> -->
     <div id="view"></div> 
 	
     <div ng-view></div>
+    <div class="snackbar-container" data-ng-controller="statusController">
+    <div class="snackbar" id="snack">
+        <span class="snackbar-content">{{qStatus}}</span>
+    </div>  
+    </div>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
