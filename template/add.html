@@ -23,7 +23,7 @@
 					<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
 </form>
 
-<div class="container">
+<div class="container container-span">
 	<div class="row">
 		<div class="col-md-12">
 
@@ -47,7 +47,7 @@
 			</div> -->
 
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
-				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input" type="text" ng-model="newReport.name" required /></div>
+				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
 				<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
 				<div class="field"><label class="field-label">Ligne</label>
 				<select name="line" ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess" required>
