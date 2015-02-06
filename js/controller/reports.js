@@ -2,15 +2,17 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
     var count=30; // search reeport count 
     var radius=30; // search reports inside this radius area 
     $scope.lastid=0;
-    $scope.coords={};
+    $scope.go=false;
 
     geolocation.getLocation().then(function(data,scope){
         $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
         $scope.reports=Report.getReportsByGeoloc(count,$scope.coords.longitude,$scope.coords.latitude,radius).then(function(reports){
             $scope.reports=reports;
             $scope.lastid=reports[reports.length-1].id;
+            $scope.go=true;
             }, function(reason) {
-                $rootScope.$broadcast("FlashStatus","error :"+reason);
+                $scope.go=false;
+                $rootScope.$broadcast("FlashStatus","error : "+reason);
         })
     } , function(reason,scope){
 /*        $scope.reports=Report.getReports(count).then(function(reports){
@@ -29,7 +31,7 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
             $scope.reports = $scope.reports.concat(reports);
             $rootScope.$broadcast("EndStatus");
         }, function(reason) {
-            $rootScope.$broadcast("FlashStatus","error :"+reason);
+            $rootScope.$broadcast("FlashStatus","error : "+reason);
     })
     }
 });
@@ -76,7 +78,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
                         $rootScope.$broadcast("EndStatus");
                         $location.path("/search");
                     }, function(reason) {
-                        $rootScope.$broadcast("FlashStatus","error :"+reason);
+                        $rootScope.$broadcast("FlashStatus","error : "+reason);
                     })
                 }
                 else
@@ -87,7 +89,12 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
                 }
 
         	}, function(reason) {
-            $rootScope.$broadcast("FlashStatus","erreur :"+reason);
+                error="";
+                for (var i in reason)
+                    for (var j in reason[i])
+                        error=error+reason[i][j]+" ";
+                console.log(error);
+                $rootScope.$broadcast("FlashStatus","erreur : "+error  );
         })
     }
 
@@ -106,7 +113,7 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
         $scope.report=report;
         console.log(report);
     }, function(reason) {
-            $rootScope.$broadcast("FlashStatus","error :"+reason);
+            $rootScope.$broadcast("FlashStatus","error : "+reason);
     })
 });
 

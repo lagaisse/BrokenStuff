@@ -114,7 +114,7 @@ app.service('Report', function($http, $q, $timeout){
                 }, 0)
             })
             .error(function(data, status){
-                deferred.reject(status);
+                deferred.reject(data);
             })
         return deferred.promise;
 

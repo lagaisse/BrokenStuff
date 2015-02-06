@@ -13,7 +13,7 @@ app.controller('statusController', ['$scope', '$timeout',
                 $("#snack").removeClass("snackbar-opened");
                 $("#view").removeClass("waiting");
                 $scope.qStatus = "";
-                }, 2000)
+                }, 3000)
         });
 
         $scope.$on('FlashStatus', function (event, args) {
@@ -21,8 +21,9 @@ app.controller('statusController', ['$scope', '$timeout',
             $("#snack").addClass("snackbar-opened");
 			$timeout(function(){
                     $("#snack").removeClass("snackbar-opened");
+                    $("#view").removeClass("waiting");
                     $scope.qStatus = "";
-                }, 2000)
+                }, 3000)
         });
     }
 ]);
