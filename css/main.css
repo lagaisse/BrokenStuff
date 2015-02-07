@@ -136,6 +136,21 @@ right: 16px;
 z-index: 100;  
 }
 
+#progress {
+width: 100%;
+position: fixed;
+top: 0;
+margin:0;
+padding:0;
+z-index: 9999;
+}
+
+/***************************************/
+/* ProgressBar */
+.mprogress-custom-parent {
+overflow:visible; 
+}
+
 /***************************************/
 /* Snackbar */
 

@@ -14,10 +14,12 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.js"></script>      
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="dist/css/material.min.css">
+        <link rel="stylesheet" href="dist/mprogress.css">
         <link rel="stylesheet" href="css/main.css">
 		<script src="app.js"></script>
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
+        <script src="js/service/progress.js"></script>
         <script src="js/controller/reports.js"></script>
         <script src="js/controller/locations.js"></script>
         <script src="js/controller/status.js"></script>
@@ -25,7 +27,8 @@
 
 
     </head>
-    <body>
+    <body >
+    <div id="progress"></div>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
@@ -40,7 +43,7 @@
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
 
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-    
+    <script src="dist/mprogress.min.js"></script>
 	<script src="js/main.js"></script>
 
     </body>

@@ -49,7 +49,7 @@ app.controller("VoteController", function($scope, Report) {
 
     });
 
-app.controller("AddController", function($scope,$rootScope, $timeout, $location, Report, geolocation) {
+app.controller("AddController", function($scope,$rootScope, $timeout, $location, Report, geolocation, progress) {
     $('head').append('<script src="js/forms.js"></script>');
     $scope.newReport={};
 
@@ -64,19 +64,21 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
     })
 
     $scope.addReport = function() {
-        $rootScope.$broadcast("BeginStatus","Chargement");
+        //$rootScope.$broadcast("BeginStatus","Chargement");
+        progress.start();
         $scope.newReport.geolocation=$scope.coords;
         $scope.newReport.datetime=Date.now();
         Report.add($scope.newReport).then(function(id) {
-                $rootScope.$broadcast("EndStatus");
                 if ($scope.newReport.b64pic){
                     $scope.newReport.id=id;
-                    $rootScope.$broadcast("BeginStatus","posting");
+                    //$rootScope.$broadcast("BeginStatus","posting");
                     Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
                         $scope.newReport.pictureUrl=pictureUrl;
                         $scope.newReport.endOfProcess=true;
-                        $rootScope.$broadcast("EndStatus");
-                        $location.path("/search");
+                        //$rootScope.$broadcast("EndStatus");
+                        progress.stop().then(function() {
+                            $location.path("/search");
+                            })
                     }, function(reason) {
                         $rootScope.$broadcast("FlashStatus","error : "+reason);
                     })
@@ -84,17 +86,21 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
                 else
                 {
                     $scope.newReport.endOfProcess=true;
-                    $rootScope.$broadcast("EndStatus");
-                    $location.path("/search");
+                    //$rootScope.$broadcast("EndStatus");
+                    progress.stop().then(function() {
+                        $location.path("/search");
+                        })
                 }
 
         	}, function(reason) {
-                error="";
-                for (var i in reason)
-                    for (var j in reason[i])
-                        error=error+reason[i][j]+" ";
-                console.log(error);
-                $rootScope.$broadcast("FlashStatus","erreur : "+error  );
+                progress.stop().then(function() {
+                    error="";
+                    for (var i in reason)
+                        for (var j in reason[i])
+                            error=error+reason[i][j]+" ";
+                    console.log(error);
+                    $rootScope.$broadcast("FlashStatus","erreur : "+error  );
+                })
         })
     }
 
