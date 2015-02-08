@@ -4,6 +4,10 @@ html, body{
   background-color: #FFF;
 }
 
+html, body, #view, .navbar-50 , form {
+  height:100%;  
+}
+
 /***************************************/
 /* Formatage de l'affichage des textes */
 .display2 {
@@ -70,6 +74,10 @@ html, body{
 margin-bottom:0px;
 font-weight: 700;
 color: #FFF;
+}
+
+.navbar-50 {
+  max-height: 40%;
 }
 
 .navbar-nav {
@@ -343,9 +351,16 @@ border-bottom:1px solid #EEE;
 
 .picto {  /* TODO : a revoir , positionnement aleatoire et nomage approximatif */
 position: absolute;
-bottom:75px;
-left:0.25em;
-font-size:15em;
+bottom: 0.45em;
+float: left;
+left: 50%;
+margin-left: -0.5em;
+
+font-size: 15em;
+}
+
+.test {
+  z-index: 999;
 }
 
 .right {
@@ -390,18 +405,21 @@ overflow: hidden;
 }
 
 .item-full {
-max-height:50%;
+height: 100%;
+max-height:100%;
 min-height:12em;
 overflow: hidden;
 }
 
 .img-item{
-height: 100%;
+/*max-height: 50%;*/
+min-height: 12em;
 width: 100%;
+height: 100%;
 }
 
-.img-item img {
-width: 100%;
+.img-item img{
+width:100%;
 }
 
 .text {

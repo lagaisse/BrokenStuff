@@ -1,4 +1,4 @@
-<nav class="navbar navbar-material-lime shadow-z-1" role="navigation">
+<nav class="navbar navbar-material-lime shadow-z-1" role="navigation" >
 	<div class="container-header">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#"><i class="mdi-navigation-close"  style="line-height: 30px;"></i></a>
@@ -7,12 +7,12 @@
 	</div>
 </nav>
 
-<nav class="navbar navbar-material-lime" ng-controller="PictureController"><i class="mdi-image-panorama picto"  style="line-height: 30px;" ng-hide="newReport.b64pic"></i>
+<nav class="navbar navbar-material-lime navbar-50" ng-controller="PictureController"><i class="mdi-image-panorama picto"  style="line-height: 30px;" ng-hide="newReport.b64pic"></i>
 <form ng-submit="addPicture()" role="form2" name="addform">
-	<div class="item-full material-lime-300">
-	<div class="img-item">
+	<div class="item-full material-lime-300" ng-mousedown="count = count + 1" ng-init="count=0">
+	<div class="img-item" ng-mousedown="count = count + 1" ng-init="count=0">
 		<img class="test" ng-hide="newReport.b64pic"></img>
-		<img class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}"></img>
+		<img class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" ng-mousedown="count = count + 1" ng-init="count=0"></img>
 	</div>
 	
 	<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt"  ng-click="selectFile()"></span>
@@ -27,27 +27,8 @@
 	<div class="row">
 		<div class="col-md-12">
 
-
-<!-- 			<div ng-show="newReport.pictureForm" class="photo-form" ng-controller="PictureController">
-				<form ng-submit="addPicture()" role="form2" name="addform">
-					<div class="drop-zone" ng-click="selectFile()">
-					<img class="drop-img" ng-if="newReport.b64pic" ng-src="{{newReport.b64pic}}"/>
-					<input type="hidden" ng-model="newPicture.idReport"/>
-						<div ng-hide="newReport.b64pic" class="file_upload">
-							<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
-						</div>
-						<div ng-hide="newReport.b64pic" class="desc-photo">
-							<i class="fa fa-camera fa-5x"></i>
-						</div>
-				</div>
-				<div class="right">
-					<input ng-hide="newReport.endOfProcess" ng-disabled="!newReport.b64pic" class="btn btn-material-lime btn-primary" type="submit" value="ENREGISTRER"/>
-					</form>
-				</div>
-			</div> -->
-
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
-				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
+				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required  ng-mousedown="count = count + 1" ng-init="count=0"/></div>
 				<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
 				<div class="field"><label class="field-label">Ligne</label>
 				<select name="line" ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess" required>
@@ -66,8 +47,10 @@
 					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="SUIVANT"/>
 				</div>
 			<form>
+alors : {{MouseMoveCount}}
 
 
+count: {{count}}
 			
 		</div>
 	</div>
