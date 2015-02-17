@@ -111,13 +111,38 @@ $config = array(
             'rules' => 'is_natural'
             )
         ),
-    'apiv1/location_get' => array(
+    'apiv1/locations_get' => array(
         array(
             'field' => 'id',
             'label' => 'location',
             'rules' => 'required|alpha_numeric'
             )
+        ),
+    'apiv1/locations_geo_get' => array(
+        array(
+            'field' => 'latitude',
+            'label' => 'latitude',
+            'rules' => 'required|numeric'
+            ),
+        array(
+            'field' => 'longitude',
+            'label' => 'longitude',
+            'rules' => 'required|numeric'
+            ),
+        array(
+            'field' => 'distance',
+            'label' => 'distance',
+            'rules' => 'required|numeric_positive'
+            ),
+        array(
+            'field' => 'start',
+            'label' => 'start',
+            'rules' => 'is_natural'
+            ),
+        array(
+            'field' => 'count',
+            'label' => 'Number',
+            'rules' => 'is_natural'
+            )
         )
-
-
     );

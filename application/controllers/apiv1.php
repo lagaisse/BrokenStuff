@@ -117,7 +117,7 @@ class Apiv1 extends REST_Controller
     $this->validate_data('apiv1/reports_geo_get');
 
     $this->load->model('Report');
-    $reports=$this->Report->get_report_bygeo( $this->get('latitude'),
+    $reports=$this->Report->get_reports_bygeo($this->get('latitude'),
                                               $this->get('longitude'),
                                               $this->get('distance'),
                                               $this->get('start'), 
@@ -252,12 +252,17 @@ class Apiv1 extends REST_Controller
 
     if($this->get('id')==null)
     {
-      $this->location_list_get();
+      if(!$this->get('latitude') && !$this->get('longitude') && !$this->get('distance')) {
+        $this->locations_list_get();
+      }
+      else {
+        $this->locations_geo_get();
+      }
     }
 
-    $this->validate_data('apiv1/location_get');
+    $this->validate_data('apiv1/locations_get');
     $this->load->model('Location');
-    $locations = $this->Location->get_locationFromPath("".$this->get('id'));
+    $locations = $this->Location->get_locationsFromPath("".$this->get('id'));
     $results= array(
              'metadata' => array('resultset' => array('count'=>count($locations))),
              'results'  => $locations
@@ -273,7 +278,7 @@ class Apiv1 extends REST_Controller
     }
   }
 
-  function location_list_get()
+  function locations_list_get()
   {
     $this->load->model('Location');
     $locations = $this->Location->get_locations();
@@ -291,6 +296,31 @@ class Apiv1 extends REST_Controller
     else
     {
         $this->response(array('error' => 'locations could not be found'), 404);
+    }
+  }
+
+  function locations_geo_get()
+  {
+
+    $this->validate_data('apiv1/locations_geo_get');
+
+    $this->load->model('Location');
+    $locations=$this->Location->get_locations_bygeo($this->get('latitude'),
+                                                    $this->get('longitude'),
+                                                    $this->get('distance'),
+                                                    $this->get('start'), 
+                                                    $this->get('count'));
+    $results= array(
+               'metadata' => array('resultset' => array('count'=>count($locations))),
+               'results'  => $locations
+               );
+    if($locations)
+    {
+      $this->response($results, 200); // 200 being the HTTP response code
+    }
+    else
+    {
+      $this->response(array('error' => 'No location in database with this parameters'), 404);
     }
   }
 

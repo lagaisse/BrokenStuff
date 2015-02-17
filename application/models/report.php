@@ -81,7 +81,7 @@ class Report extends CI_Model {
     }
 
 
-    function get_report_bygeo($latitude, $longitude, $distance, $start, $count)
+    function get_reports_bygeo($latitude, $longitude, $distance, $start, $count)
     {
         $this->load->database();
         $this->load->model('Location');

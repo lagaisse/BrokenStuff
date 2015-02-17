@@ -1,0 +1,18 @@
+{
+	"exclude":["system/", 
+				"application/",
+				"uploads/", 
+				"sql/", 
+				".git/",
+				"composer.json",
+				"readme.md",
+				"license.txt",
+				".htaccess", 
+				"*.php", 
+				"*.map"],
+	"include":["/"],
+	"network":["/api"],
+	"fallback":[{"url":"/","fb":"fallback.html"},
+				{"url":"/api","fb":"api.json"}],
+	"manifest":"manifest.appcache"
+}
