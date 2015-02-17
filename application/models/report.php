@@ -168,7 +168,7 @@ XQL;*/
                     'picture'       =>  $this->picture_build_path($row['r_picture']),
                     'status'        =>  $row['r_status'],
                     'nb_vote'       =>  $row['r_nb_vote'],
-                    'location'      =>  $this->Location->get_locationSFromPath($row['lo_path']));
+                    'location'      =>  $this->Location->get_locationsFromPath($row['lo_path']));
     }
 
     function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
