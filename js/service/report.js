@@ -181,7 +181,7 @@ app.service('Report', function($http, $q, $timeout){
         var deferred = $q.defer();
         $http.get('./api/v1/locations/'+id+'.json')
             .success(function(data, status){
-                this.sublocations=data.results.sublocation;
+                this.sublocations=data.results[0].sublocation;
                 deferred.resolve(this.sublocations);
             })
             .error(function(data, status){
