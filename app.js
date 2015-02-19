@@ -25,3 +25,8 @@ app.config(['$routeProvider',
 
 app.controller("IndexController", function($scope) {
 });
+
+//var apiHost = ''; // Define HERE API host. If not define, it'll be the local server.
+if (typeof apiHost == "undefined") {
+    var apiHost =".";
+    }

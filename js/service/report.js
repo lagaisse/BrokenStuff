@@ -1,12 +1,12 @@
 app.service('Report', function($http, $q, $timeout){
-
+    var host = apiHost;
     this.reports=false;
 
     this.getReports = function(count,since_id) {
         var firstattr=true;
         var separation='';
         var deferred = $q.defer();
-        var endpoint = './api/v1/reports.json';
+        var endpoint = '/api/v1/reports.json';
 
         if (firstattr) separation='?';
         else
@@ -23,6 +23,7 @@ app.service('Report', function($http, $q, $timeout){
             endpoint=endpoint+separation+'count='+count;
         }
 
+        endpoint=host+endpoint; // test 
         $http.get(endpoint)
             .success(function(data, status){
                 this.reports=data.results;
@@ -38,7 +39,7 @@ app.service('Report', function($http, $q, $timeout){
         var firstattr=true;
         var separation='';
         var deferred = $q.defer();
-        var endpoint = './api/v1/reports.json';
+        var endpoint = '/api/v1/reports.json';
 
         if (firstattr) separation='?';
         else
@@ -80,6 +81,7 @@ app.service('Report', function($http, $q, $timeout){
             firstattr=false;
         }
 
+        endpoint=host+endpoint; // test 
         $http.get(endpoint)
             .success(function(data, status){
                 this.reports=data.results;
@@ -93,7 +95,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.getReport = function(id){
         var deferred = $q.defer();
-        $http.get('./api/v1/reports/id/'+id+'.json')
+        var endpoint = '/api/v1/reports/id/';
+
+        endpoint=host+endpoint; // test 
+        $http.get(endpoint+id+'.json')
             .success(function(data, status){
                 this.reports=data;
                 deferred.resolve(this.reports);
@@ -106,7 +111,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.add = function(report){
         var deferred = $q.defer();
-        $http.post('./api/v1/reports/',report)
+        var endpoint = '/api/v1/reports/';
+
+        endpoint=host+endpoint; // test 
+        $http.post(endpoint,report)
             .success(function(data, status){
                 $timeout(function(){
                     console.log(data.success);
@@ -122,7 +130,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.vote = function(id){
         var deferred = $q.defer();
-        $http.post('./api/v1/reports/'+id+'/vote.json')
+        var endpoint = '/api/v1/reports/';
+
+        endpoint=host+endpoint; // test 
+        $http.post(endpoint+id+'/vote.json')
             .success(function(data, status){
                 $timeout(function(){
                     deferred.resolve(data.success);
@@ -136,7 +147,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.addPic = function(report){
         var deferred = $q.defer();
-        $http.post('./api/v1/pictures/upload.json',report)
+        var endpoint = '/api/v1/pictures/upload.json';
+
+        endpoint=host+endpoint; // test 
+        $http.post(endpoint,report)
             .success(function(data, status){
                 console.log(data.success);
                 deferred.resolve(data.success);                    
@@ -149,10 +163,13 @@ app.service('Report', function($http, $q, $timeout){
     }
     this.addPicAlt = function(id, picture){
         var deferred = $q.defer();
+        var endpoint = '/api/v1/reports/';
         var postPic = {};
+
         postPic.picture=picture;
         postPic = JSON.stringify(postPic);
-        $http.post('./api/v1/reports/'+id+'/pictures/upload.json',postPic)
+        endpoint=host+endpoint; // test 
+        $http.post(endpoint+id+'/pictures/upload.json',postPic)
             .success(function(data, status){
                 console.log(data.success);
                 deferred.resolve(data.success);
@@ -166,7 +183,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.getLocations = function() {
         var deferred = $q.defer();
-        $http.get('./api/v1/locations.json')
+        var endpoint = '/api/v1/locations.json';
+
+        endpoint=host+endpoint; // test 
+        $http.get(endpoint)
             .success(function(data, status){
                 this.locations=data.results;
                 deferred.resolve(this.locations);
@@ -179,7 +199,10 @@ app.service('Report', function($http, $q, $timeout){
 
     this.getSubLocations = function(id) {
         var deferred = $q.defer();
-        $http.get('./api/v1/locations/'+id+'.json')
+        var endpoint = '/api/v1/locations/';
+
+        endpoint=host+endpoint; // test 
+        $http.get(endpoint+id+'.json')
             .success(function(data, status){
                 this.sublocations=data.results[0].sublocation;
                 deferred.resolve(this.sublocations);
