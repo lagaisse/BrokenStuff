@@ -31,7 +31,7 @@ class Report extends CI_Model {
         $reports=null;
         $param=array();
 
-        $sql  = 'select * from report where r_status="open"';
+        $sql  = 'select * from '.$this->db->dbprefix("report").' where r_status="open"';
         if ($since_id) {$sql .= ' and r_id>=?'; $param[]=$since_id;}
         if ($reports_count) {$sql .= ' LIMIT ?'; $param[]=$reports_count;}
 
@@ -69,7 +69,7 @@ class Report extends CI_Model {
         $report = null;
 
         //get the report from the report table where id =$id
-        $query = $this->db->query('select * from report where r_id=?', $id);
+        $query = $this->db->query('select * from '.$this->db->dbprefix("report").' where r_id=?', $id);
         if($query->num_rows()>0)
         {
             $row = $query->first_row('array');
@@ -109,15 +109,15 @@ class Report extends CI_Model {
         }
 
         $sql=<<<SQL
-                SELECT report.*,
+                SELECT rep.*,
                         {$rayon_terre} * 2 * ASIN(SQRT( 
                                 POWER(SIN(({$latitude} -abs(loc.lo_geoloc_lat)) * pi()/180 / 2), 2) +
                                 COS({$latitude} * pi()/180) * COS(abs(loc.lo_geoloc_lat) * pi()/180) * 
                                 POWER(SIN(({$longitude} -loc.lo_geoloc_long) * pi()/180 / 2), 2) 
                             )) as distance 
-                FROM location loc, report
+                FROM {$this->db->dbprefix("location")} loc, {$this->db->dbprefix("report")} rep
                 WHERE 1
-                and report.lo_path = loc.lo_path
+                and rep.lo_path = loc.lo_path
                 and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
                 and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r}
                 having distance < {$distance} ORDER BY distance {$sql_count};
@@ -148,7 +148,7 @@ XQL;*/
     function vote_report($id)
     {
         $this->load->database();
-        $this->db->query('update report set r_nb_vote = ifnull(r_nb_vote,0) + 1 where r_id=?', $id);
+        $this->db->query('update '.$this->db->dbprefix("report").' set r_nb_vote = ifnull(r_nb_vote,0) + 1 where r_id=?', $id);
 
         if ($this->db->affected_rows() > 0) //report exists
         {
@@ -205,7 +205,7 @@ XQL;*/
         if ($rets>1)
         {//we have at least one image stored
             $this->load->database();
-            $this->db->query('update report set r_picture=? where r_id=?', array($image_name,$id));
+            $this->db->query('update '.$this->db->dbprefix("report").' set r_picture=? where r_id=?', array($image_name,$id));
             return $dir_res;
         }
 

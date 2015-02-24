@@ -28,7 +28,7 @@ class Location extends CI_Model {
     function get_locationsFromPath($path)
     {
         $this->load->database();
-        $query_location = $this->db->query('SELECT * FROM location where lo_path=?',$path);
+        $query_location = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path=?',$path);
 
         $location=array(); 
         $sublocation=array();
@@ -37,7 +37,7 @@ class Location extends CI_Model {
         {  
             $row_location = $query_location->first_row('array');
             
-            $query_parentlocation = $this->db->query('SELECT * FROM location where lo_path=? order by lo_name', $this->get_parent($row_location['lo_path']));
+            $query_parentlocation = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path=? order by lo_name', $this->get_parent($row_location['lo_path']));
             if($query_parentlocation->num_rows()>0)
             {  
                 $row_parentlocation = $query_parentlocation->first_row('array');
@@ -68,7 +68,7 @@ class Location extends CI_Model {
         // si 001001000 >> 001001xxx
         // si 001001001 >> 001001001(xxx)
         $path_offset = "".str_pad("",(strlen($path)/$this->grp_size - $this->get_depth($path)-1) * ($this->grp_size),"0", STR_PAD_RIGHT);
-        $query_sublocation = $this->db->query('SELECT * FROM location where lo_path like ? and lo_path>? order by lo_name', 
+        $query_sublocation = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path like ? and lo_path>? order by lo_name', 
                                     array(rtrim($path,"0") . str_pad("",$this->grp_size,"_"). $path_offset , $path));
         log_message('debug', 'query sublocation : ' . $this->db->last_query());
         $results_sublocations = $query_sublocation->result_array();
@@ -86,12 +86,12 @@ class Location extends CI_Model {
     function get_locationsFromCode($code)
     {
         $this->load->database();
-        $query_location = $this->db->query('SELECT * FROM location where lo_code=?',$code);
+        $query_location = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_code=?',$code);
 
         $location=array(); 
         $sublocation=array();
         foreach ($query_location->result_array() as $row_location) {
-            $query_parentlocation = $this->db->query('SELECT * FROM location where lo_path=? order by lo_name', $this->get_parent($row_location['lo_path']));
+            $query_parentlocation = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path=? order by lo_name', $this->get_parent($row_location['lo_path']));
             foreach ($query_parentlocation->result_array() as $row) {
               $row_parentlocation[] = $row['lo_name'];
               $row_locationpath[] = $row_location['lo_path'];
@@ -117,7 +117,8 @@ class Location extends CI_Model {
         $this->load->database();
         //get all lines of transportation, which are level 2 in the table location : xxxyyy000
         $req  = 'SELECT *, SUBSTRING(lo_path,1,3) as path1, SUBSTRING(lo_path,4,3) as path2, SUBSTRING(lo_path,7,3) as path3 ';
-        $req .= ' FROM location where lo_path like "%000" and SUBSTRING(lo_path,4,3) > "000" order by lo_path';
+        $req .= ' FROM '.$this->db->dbprefix("location").' where lo_path like "%000" and SUBSTRING(lo_path,4,3) > "000" order by lo_path';
+
         $query_location = $this->db->query($req);
 
         $locations=array();
@@ -125,7 +126,7 @@ class Location extends CI_Model {
         $results_location = $query_location->result_array();
         foreach ($results_location as $row_location) {
             //for each line get the netwok it belongs to, level 1 in the table location : xxx000000
-            $query_parentlocation = $this->db->query('SELECT * FROM location where lo_path=? order by lo_name', substr($row_location['lo_path'],0,3)."000000");
+            $query_parentlocation = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path=? order by lo_name', substr($row_location['lo_path'],0,3)."000000");
 
             if($query_parentlocation->num_rows()>0)
             {
@@ -177,7 +178,7 @@ class Location extends CI_Model {
                                 COS({$latitude} * pi()/180) * COS(abs(loc.lo_geoloc_lat) * pi()/180) * 
                                 POWER(SIN(({$longitude} -loc.lo_geoloc_long) * pi()/180 / 2), 2) 
                             )) as distance 
-                FROM location loc
+                FROM {$this->db->dbprefix("location")} loc
                 WHERE 1
                 and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
                 and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r}
