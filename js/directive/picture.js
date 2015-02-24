@@ -1,45 +1,3 @@
-app.directive('ngPicture_DEPRECATED', ['Report', '$rootScope' , function(Report){
-	return {
-		transclude: true,
-		restrict: 'EA',
-		link: function ($scope, Element, attrs, $rootScope) {
-			$scope.addPicture = function() {
-//TODO : ajouter le broadcast pour le chargement
-//				$rootScope.$broadcast("BeginStatus","posting");
-				Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
-//					$rootScope.$broadcast("EndStatus");
-	                $scope.newReport.pictureUrl=pictureUrl;
-	                $scope.newReport.reportForm=true;
-	                $scope.newReport.pictureForm=true;
-	                $scope.newReport.endOfProcess=true;
-	                $("#uppic").attr("src",pictureUrl);
-	                $rootScope.$broadcast("FlashStatus","error :"+reason);
-	        	}, function(msg) {
-	        		alert(msg);
-	        	})
-			}
-		},
-		replace: true,
-		template:'<div class="photo-form" ng-controller="PictureController">'+
-				'		<form ng-submit="addPicture()" role="form2">'+
-				'		<div class="drop-zone">'+
-				'		<img class="drop-img" ng-hide="!newReport.pictureUrl" id="uppic" src=""/>'+
-				'		<img class="drop-img" ng-hide="newReport.pictureUrl" ng-if="newReport.b64pic" ng-src="{{newReport.b64pic}}"/>'+
-				'		<input type="hidden" ng-model="newPicture.idReport"/>'+
-				'			<div ng-hide="newReport.b64pic" class="file_upload">'+
-				'				<input type="file" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">'+
-				'			</div>'+
-				'			<div ng-hide="newReport.b64pic" class="desc-photo">'+
-				'				<i class="fa fa-camera fa-5x"></i>'+
-				'			</div>'+
-				'	</div>'+
-				'		<input ng-hide="newReport.endOfProcess" ng-disabled="!newReport.b64pic" class="btn btn-success btn-lg btn-block" type="submit" value="Terminer"/>'+
-				'		</form>'+
-
-				'</div>'
-	}
-}]);
-
 app.directive('ngFileSelect',['$parse','$timeout',function($parse,$timeout){
 	return function(scope, elem, attr){
 		var fn = $parse(attr['ngFileSelect']);
@@ -59,4 +17,47 @@ app.directive('ngFileSelect',['$parse','$timeout',function($parse,$timeout){
 			});
 		});
 	}
+}]);
+
+app.directive('myDraggable', ['$document', function($document) {
+  return function(scope, element, attr) {
+    var startX = 0, startY = 0, x = 0, y = 0;
+
+    element.css({
+     position: 'relative',
+     cursor: 'move' 
+    });
+
+    element.on('mousedown', function(event) {
+      // Prevent default dragging of selected content
+      event.preventDefault();
+      startX = event.pageX - x;
+      startY = event.pageY - y;
+      $document.on('mousemove', mousemove);
+      $document.on('mouseup', mouseup);
+    });
+
+    function mousemove(event) { 
+      y = event.pageY - startY;
+      bottomBorder=element[0].parentElement.clientHeight-element[0].height;
+      if (y>0) {y=0;}
+      if (y<bottomBorder) {y=bottomBorder;}
+      ratio=element[0].width/element[0].naturalWidth;
+      scope.newReport.crop={};
+      scope.newReport.crop.top=-Math.round(y/ratio);
+      scope.newReport.crop.left=Math.round(x/ratio);
+      scope.newReport.crop.height=Math.round(element[0].parentElement.clientHeight/ratio);
+      scope.newReport.crop.width=Math.round(element[0].width/ratio);
+      console.log("crop:{ top:("+scope.newReport.crop.top+"), left:("+scope.newReport.crop.left+"), height:("+scope.newReport.crop.height+"), width:("+scope.newReport.crop.width+") }");
+      element.css({
+        top: y + 'px',
+        left:  x + 'px'
+      });
+    }
+
+    function mouseup() {
+      $document.off('mousemove', mousemove);
+      $document.off('mouseup', mouseup);
+    }
+  };
 }]);

@@ -165,9 +165,10 @@ app.service('Report', function($http, $q, $timeout){
         var deferred = $q.defer();
         var endpoint = '/api/v1/reports/';
         var postPic = {};
-
-        postPic.picture=picture;
+        postPic.picture=picture.b64pic;
+        postPic.crop=picture.crop;
         postPic = JSON.stringify(postPic);
+
         endpoint=host+endpoint; // test 
         $http.post(endpoint+id+'/pictures/upload.json',postPic)
             .success(function(data, status){

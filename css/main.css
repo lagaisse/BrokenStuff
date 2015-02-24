@@ -199,6 +199,7 @@ font-size: 1.3em;
 /* Boutons */
 .btn {
 font-weight:400;
+z-index:999;
 }
 
 .btn-middle {

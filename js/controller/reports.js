@@ -72,7 +72,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
                 if ($scope.newReport.b64pic){
                     $scope.newReport.id=id;
                     //$rootScope.$broadcast("BeginStatus","posting");
-                    Report.addPicAlt($scope.newReport.id, $scope.newReport.b64pic).then(function(pictureUrl) {
+                    Report.addPicAlt($scope.newReport.id, $scope.newReport).then(function(pictureUrl) { 
                         $scope.newReport.pictureUrl=pictureUrl;
                         $scope.newReport.endOfProcess=true;
                         //$rootScope.$broadcast("EndStatus");
@@ -133,6 +133,7 @@ app.controller("PictureController", function($scope, $rootScope, $timeout, $loca
             reader.onload = function() {
                 $timeout(function() {
                     $scope.newReport.b64pic = reader.result;
+
                     console.log($scope.newReport);
                 }, 0);
             }
