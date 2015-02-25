@@ -12,7 +12,7 @@
 		<a href="#add" class="btn btn-fab btn-raised  btn-bottom btn-material-red mdi-content-add"></a>
 	</div>
 <!-- 	<div class="row"> -->
-	<div ng-hide="coords">
+	<div ng-show="nogo">
 		<p>Cette fonction necessite l'activation de la géolocalisation. </p>
 	</div>
 		<div ng-show="go" ng-repeat ="report in reports" class="row">

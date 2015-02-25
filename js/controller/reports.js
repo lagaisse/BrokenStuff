@@ -3,6 +3,7 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
     var radius=30; // search reports inside this radius area 
     $scope.lastid=0;
     $scope.go=false;
+    $scope.nogo=false;
 
     geolocation.getLocation().then(function(data,scope){
         $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
@@ -15,12 +16,7 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
                 $rootScope.$broadcast("FlashStatus","error : "+reason);
         })
     } , function(reason,scope){
-/*        $scope.reports=Report.getReports(count).then(function(reports){
-            $scope.reports=reports;
-            $scope.lastid=reports[reports.length-1].id;
-            }, function(reason) {
-                $rootScope.$broadcast("FlashStatus","error :"+reason);
-        })*/
+        $rootScope.$broadcast("ACKStatus",{status:"Cette fonction necessite l'activation de la géolocalisation" , actionName:"OK" , action:"close();"});
         
     });
 

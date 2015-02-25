@@ -25,5 +25,24 @@ app.controller('statusController', ['$scope', '$timeout',
                     $scope.qStatus = "";
                 }, 3000)
         });
+
+        $scope.$on('ACKStatus', function (event, args) {
+            $scope.qStatus = args.status;
+            $scope.qActionName = args.actionName;
+            $scope.qAction = args.action;
+            $("#view").addClass("waiting");
+            $("#snack").addClass("snackbar-opened");
+        });
+
+        $scope.close = function()
+           {
+            $timeout(function(){
+                $("#snack").removeClass("snackbar-opened");
+                $("#view").removeClass("waiting");
+                $scope.qStatus = "";
+                $scope.qActionName = "";
+                $scope.qAction = "";
+                }, 0)
+           }
     }
 ]);

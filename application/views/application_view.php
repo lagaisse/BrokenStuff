@@ -36,6 +36,7 @@
     <div class="snackbar-container" data-ng-controller="statusController">
     <div class="snackbar" id="snack">
         <span class="snackbar-content">{{qStatus}}</span>
+        <span ng-click="close()" class="snackbar-action btn btn-material-lime btn-flat">{{qActionName}}</span>
     </div>  
     </div>
 
