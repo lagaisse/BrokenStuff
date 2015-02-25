@@ -16,7 +16,7 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
                 $rootScope.$broadcast("FlashStatus","error : "+reason);
         })
     } , function(reason,scope){
-        $rootScope.$broadcast("ACKStatus",{status:"Cette fonction necessite l'activation de la géolocalisation" , actionName:"OK" , action:"close();"});
+        $rootScope.$broadcast("ACKStatus",{status:reason , actionName:"OK" , action:"close();"});
         
     });
 
