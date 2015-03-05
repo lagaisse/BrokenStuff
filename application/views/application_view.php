@@ -12,8 +12,8 @@
  -->		<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.js"></script>      
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="dist/css/material.min.css">
+<!--         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+ -->        <link rel="stylesheet" href="dist/css/material.min.css">
         <link rel="stylesheet" href="dist/mprogress.css">
         <link rel="stylesheet" href="css/main.css">
 		<script src="app.js"></script>
@@ -42,7 +42,9 @@
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
-
+    
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script src="dist/js/jquery.ui.touch-punch.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="dist/mprogress.min.js"></script>
 	<script src="js/main.js"></script>
