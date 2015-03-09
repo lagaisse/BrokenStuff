@@ -62,7 +62,7 @@ $route['api/v(:num)/locations/id/(.*)'] = 'apiv$1/locations/id/$2'; //location
 $route['api/v(:num)/locations/([^/]+)'] = 'apiv$1/locations/id/$2'; //location
 $route['api/v(:num)/locations(.*)'] = 'apiv$1/locations$2'; //(futur POST) GET a list of location
 
-
+$route['migrate/(.*)'] = 'migrate/$1'; //(futur POST) GET a list of location
 
 //$route['api/v(:num)/(:any)'] = 'apiv$1/$2';
 
