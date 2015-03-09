@@ -1,0 +1,24 @@
+<nav class="navbar navbar-material-lime shadow-z-1" role="navigation">
+	<div class="container-header">
+		<div class="navbar-header">
+			<ul class="nav navbar-nav">
+			<li><a class="navbar-brand" href="#"><i class="mdi-navigation"  style="line-height: 30px;"></i></a><li>
+			<li><div class="navbar-brand title">Migration</div></li>
+	    	</ul>
+		</div>
+	</div>
+</nav>
+<div class="container">
+<row>
+<div class="col-md-12">
+<div class="jumbotron">
+Version actuelle  : {{mig.currentversion}}
+<br/>
+Version cible : {{mig.targetversion}}
+<div ng-hide="migok">
+<button class="btn btn-material-lime btn-primary" ng-click="next();">Next</button>
+</div>
+</div>
+</div>
+</div>
+</div>

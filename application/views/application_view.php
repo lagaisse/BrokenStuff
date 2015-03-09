@@ -20,9 +20,11 @@
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
         <script src="js/service/progress.js"></script>
+        <script src="js/service/migration.js"></script>
         <script src="js/controller/reports.js"></script>
         <script src="js/controller/locations.js"></script>
         <script src="js/controller/status.js"></script>
+        <script src="js/controller/migration.js"></script>
         <script src="js/directive/picture.js"></script>
 
 
