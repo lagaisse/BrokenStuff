@@ -227,6 +227,7 @@ XQL;*/
 
     function picture_crop($picture, $top=0, $left=0, $width=0, $height=0) 
     {
+        log_message('debug', 'Call picture_crop with crop : top : '. $top .' left : ' .$left. ' width : '. $width .' height : '. $height.'');
         if($width==0||$height==0)
         {
             return false;
@@ -234,11 +235,15 @@ XQL;*/
          //calculate thumb size
         $ow = imagesx($picture);
         $oh = imagesy($picture);
+       
+        log_message('debug', 'Call picture_crop : picture\'s dimensions : width : '. $ow .' height : ' .$oh.'');
 
-        if($top+$height>=$oh||$left+$width>=$ow)
+        if($top+$height>$oh||$left+$width>$ow)
         {
+            log_message('debug', 'Call picture_crop : returning no-crop for this picture');
             return false;
         }
+        log_message('debug', 'Call picture_crop : cropping in progress');
         //resize and copy image
         return imagecrop($picture, 
                         array('x'     => $left,
