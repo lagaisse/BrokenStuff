@@ -6,25 +6,24 @@
 		</div>
 	</div>
 </nav>
-<nav class="navbar navbar-material-lime navbar-50" ng-controller="PictureController"><i class="mdi-image-panorama picto"  style="line-height: 30px;" ng-hide="newReport.b64pic"></i>
-<form ng-submit="addPicture()" role="form2" name="addform">
-	<div class="item-full material-lime-300" >
-	<div class="img-item" >
-		<img class="test" ng-hide="newReport.b64pic"></img>
-		<img  my-draggable class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" ></img>
-	</div>
-	
-	<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt"  ng-click="selectFile()"></span>
-
-</div>
-</nav>
-					<input type="hidden" ng-model="newPicture.idReport"/>
-					<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
-</form>
 
 <div class="container container-span">
+<div class="card unic-card shadow-2">
+	<div class="navbar-50" ng-controller="PictureController">
+	<form ng-submit="addPicture()" role="form2" name="addform">
+		<div class="item-full material-lime-300">
+			<div class="img-item">
+				<img class="test" ng-hide="newReport.b64pic"></img>
+				<img  my-draggable class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" ></img>
+			</div>
+		</div>
+		<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
+	</div>
+						<input type="hidden" ng-model="newPicture.idReport"/>
+						<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
+	</form>
+
 	<div class="row">
-		<div class="col-md-12">
 
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
 				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
@@ -48,4 +47,5 @@
 			<form>
 		</div>
 	</div>
+</div>
 </div>
