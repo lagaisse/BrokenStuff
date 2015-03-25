@@ -231,6 +231,7 @@ class Apiv1 extends REST_Controller
       $report = $this->Report->get_report($this->get('id_reports'));
       if ($report)
       {
+        log_message('debug', 'Call update_report_picture with : id_reports '. $this->get('id_reports') .' crop : top : '. $top .' left : ' .$left. ' width : '. $width .' height : '. $height.'');
         $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'), $picture, $top, $left, $width, $height);
         $this->response(array('success' => $url), 200);
       }
