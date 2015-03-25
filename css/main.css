@@ -118,6 +118,7 @@ padding-left:0px;
 padding-right:0px;
 margin-left:auto;
 margin-right:auto;
+height: 100%;
 }
 
 @media (max-width: 1199px) {
@@ -383,13 +384,13 @@ border-bottom:1px solid #EEE;
 /* Formulaire d'ajout report */
 
 .picto {  /* TODO : a revoir , positionnement aleatoire et nomage approximatif */
-position: absolute;
-bottom: 0.45em;
+position: relative;
+bottom: -0.3em;
 float: left;
 left: 50%;
 margin-left: -0.5em;
-
 font-size: 15em;
+color:#FFF;
 }
 
 .test {
