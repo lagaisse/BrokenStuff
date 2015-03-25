@@ -1,7 +1,7 @@
 html, body{
   font-size: 16px;
 	font-family: 'Roboto', sans-serif;
-  background-color: #FFF;
+  background-color: #f3f3f3;
 }
 
 html, body, #view, .navbar-50 , form {
@@ -116,12 +116,27 @@ height: 50px;
 padding-top:0px;
 padding-left:0px;
 padding-right:0px;
-margin-left:0px;
-margin-right:0px;
+margin-left:auto;
+margin-right:auto;
 }
 
+@media (max-width: 1199px) {
+.navbar .navbar-brand {
+  height: 60px;
+  /* padding: 10px 15px; */
+    line-height: 30px;
+  position: relative;
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+}}
+
+
+}
 .container-span {
 padding-top:8px; 
+height:100%;
 }
 
 .row {
