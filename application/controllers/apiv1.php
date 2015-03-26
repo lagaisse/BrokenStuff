@@ -107,7 +107,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-      $this->response(array('error' => 'No report in database'), 404);
+      $this->response(array('error' => 'No report in database'), 200);
     }
   }
 
@@ -132,7 +132,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-      $this->response(array('error' => 'No report in database with this parameters'), 404);
+      $this->response(array('error' => 'No report in database with this parameters'), 200);
     }
   }
 
@@ -276,7 +276,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-        $this->response(array('error' => 'location could not be found'), 404);
+        $this->response(array('error' => 'location could not be found'), 200);
     }
   }
 
@@ -297,7 +297,7 @@ class Apiv1 extends REST_Controller
 
     else
     {
-        $this->response(array('error' => 'locations could not be found'), 404);
+        $this->response(array('error' => 'locations could not be found'), 200);
     }
   }
 
@@ -322,7 +322,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-      $this->response(array('error' => 'No location in database with this parameters'), 404);
+      $this->response(array('error' => 'No location in database with this parameters'), 200);
     }
   }
 
