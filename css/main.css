@@ -429,6 +429,7 @@ position: relative;
 
 .item {
 max-height:10em;
+min-height: 10em;
 overflow: hidden;
 }
 
