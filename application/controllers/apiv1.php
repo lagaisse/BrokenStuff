@@ -150,7 +150,6 @@ class Apiv1 extends REST_Controller
 
     $this->load->model('Report');
     $report=array();
-    $report['description']='';
     
     foreach ($this->request->body as $key => $value) {
       switch ($key) {
@@ -184,7 +183,7 @@ class Apiv1 extends REST_Controller
     $the_id=false;
     if (isset($report['name'])) {
       $the_id=$this->Report->new_report($report['name'],
-                                        $report['description'],
+                                        isset($report['description'])? $report['description']:null,
                                         isset($report['datetime'])? $report['datetime']:new DateTime('now'),
                                         isset($report['geolocation'])? $report['geolocation']['latitude']:null,
                                         isset($report['geolocation'])? $report['geolocation']['longitude']:null,
