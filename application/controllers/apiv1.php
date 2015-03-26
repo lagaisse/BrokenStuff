@@ -150,6 +150,8 @@ class Apiv1 extends REST_Controller
 
     $this->load->model('Report');
     $report=array();
+    $report['description']='';
+    
     foreach ($this->request->body as $key => $value) {
       switch ($key) {
         case 'name':
