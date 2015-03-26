@@ -1,4 +1,4 @@
-<nav class="navbar navbar-material-lime shadow-z-1" role="navigation" >
+<nav class="navbar navbar-fixed-top navbar-material-lime shadow-z-1" role="navigation" >
 	<div class="container-header">
 		<div class="navbar-header">
 			<a class="navbar-brand" href="#"><i class="mdi-navigation-close"  style="line-height: 30px;"></i></a>
@@ -7,7 +7,7 @@
 	</div>
 </nav>
 
-<div class="container container-span">
+<div class="container ">
 <div class="card unic-card shadow-2">
 	<div class="navbar-50" ng-controller="PictureController">
 		<form ng-submit="addPicture()" role="form2" name="addform">
@@ -20,8 +20,8 @@
 		</div>
 		<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
 	</div>
-						<input type="hidden" ng-model="newPicture.idReport"/>
-						<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
+	<input type="hidden" ng-model="newPicture.idReport"/>
+	<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
 	</form>
 
 	<div class="row">

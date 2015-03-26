@@ -74,10 +74,11 @@ html, body, #view, .navbar-50 , form {
 margin-bottom:0px;
 font-weight: 700;
 color: #FFF;
+z-index: 800;
 }
 
 .navbar-50 {
-  max-height:30%;
+  height:240px; 
 }
 
 .navbar-nav {
@@ -113,7 +114,7 @@ height: 50px;
 /***************************************/
 /* conteneurs principaux */
 .container {
-padding-top:0px;
+padding-top:60px;
 padding-left:0px;
 padding-right:0px;
 margin-left:auto;
@@ -121,7 +122,7 @@ margin-right:auto;
 height: 100%;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1199px) { /*hack pour empecher le chnagement de taille de la navbar */
 .navbar .navbar-brand {
   height: 60px;
   /* padding: 10px 15px; */
@@ -134,14 +135,8 @@ height: 100%;
 }}
 
 
-}
-.container-span {
-padding-top:8px; 
-height:100%;
-}
 
 .row {
-height:100%;
 margin-left:0px;
 margin-right:0px;
 padding-left:16px;
@@ -225,7 +220,7 @@ font-size: 1.3em;
 /* Boutons */
 .btn {
 font-weight:400;
-z-index:999;
+z-index:100;
 }
 
 .btn-middle {
@@ -241,7 +236,6 @@ right:16px;
 .card {
   margin-top:8px;
   margin-bottom:8px;
-  height:100%;
 }
 
 .unic-card {
@@ -386,7 +380,7 @@ border-bottom:1px solid #EEE;
 
 .picto {  /* TODO : a revoir , positionnement aleatoire et nomage approximatif */
 position: relative;
-bottom: -0.3em;
+bottom: -0.45em;
 float: left;
 left: 50%;
 margin-left: -0.5em;
@@ -395,7 +389,7 @@ color:#FFF;
 }
 
 .test {
-  z-index: 999;
+  z-index: 90;
 }
 
 .right {
@@ -435,22 +429,21 @@ position: relative;
 
 .item {
 max-height:10em;
-min-height:10em;
 overflow: hidden;
 }
 
 .item-full {
 height: 100%;
 max-height:100%;
-min-height:12em;
+min-height: 30%;
 overflow: hidden;
 }
 
 .img-item{
-/*max-height: 50%;*/
-min-height: 12em;
+min-height: 30%;
 width: 100%;
 height: 100%;
+overflow: hidden;
 }
 
 .img-item img{
@@ -459,7 +452,7 @@ width:100%;
 
 .text {
 position: absolute;
-bottom:0.5em;
+bottom:2.4em;
 left: 0.5em;
 z-index: 2;
 color : #FFF;
