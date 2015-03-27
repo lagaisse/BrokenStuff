@@ -1,9 +1,19 @@
-app.controller("SearchController", function($scope,$rootScope, Report, geolocation) {
+app.controller("SearchController", function($scope,$rootScope, Report, geolocation,localstorageservice) {
     var count=30; // search reeport count 
     var radius=30; // search reports inside this radius area 
+    var lsvotes;
     $scope.lastid=0;
     $scope.go=false;
     $scope.nogo=false;
+    $scope.votes=[];
+
+    lsvotes=localstorageservice.getFromLocalStorage("votes");
+    if (lsvotes !== null){
+        for(var i= 0; i < lsvotes.length; i++)
+        {
+            $scope.votes.push(lsvotes[i].id);
+        }
+    }
 
     geolocation.getLocation().then(function(data,scope){
         $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
@@ -32,10 +42,18 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
     }
 });
 
-app.controller("VoteController", function($scope, Report) {
+app.controller("VoteController", function($scope, $document, localstorageservice, Report) {
+
+    angular.element(document).ready(function () {
+        if ($scope.votes.indexOf($scope.report.id)!=-1){
+            console.log("prout");
+            $("#action_"+$scope.report.id).addClass("disabled");
+        }
+        });
 
     $scope.vote = function(report_id) {
         Report.vote(report_id).then(function(data){
+            localstorageservice.add("votes",report_id);
             $scope.$parent.report.nb_vote++;
             $("#action_"+report_id).addClass("disabled");
         }, function(reason) {
@@ -129,7 +147,6 @@ app.controller("PictureController", function($scope, $rootScope, $timeout, $loca
             reader.onload = function() {
                 $timeout(function() {
                     $scope.newReport.b64pic = reader.result;
-
                     console.log($scope.newReport);
                 }, 0);
             }

@@ -21,6 +21,7 @@
         <script src="js/service/report.js"></script>
         <script src="js/service/progress.js"></script>
         <script src="js/service/migration.js"></script>
+        <script src="js/service/localstorage.js"></script>
         <script src="js/controller/reports.js"></script>
         <script src="js/controller/locations.js"></script>
         <script src="js/controller/status.js"></script>
