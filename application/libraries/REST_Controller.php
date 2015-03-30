@@ -192,7 +192,7 @@ abstract class REST_Controller extends CI_Controller
      * Constructor function
      * @todo Document more please.
      */
-    public function __construct()
+    public function __construct($config = 'rest')
     {
         parent::__construct();
 
@@ -200,7 +200,7 @@ abstract class REST_Controller extends CI_Controller
         $this->_start_rtime = microtime(true);
 
         // Lets grab the config and get ready to party
-        $this->load->config('rest');
+        $this->load->config($config);
 
         // This library is bundled with REST_Controller 2.5+, but will eventually be part of CodeIgniter itself
         $this->load->library('format');
@@ -368,7 +368,7 @@ abstract class REST_Controller extends CI_Controller
             if (config_item('rest_enable_logging') and $log_method) {
                 $this->_log_request();
             }
-            
+
             $this->response(array(config_item('rest_status_field_name') => false, config_item('rest_message_field_name') => 'Invalid API Key '.$this->rest->key), 403);
         }
 
@@ -520,7 +520,9 @@ abstract class REST_Controller extends CI_Controller
      */
     protected function _detect_ssl()
     {
-            return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on");
+    	    // $_SERVER['HTTPS'] (http://php.net/manual/en/reserved.variables.server.php)
+    	    // Set to a non-empty value if the script was queried through the HTTPS protocol
+            return (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']));
     }
 
 
@@ -566,6 +568,7 @@ abstract class REST_Controller extends CI_Controller
 
         // Check if a file extension is used
         elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end($this->_get_args), $matches)) {
+        //elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end(array_keys($this->_get_args)), $matches)) {
             // The key of the last argument
             $last_key = end(array_keys($this->_get_args));
 
@@ -813,7 +816,7 @@ abstract class REST_Controller extends CI_Controller
                     ->set('count', 1)
                     ->update(config_item('rest_limits_table'));
         }
-        
+
         // They have called within the hour, so lets update
         else {
             // Your luck is out, you've called too many times!
@@ -1296,11 +1299,11 @@ abstract class REST_Controller extends CI_Controller
         if (empty($username)) {
             return false;
         }
-        
+
         $auth_source = strtolower($this->config->item('auth_source'));
         $rest_auth = strtolower($this->config->item('rest_auth'));
         $valid_logins = $this->config->item('rest_valid_logins');
-        
+
         if (!$this->config->item('auth_source') && $rest_auth == 'digest') { // for digest we do not have a password passed as argument
             return md5($username.':'.$this->config->item('rest_realm').':'.(isset($valid_logins[$username])?$valid_logins[$username]:''));
         }
@@ -1513,11 +1516,16 @@ abstract class REST_Controller extends CI_Controller
             return true;
         }
 
-        $controller = explode('/', $this->uri->uri_string());
+        // Fetch controller based on path and controller name
+        $controller = implode( '/', array($this->router->fetch_directory(), $this->router->fetch_class()) );
 
+        // Remove any double slashes for safety
+        $controller = str_replace('//', '/', $controller);
+
+        // Build access table query
         $this->rest->db->select();
         $this->rest->db->where('key', $this->rest->key);
-        $this->rest->db->where('controller', $controller[0]);
+        $this->rest->db->where('controller', $controller);
 
         $query = $this->rest->db->get(config_item('rest_access_table'));
 
