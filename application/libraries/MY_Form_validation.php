@@ -5,9 +5,9 @@ class MY_Form_validation extends CI_Form_validation
   function __construct($config = array())
   {
     parent::__construct($config);
-    parent::set_message('numeric_positive', 'The %s field must contain a decimal greater or equal than 0.');
-    parent::set_message('image_base64', 'The %s field must be a image in base64 format.');
-    parent::set_message('valid_base64', 'The %s field must be base64 data.');
+    parent::set_message('numeric_positive', 'The {field} field must contain a decimal greater or equal than 0.');
+    parent::set_message('image_base64', 'The {field} field must be a image in base64 format.');
+    parent::set_message('valid_base64', 'The {field} field must be base64 data.');
   }
 
   function error_array()

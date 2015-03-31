@@ -558,6 +558,7 @@ abstract class REST_Controller extends CI_Controller
      */
     protected function _detect_output_format()
     {
+
         $pattern = '/\.('.implode('|', array_keys($this->_supported_formats)).')$/';
 
         // Check if a file extension is used when no get arguments provided
@@ -570,7 +571,8 @@ abstract class REST_Controller extends CI_Controller
         elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end($this->_get_args), $matches)) {
         //elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end(array_keys($this->_get_args)), $matches)) {
             // The key of the last argument
-            $last_key = end(array_keys($this->_get_args));
+            $arg_keys = array_keys($this->_get_args);
+            $last_key = end($arg_keys);
 
             // Remove the extension from arguments too
             $this->_get_args[$last_key] = preg_replace($pattern, '', $this->_get_args[$last_key]);
