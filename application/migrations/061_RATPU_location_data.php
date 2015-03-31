@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Migration_RATPU_Location_data extends MY_Migration {
+class Migration_RATPU_Location_data extends CI_Migration {
     public function up(){
         $ret=true;
         $ret=$ret && $this->db->simple_query("UPDATE ".$this->db->dbprefix('location')." SET lo_geoloc_lat  =48.8616865404563, lo_geoloc_long =2.31435704324728, lo_name ='Invalides' WHERE lo_code='RATP:1857'");

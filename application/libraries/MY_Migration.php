@@ -30,64 +30,6 @@
 class MY_Migration extends CI_Migration {
 
 
-	public function __construct($config = array())
-	{
-		// Only run this constructor on main library load
-		if (get_parent_class($this) !== 'CI_Migration')
-		{
-			return;
-		}
-
-		foreach ($config as $key => $val)
-		{
-			$this->{'_' . $key} = $val;
-		}
-
-		log_message('debug', 'Migrations class initialized');
-
-		// Are they trying to use migrations while it is disabled?
-		if ($this->_migration_enabled !== TRUE)
-		{
-			show_error('Migrations has been loaded but is disabled or set up incorrectly. IN CHILD');
-		}
-
-		// If not set, set it
-		$this->_migration_path == '' AND $this->_migration_path = APPPATH . 'migrations/';
-
-		// Add trailing slash if not set
-		$this->_migration_path = rtrim($this->_migration_path, '/').'/';
-
-		// Load migration language
-		$this->lang->load('migration');
-
-		// They'll probably be using dbforge
-		$this->load->dbforge();
-
-		// If the migrations table is missing, make it
-		if ( ! $this->db->table_exists('migrations'))
-		{
-			$this->dbforge->add_field(array(
-				'version' => array('type' => 'INT', 'constraint' => 3),
-			));
-
-			$this->dbforge->create_table('migrations', TRUE);
-
-			$this->db->insert('migrations', array('version' => 0));
-		}
-		log_message('debug', 'Migrations class initialized IN CHILD');
-	}
-	// --------------------------------------------------------------------
-
-	/**
-	 * Set's the schema to the latest migration
-	 *
-	 * @return	mixed	true if already latest, false if failed, int if upgraded
-	 */
-	public function find_migrations()
-	{
-		return parent::find_migrations();
-	}
-
 
 	// --------------------------------------------------------------------
 

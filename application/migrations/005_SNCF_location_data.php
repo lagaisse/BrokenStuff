@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Migration_SNCF_Location_data extends MY_Migration {
+class Migration_SNCF_Location_data extends CI_Migration {
     public function up(){
         $ret=true;
         $ret=$ret && $this->db->simple_query("insert into ".$this->db->dbprefix('location')." (lo_code,lo_name,lo_path) VALUES ('SNCF:87682468','VERNOU SUR SEINE','002007005')");

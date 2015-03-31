@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Migration_SNCFU_Location_data extends MY_Migration {
+class Migration_SNCFU_Location_data extends CI_Migration {
     public function up(){
         $ret=true;
         $ret=$ret && $this->db->simple_query("UPDATE ".$this->db->dbprefix('location')." SET lo_geoloc_lat  =48.819155929, lo_geoloc_long =2.22962459235 WHERE lo_code='SNCF:87393116'");
