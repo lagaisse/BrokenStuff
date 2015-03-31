@@ -27,8 +27,8 @@ class Apiv1 extends REST_Controller
   {
     parent::__construct();
     $this->methods = array(
-            'vote_get' => array('level' => 0, 'limit' => 2, 'time' => 60 * 60 * 24),
-            'vote_post' => array('level' => 0, 'limit' => 2, 'time' => 60 * 60 * 24)
+            'vote_get' => array('level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24),
+            'vote_post' => array('level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24)
 
     );
   }
@@ -347,6 +347,8 @@ class Apiv1 extends REST_Controller
   _check_limit : change the time limit to be included
                   in the parameter 'time' in the 
                   $this->methods array (in seconds)
+                 do not take into account output format 
+                 for filtering
 
 \*****************************************************/
   /**
@@ -389,9 +391,15 @@ class Apiv1 extends REST_Controller
       // How many times can you get to this method an hour?
       $limit = $this->methods[$controller_method]['limit'];
 
+      $uri_noext=$this->uri->uri_string();
+      if (strpos(strrev($this->uri->uri_string()), strrev($this->response->format))===0)
+      { 
+        $uri_noext=substr($this->uri->uri_string(),0, -strlen($this->response->format)-1);
+      }
+
       // Get data on a keys usage
       $result = $this->rest->db
-              ->where('uri', $this->uri->uri_string())
+              ->where('uri', $uri_noext)
               ->where('api_key', $this->rest->key)
               ->get(config_item('rest_limits_table'))
               ->row();
@@ -400,7 +408,7 @@ class Apiv1 extends REST_Controller
       if ( ! $result ) {
           // Right, set one up from scratch
           $this->rest->db->insert(config_item('rest_limits_table'), array(
-              'uri' => $this->uri->uri_string(),
+              'uri' => $uri_noext,
               'api_key' => isset($this->rest->key) ? $this->rest->key : '',
               'count' => 1,
               'hour_started' => time()
@@ -411,7 +419,7 @@ class Apiv1 extends REST_Controller
       else if ($result->hour_started < time() - (isset($this->methods[$controller_method]['time'])? $this->methods[$controller_method]['time'] : 60 * 60  )) {
           // Reset the started period
           $this->rest->db
-                  ->where('uri', $this->uri->uri_string())
+                  ->where('uri', $uri_noext)
                   ->where('api_key', isset($this->rest->key) ? $this->rest->key : '')
                   ->set('hour_started', time())
                   ->set('count', 1)
@@ -426,7 +434,7 @@ class Apiv1 extends REST_Controller
           }
 
           $this->rest->db
-                  ->where('uri', $this->uri->uri_string())
+                  ->where('uri', $uri_noext)
                   ->where('api_key', $this->rest->key)
                   ->set('count', 'count + 1', false)
                   ->update(config_item('rest_limits_table'));
