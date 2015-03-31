@@ -27,13 +27,7 @@ class Migrate extends REST_Controller
     function index_get()
     {
          
-          $this->load->library('migration');
-        //  echo json_encode(array( 'CONTROLLER' => get_object_vars($this),
-        //                    'MIGRATIONS' => $this->migration->find_migrations()
-        //                 )) ;
-  
-        // die();
-        // $this->response(array(  'hello' => 'world'),200); 
+        $this->load->library('migration');
         $this->response(array(  'targetversion'  => $this->migration->get_target_version(),
                                 'currentversion' => $this->migration->get_version()         ,
                                 'migrationlist'  => $this->migration->find_migrations()       )
