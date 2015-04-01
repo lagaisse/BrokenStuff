@@ -66,11 +66,7 @@ app.controller("VoteController", function($scope, $document, localstorageservice
 app.controller("AddController", function($scope,$rootScope, $timeout, $location, Report, geolocation, progress) {
     $('head').append('<script src="js/forms.js"></script>');
     $scope.newReport={};
-
-/*    geolocation.getLocation().then(function(data){
-      $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
-    });
-*/
+    
     $scope.locations = [];
     $scope.sublocations = [];
     Report.getLocations().then(function(locations){
