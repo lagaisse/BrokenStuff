@@ -15,6 +15,10 @@ app.config(['$routeProvider',
                     templateUrl: 'template/report.html',
                     controller: 'ReportController'
                 })
+                .when('/map', {
+                    templateUrl: 'template/map.html',
+                    controller: 'MapController'
+                })
                 .when('/migrate', {
                     templateUrl: 'template/migrate.html',
                     controller: 'MigController'
