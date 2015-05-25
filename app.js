@@ -1,4 +1,4 @@
-var app = angular.module('brokenstuff', ['ngRoute','geolocation']);
+var app = angular.module('brokenstuff', ['ngRoute','geolocation','leaflet-directive']);
 
 app.config(['$routeProvider',
         function($routeProvider) {

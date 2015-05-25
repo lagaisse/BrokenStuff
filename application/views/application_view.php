@@ -16,17 +16,22 @@
  -->        <link rel="stylesheet" href="dist/css/material.min.css">
         <link rel="stylesheet" href="dist/mprogress.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 		<script src="app.js"></script>
         <script src="js/service/geolocation.js"></script>
         <script src="js/service/report.js"></script>
         <script src="js/service/progress.js"></script>
         <script src="js/service/migration.js"></script>
         <script src="js/service/localstorage.js"></script>
+        <script src="js/service/angular-leaflet-directive.js"></script>
         <script src="js/controller/reports.js"></script>
         <script src="js/controller/locations.js"></script>
         <script src="js/controller/status.js"></script>
         <script src="js/controller/migration.js"></script>
         <script src="js/directive/picture.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="js/controller/map.js"></script>
+
 
 
     </head>
