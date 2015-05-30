@@ -24,6 +24,7 @@
         <script src="js/service/migration.js"></script>
         <script src="js/service/localstorage.js"></script>
         <script src="js/service/angular-leaflet-directive.js"></script>
+        <script src="js/service/map.js"></script>
         <script src="js/controller/reports.js"></script>
         <script src="js/controller/locations.js"></script>
         <script src="js/controller/status.js"></script>

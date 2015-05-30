@@ -26,11 +26,8 @@ class Apiv1 extends REST_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->methods = array(
-            'vote_get' => array('level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24),
-            'vote_post' => array('level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24)
-
-    );
+    $this->methods = ['vote_get' => ['level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24],
+                      'vote_post' => ['level' => 0, 'limit' => 1, 'time' => 60 * 60 * 24]];
   }
   protected function validate_data($group='')
   {
@@ -41,7 +38,7 @@ class Apiv1 extends REST_Controller
       $this->form_validation->set_data($this->_args);
       if ($this->form_validation->run($group) == FALSE)
       {
-        $this->response(array('error' => $this->form_validation->error_array()), 500);
+        $this->response(['error' => $this->form_validation->error_array()], 500);
       }
   }
 
@@ -68,7 +65,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-      $this->response(array('error' => 'report could not be found'), 404);
+      $this->response(['error' => 'report could not be found'], 404);
     }
   }
 
@@ -82,7 +79,7 @@ class Apiv1 extends REST_Controller
     $this->validate_data('apiv1/reports_get');
     if($this->get('id')==null)
     {
-      $this->response(array('error' => 'Give me an id to vote'), 404);
+      $this->response(['error' => 'Give me an id to vote'], 404);
     }
     else
     {
@@ -94,7 +91,7 @@ class Apiv1 extends REST_Controller
       }
       else
       {
-        $this->response(array('error' => 'report could not be found'), 404);
+        $this->response(['error' => 'report could not be found'], 404);
       }
     }
   }
@@ -108,17 +105,15 @@ class Apiv1 extends REST_Controller
 
     $this->load->model('Report');
     $reports=$this->Report->get_reports($since_id,$reports_count);
-    $results= array(
-               'metadata' => array('resultset' => array('count'=>count($reports))),
-               'results'  => $reports
-               );
+    $results= ['metadata' => ['resultset' => ['count'=>count($reports)]],
+               'results'  => $reports];
     if($reports)
     {
       $this->response($results, 200); // 200 being the HTTP response code
     }
     else
     {
-      $this->response(array('error' => 'No report in database'), 200);
+      $this->response(['error' => 'No report in database'], 200);
     }
   }
 
@@ -133,25 +128,48 @@ class Apiv1 extends REST_Controller
                                               $this->get('distance'),
                                               $this->get('start'), 
                                               $this->get('count'));
-    $results= array(
-               'metadata' => array('resultset' => array('count'=>count($reports))),
-               'results'  => $reports
-               );
+    $results= ['metadata' => ['resultset' => ['count'=>count($reports)]],
+               'results'  => $reports ];
     if($reports)
     {
       $this->response($results, 200); // 200 being the HTTP response code
     }
     else
     {
-      $this->response(array('error' => 'No report in database with this parameters'), 200);
+      $this->response(['error' => 'No report in database with this parameters'], 200);
+    }
+  }
+
+  function reports_map_get()
+  {
+
+    $this->validate_data('apiv1/reports_geo_get');
+
+    $this->load->model('Report');
+    $reports=$this->Report->get_reports_bygeo($this->get('latitude'),
+                                              $this->get('longitude'),
+                                              $this->get('distance'),
+                                              $this->get('start'), 
+                                              $this->get('count'),
+                                              'geojson');
+    $results= ['type'     => 'FeatureCollection',
+               'features' => $reports];;
+
+    if($reports)
+    {//reformat the results in geojson format
+
+      $this->response($results, 200); // 200 being the HTTP response code
+    }
+    else
+    {
+      $this->response(['error' => 'No report in database with this parameters'], 200);
     }
   }
 
 
-
   function reports_put()
   {
-    $this->response(array($this->request->body), 200);
+    $this->response([$this->request->body], 200);
   }
 
   function reports_post()
@@ -160,7 +178,7 @@ class Apiv1 extends REST_Controller
     $this->validate_data('apiv1/reports_post');
 
     $this->load->model('Report');
-    $report=array();
+    $report=[];
     
     foreach ($this->request->body as $key => $value) {
       switch ($key) {
@@ -203,11 +221,11 @@ class Apiv1 extends REST_Controller
     }
     if ($the_id!=null)
     {
-      $this->response(array('success' => $the_id), 200);      
+      $this->response(['success' => $the_id], 200);      
     }
     else
     {
-      $this->response(array('error' => 'insert failed'), 500);
+      $this->response(['error' => 'insert failed'], 500);
     }
 
 
@@ -228,7 +246,7 @@ class Apiv1 extends REST_Controller
     if (preg_match('#^data:image/([^;]+);base64,(.+)$#', $data, $matches, PREG_OFFSET_CAPTURE) != 1)
     {
       //print_r($matches);
-      $this->response(array('error' => 'Not a picture', 'picture' => $this->post('picture')), 403);
+      $this->response(['error' => 'Not a picture', 'picture' => $this->post('picture')], 403);
     }
     
     log_message('debug', 'Payload mime : ' . $matches[1][0]);
@@ -245,17 +263,17 @@ class Apiv1 extends REST_Controller
       {
         log_message('debug', 'Call update_report_picture with : id_reports '. $this->get('id_reports') .' crop : top : '. $top .' left : ' .$left. ' width : '. $width .' height : '. $height.'');
         $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'), $picture, $top, $left, $width, $height);
-        $this->response(array('success' => $url), 200);
+        $this->response(['success' => $url], 200);
       }
       else
       {
-        $this->response(array('error' => 'report not found'), 404);
+        $this->response(['error' => 'report not found'], 404);
       }
       //@imagedestroy($picture); //done in the model processing
     }
     else 
     {
-      $this->response(array('error' => 'Cannot manage the picture', 'picture' => $this->post('picture')), 500);
+      $this->response(['error' => 'Cannot manage the picture', 'picture' => $this->post('picture')], 500);
     }
     
   }
@@ -276,10 +294,8 @@ class Apiv1 extends REST_Controller
     $this->validate_data('apiv1/locations_get');
     $this->load->model('Location');
     $locations = $this->Location->get_locationsFromPath("".$this->get('id'));
-    $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations))),
-             'results'  => $locations
-             );
+    $results= ['metadata' => ['resultset' => ['count'=>count($locations)]],
+               'results'  => $locations ];
 
     if($locations)
     {
@@ -287,7 +303,7 @@ class Apiv1 extends REST_Controller
     }
     else
     {
-        $this->response(array('error' => 'location could not be found'), 200);
+        $this->response(['error' => 'location could not be found'], 200);
     }
   }
 
@@ -296,10 +312,8 @@ class Apiv1 extends REST_Controller
     $this->load->model('Location');
     $locations = $this->Location->get_locations();
 
-    $results= array(
-             'metadata' => array('resultset' => array('count'=>count($locations))),
-             'results'  => $locations
-             );
+    $results= ['metadata' => ['resultset' => ['count'=>count($locations)]],
+               'results'  => $locations];
 
     if($locations)
     {
@@ -308,7 +322,7 @@ class Apiv1 extends REST_Controller
 
     else
     {
-        $this->response(array('error' => 'locations could not be found'), 200);
+        $this->response(['error' => 'locations could not be found'], 200);
     }
   }
 
@@ -323,17 +337,15 @@ class Apiv1 extends REST_Controller
                                                     $this->get('distance'),
                                                     $this->get('start'), 
                                                     $this->get('count'));
-    $results= array(
-               'metadata' => array('resultset' => array('count'=>count($locations))),
-               'results'  => $locations
-               );
+    $results= ['metadata' => ['resultset' => ['count'=>count($locations)]],
+               'results'  => $locations ];
     if($locations)
     {
       $this->response($results, 200); // 200 being the HTTP response code
     }
     else
     {
-      $this->response(array('error' => 'No location in database with this parameters'), 200);
+      $this->response(['error' => 'No location in database with this parameters'], 200);
     }
   }
 

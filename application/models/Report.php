@@ -81,7 +81,7 @@ class Report extends CI_Model {
     }
 
 
-    function get_reports_bygeo($latitude, $longitude, $distance, $start, $count)
+    function get_reports_bygeo($latitude, $longitude, $distance, $start, $count, $style='list')
     {
         $this->load->database();
         $this->load->model('Location');
@@ -140,7 +140,7 @@ XQL;*/
         $query = $this->db->query($sql);
         $results = $query->result_array();
         foreach ($results as $row) {
-            $reports[] = $this->report_format($row);
+            $reports[] = $this->report_format($row,$style);
         }        
         return $reports;
     }
@@ -156,19 +156,42 @@ XQL;*/
         } 
     }
 
-    function report_format($row)
+    function report_format($row, $style='list')
     {
-        return array(
-                    'id'            =>  $row['r_id'],
-                    'name'          =>  $row['r_name'],
-                    'description'   =>  $row['r_desc'],
-                    'add_date'      =>  $row['r_add_date'],
-                    'end_date'      =>  $row['r_end_date'],
-                    'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
-                    'picture'       =>  $this->picture_build_path($row['r_picture']),
-                    'status'        =>  $row['r_status'],
-                    'nb_vote'       =>  $row['r_nb_vote'],
-                    'location'      =>  $this->Location->get_locationsFromPath($row['lo_path']));
+        if ($style=='geojson') 
+        {
+
+            $location = $this->Location->get_locationsFromPath($row['lo_path']);
+
+            return ['type'          =>  'Feature',
+                    'geometry'      =>  ['type' => 'Point', 'coordinates' => [(float)$location[0]['geolocation']['longitude'], (float)$location[0]['geolocation']['latitude']]],
+                    'properties'    =>  ['id'            =>  $row['r_id'], 
+                                         'name'          =>  $row['r_name'],
+                                         'description'   =>  $row['r_desc'],
+                                         'add_date'      =>  $row['r_add_date'],
+                                         'end_date'      =>  $row['r_end_date'],
+                                         'status'        =>  $row['r_status'],
+                                         'nb_vote'       =>  $row['r_nb_vote'],
+                                         'location'      =>  $this->Location->get_locationsFromPath($row['lo_path']),
+                                         'picture'       =>  $this->picture_build_path($row['r_picture'])
+                                        ]
+                  ];
+        }
+        return ['id'            =>  $row['r_id'],
+                'name'          =>  $row['r_name'],
+                'description'   =>  $row['r_desc'],
+                'add_date'      =>  $row['r_add_date'],
+                'end_date'      =>  $row['r_end_date'],
+                'geolocation'   =>  array('latitude' => $row['r_geoloc_lat'],'longitude'=>$row['r_geoloc_long']),
+                'picture'       =>  $this->picture_build_path($row['r_picture']),
+                'status'        =>  $row['r_status'],
+                'nb_vote'       =>  $row['r_nb_vote'],
+                'location'      =>  $this->Location->get_locationsFromPath($row['lo_path'])];
+    }
+
+    function reportmap_format($row)
+    {
+ 
     }
 
     function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
