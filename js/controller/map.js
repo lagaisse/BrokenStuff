@@ -83,7 +83,7 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
         
         leafletData.getMap().then(function(map) {
             if (!geoloc) {
-                map.locate({watch:true, setView:true});
+                map.locate({watch:true, setView:false});
                 geoloc=true;
             }
         });
