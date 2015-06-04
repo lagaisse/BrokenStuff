@@ -1,4 +1,4 @@
-app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService", function($scope, $log, leafletData, MapService) {
+app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService", "$location", function($scope, $log, leafletData, MapService, $location) {
  var host = apiHost;
 
     this.refreshGeoJson = function(event) {
@@ -26,17 +26,23 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
             lng: 2.00,
             zoom: 11
         },
+        center:{
+            lat: 49.04,
+            lng: 2.00,
+            zoom: 11,
+            autoDiscover: true
+        },
         defaults: {
             scrollWheelZoom: true
         },
         events: {
             map: {
-                enable: ['zoomstart','zoomend', 'dragend', 'click', 'mousemove'],
+                enable: ['zoomstart','zoomend', 'dragend', 'click', 'mousemove','locationfound', 'locationerror','load'],
                 logic: 'emit'
             }
         }
     });
-
+    $scope.markers = new Array();
 
 
     $scope.eventDetected = "No events yet...";
@@ -56,5 +62,30 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
         //$scope.eventDetected = "MouseMove";
     });
 
+    $scope.$on('leafletDirectiveMap.locationfound', function(event,args){
+        var leafEvent = args.leafletEvent;
+
+        $scope.eventDetected = "location found";
+        //console.log(args);
+        var radius =  leafEvent.accuracy / 2;
+        $scope.markers.push({
+            lat: leafEvent.latlng.lat,
+            lng:  leafEvent.latlng.lng,
+            message: "my position in radius " + radius 
+        });
+/*
+        leafletData.marker(event.latlng).addTo(leafletData.map)
+                    .bindPopup('you are within '+radiuts + " meters from here").openPopup();
+        leafletData.circle(event.latlng,radius).addTo(map);
+        */
+
+    }); 
+    $scope.$on('leafletDirectiveMap.locationerror', function(event){
+        $scope.eventDetected = "location error";
+    });    
+
+    $scope.$on('leafletDirectiveMap.load', function(event) {
+        $scope.eventDetected = "chargement";
+    });
 
 } ]);
