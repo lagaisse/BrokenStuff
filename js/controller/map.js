@@ -1,5 +1,6 @@
 app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService", "$location", function($scope, $log, leafletData, MapService, $location) {
  var host = apiHost;
+ var geoloc=false;
 
     this.refreshGeoJson = function(event) {
             leafletData.getMap().then(function(map) {
@@ -56,9 +57,6 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
     $scope.$on('leafletDirectiveMap.dragend', this.refreshGeoJson);
 
     $scope.$on('leafletDirectiveMap.click', function(event, args){
-      leafletData.getMap().then(function(map) {
-        map.locate({watch:true, setView:true});
-      });
 
     });
 
@@ -83,9 +81,12 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
                                   weight: 2,
                                   clickable: false       };
         
-        //activate location tracking
-console.log($scope);
-
+        leafletData.getMap().then(function(map) {
+            if (!geoloc) {
+                map.locate({watch:true, setView:true});
+                geoloc=true;
+            }
+        });
 /*
         leafletData.marker(event.latlng).addTo(leafletData.map)
                     .bindPopup('you are within '+radiuts + " meters from here").openPopup();
