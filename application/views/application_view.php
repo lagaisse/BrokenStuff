@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html ng-app="brokenstuff">
+<html manifest="manifest.appcache" ng-app="brokenstuff">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <title>BrokenStuff</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		
+<!-- Une fois l'icone en place, décommenter ce bloc
+        <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+<link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png"> -->
+
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 <!--         <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
  -->		<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>

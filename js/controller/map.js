@@ -42,7 +42,8 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
             }
         }
     });
-    $scope.markers = new Array();
+    $scope.markers = {};
+    $scope.paths = {};
 
 
     $scope.eventDetected = "No events yet...";
@@ -54,12 +55,15 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
     $scope.$on('leafletDirectiveMap.zoomend',  this.refreshGeoJson);
     $scope.$on('leafletDirectiveMap.dragend', this.refreshGeoJson);
 
-    $scope.$on('leafletDirectiveMap.click', function(event){
-      //  $scope.eventDetected = "Click";
+    $scope.$on('leafletDirectiveMap.click', function(event, args){
+      leafletData.getMap().then(function(map) {
+        map.locate({watch:true, setView:true});
+      });
+
     });
 
-    $scope.$on('leafletDirectiveMap.mousemove', function(event){
-        //$scope.eventDetected = "MouseMove";
+    $scope.$on('leafletDirectiveMap.mousemove', function(event, args){
+        $scope.eventDetected = "MouseMove";
     });
 
     $scope.$on('leafletDirectiveMap.locationfound', function(event,args){
@@ -68,11 +72,20 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
         $scope.eventDetected = "location found";
         //console.log(args);
         var radius =  leafEvent.accuracy / 2;
-        $scope.markers.push({
-            lat: leafEvent.latlng.lat,
-            lng:  leafEvent.latlng.lng,
-            message: "my position in radius " + radius 
-        });
+        $scope.markers["robert"] = {lat: leafEvent.latlng.lat,
+                                    lng:  leafEvent.latlng.lng,
+                                    message: "my position in radius " + radius,
+                                    icon: {icon:"extraMarkerIcon", markerColor: "red", shape: "star" },
+                                    draggable: true};
+        $scope.paths["robert"] = {type: "circle",
+                                  radius: radius,
+                                  latlngs: leafEvent.latlng,
+                                  weight: 2,
+                                  clickable: false       };
+        
+        //activate location tracking
+console.log($scope);
+
 /*
         leafletData.marker(event.latlng).addTo(leafletData.map)
                     .bindPopup('you are within '+radiuts + " meters from here").openPopup();
@@ -80,11 +93,11 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
         */
 
     }); 
-    $scope.$on('leafletDirectiveMap.locationerror', function(event){
+    $scope.$on('leafletDirectiveMap.locationerror', function(event, args){
         $scope.eventDetected = "location error";
     });    
 
-    $scope.$on('leafletDirectiveMap.load', function(event) {
+    $scope.$on('leafletDirectiveMap.load', function(event, args) {
         $scope.eventDetected = "chargement";
     });
 
