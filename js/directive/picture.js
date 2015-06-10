@@ -38,19 +38,34 @@ app.directive('pictureTool', ['$document', function($document) {
             transform_min_scale: 1,
             drag_block_horizontal: true,
             drag_block_vertical: true,
+            threshold: 0,
             drag_min_distance: 0
         });
+
+    var pinch = new Hammer.Pinch();
+    var rotate = new Hammer.Rotate();
+
+// we want to detect both the same time
+    pinch.recognizeWith(rotate);
+
+// add to the Manager
+    mc.add([pinch, rotate]);
+
     mc.get('pinch').set({ enable: true });
     mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+    mc.get('rotate').set({ enable: true });
 
-    var scale=1, last_scale =1 , transform = "", posX = 0, posY = 0, last_posX = 0, last_posY = 0, max_pos_x = 0, max_pos_y = 0;
+    var scale=1, last_scale =1 , transform = "", posX = 0, posY = 0, last_posX = 0, last_posY = 0, max_pos_x = 0, max_pos_y = 0 , rotation = 90;
     var el = picture;
 
-    mc.on("pinch doubletap pinchout pinchend pan panend", function(ev) {
+    mc.on("pinch doubletap pinchout pinchend pan panend rotate", function(ev) {
+    ev.preventDefault();
 
-      if (ev.type == "pinch") { scale = Math.max(.999, Math.min(last_scale * (ev.scale), 4));       }
+      if (ev.type==="rotate") {console.log("rot");}
 
-      if(ev.type == "pinchend") {last_scale = scale;}
+      if (ev.type === "pinch") { scale = Math.max(.999, Math.min(last_scale * (ev.scale), 4));       }
+
+      if(ev.type === "pinchend") {last_scale = scale;}
 
       if (ev.type == "doubletap") {
         if (last_scale===2) {
@@ -85,7 +100,7 @@ app.directive('pictureTool', ['$document', function($document) {
           posY = (element[0].parentElement.clientHeight/scale)-element[0].height;
       }
 
-      if(ev.type == "panend"){
+      if(ev.type === "panend"){
       last_posX = posX < max_pos_x ? posX : max_pos_x;
       last_posY = posY < max_pos_y ? posY : max_pos_y;
 
@@ -98,7 +113,7 @@ app.directive('pictureTool', ['$document', function($document) {
       console.log("crop:{ top:("+scope.newReport.crop.top+"), left:("+scope.newReport.crop.left+"), height:("+scope.newReport.crop.height+"), width:("+scope.newReport.crop.width+") }");
       }
 
-      transform ="translate3d("+posX+"px,"+posY+"px, 0) " +"scale3d(" + scale + ", " + scale + ", 1)";
+      transform ="translate3d("+posX+"px,"+posY+"px, 0) " +"scale3d(" + scale + ", " + scale + ", 1) " + "rotate("+rotation+"deg) ";
 
       if (transform) {
           picture.style.transform = transform;

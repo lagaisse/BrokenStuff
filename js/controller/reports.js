@@ -65,6 +65,7 @@ app.controller("VoteController", function($scope, $document, localstorageservice
 
 app.controller("AddController", function($scope,$rootScope, $timeout, $location, Report, geolocation, progress) {
     $('head').append('<script src="js/forms.js"></script>');
+    $('head').append('<script src="dist/js/exif.js"></script>');
     $scope.newReport={};
     
     $scope.locations = [];
@@ -133,16 +134,40 @@ app.controller("ReportController", function($scope, $rootScope, Report, $routePa
     })
 });
 
-app.controller("PictureController", function($scope, $rootScope, $timeout, $location, Report) {
+app.controller("PictureController", function($scope, $rootScope, $document, $timeout, $location, Report) {
     $rootScope.onFileSelect = function($files) {
         //$files: an array of files selected, each file has name, size, and type.
         for (var i = 0; i < $files.length; i++) {
             var file = $files[i];
             var reader = new FileReader();
+            var image = new Image();
+            image.onload = function() {
+                EXIF.getData(image, function() {
+                    var Orientation = EXIF.getTag(this, "Orientation");
+                    switch (Orientation) {
+                        case 8:
+                            console.log(Orientation);
+                            var transform="rotate(90 deg)";
+                            var picture= document.getElementById('pic');
+                          picture.style.transform = transform;
+                          picture.style.oTransform = transform;
+                          picture.style.msTransform = transform;
+                          picture.style.mozTransform = transform;
+                          picture.style.webkitTransform = transform;
+                        break;
+                    }
+                });
+            };
             reader.readAsDataURL(file);
             reader.onload = function() {
                 $timeout(function() {
                     $scope.newReport.b64pic = reader.result;
+
+//var bin = atob($scope.newReport.b64pic.split(',')[1]);
+//var bin = atob($scope.newReport.b64pic.replace(/^.*?,/,''));
+//var exif = EXIF.readFromBinaryFile(new BinaryFile(bin));
+                    image.src =$scope.newReport.b64pic;
+
                     console.log($scope.newReport);
                 }, 0);
             }

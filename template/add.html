@@ -27,7 +27,7 @@
 	<div class="row">
 
 			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
-				<div class="field"><label class="field-label">Intitulé</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
+				<div class="field"><label class="field-label">Intitulé de l'incident</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
 				<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
 				<div class="field"><label class="field-label">Ligne</label>
 				<select name="line" ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess" required>
@@ -43,7 +43,7 @@
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
 				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
 				<div class="right">
-					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="SUIVANT"/>
+					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="ENREGISTRER"/>
 				</div>
 			<form>
 		</div>
