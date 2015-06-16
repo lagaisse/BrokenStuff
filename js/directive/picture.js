@@ -43,19 +43,20 @@ app.directive('pictureTool', ['$document', function($document) {
         });
 
     var pinch = new Hammer.Pinch();
-    var rotate = new Hammer.Rotate();
+ //   var rotate = new Hammer.Rotate();
 
 // we want to detect both the same time
-    pinch.recognizeWith(rotate);
+//    pinch.recognizeWith(rotate);
 
 // add to the Manager
-    mc.add([pinch, rotate]);
+//    mc.add([pinch, rotate]);
+    mc.add([pinch]);
 
     mc.get('pinch').set({ enable: true });
     mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-    mc.get('rotate').set({ enable: true });
+//    mc.get('rotate').set({ enable: true });
 
-    var scale=1, last_scale =1 , transform = "", posX = 0, posY = 0, last_posX = 0, last_posY = 0, max_pos_x = 0, max_pos_y = 0 , rotation = 90;
+    var scale=1, last_scale =1 , transform = "", posX = 0, posY = 0, last_posX = 0, last_posY = 0, max_pos_x = 0, max_pos_y = 0 , rotation = 0;
     var el = picture;
 
     mc.on("pinch doubletap pinchout pinchend pan panend rotate", function(ev) {
