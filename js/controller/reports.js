@@ -128,7 +128,6 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
 app.controller("ReportController", function($scope, $rootScope, Report, $routeParams) {
 	$scope.report=Report.getReport($routeParams.id).then(function(report){
         $scope.report=report;
-        $('head').append('<meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@brokenstuff"><meta name="twitter:creator" content="@brokenstuff"><meta name="twitter:title" content="'+report.name+'"><meta name="twitter:description" content="'+report.description+'"><meta name="twitter:image" content="'+report.picture.thumbnail+'">');
         console.log(report);
     }, function(reason) {
             $rootScope.$broadcast("FlashStatus","error : "+reason);
