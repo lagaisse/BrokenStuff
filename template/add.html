@@ -11,9 +11,9 @@
 <div class="card unic-card shadow-z-1">
 	<div class="navbar-50" ng-controller="PictureController">
 		<form ng-submit="addPicture()" role="form2" name="addform">
-		<div class="item-full material-lime-300">
+		<div class="item-full edit material-lime-300">
 			<i class="mdi-image-panorama picto" style="line-height:30px;" ng-hide="newReport.b64pic"></i>
-			<div class="img-item" id="touch">
+			<div class="img-item edit" id="touch">
 				<img class="test" ng-hide="newReport.b64pic"></img>
 				<img  picture-tool class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" id="pic" ></img>
 			</div>
