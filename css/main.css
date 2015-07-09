@@ -267,6 +267,20 @@ right:16px;
   margin-bottom:0px;
 }
 
+.card .card-text {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.card .text-item {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.text-item span {
+  width:28px;
+}
+
 .card .btn-primary {
   padding: 8px 10px;
 }

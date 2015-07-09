@@ -14,16 +14,20 @@
 		<div class="text display2">{{report.name}}</div>
 	</div>
 	</div>
+	<div class="row card-text">
+		<div class="text-item" >
+<!-- 			<div class="note">Localisation</div>
+ -->			<span class="glyphicon glyphicon-map-marker"></span> {{report.location[0].parent}} - {{report.location[0].name}}
+		</div>
 
-	<div class="row">
-		<div class="col-md-12"><div class="note">Description</div>{{report.description}}</div>
-	</div>
 	<hr>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="note">Localisation</div>
-			{{report.location[0].parent}} - {{report.location[0].name}}
+
+
+		<div class="text-item"  >
+<!-- 			<div class="note">Description</div>
+ -->			{{report.description}}
 		</div>
 	</div>
+
 </div>
 </div>
