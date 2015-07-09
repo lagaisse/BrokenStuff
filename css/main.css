@@ -484,6 +484,11 @@ bottom:2.4em;
 left: 0.5em;
 z-index: 2;
 color : #FFF;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+width: 100%;
+padding-right: 0.5em;
 }
 
 .more {
