@@ -31,15 +31,20 @@
 				<div class="card-body">
 					<div class="card-body-info subhead">{{report.location[0].parent}} - {{report.location[0].name}}
 					</div>
-					<div class="card-body-info subhead">{{report.nb_vote}} votes
-					</div>
+<!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
+					</div> -->
 					<div  class="card-body-desc">{{report.description}}
 					</div>
 				</div>
 
 				<hr>
 				
-				<div class="card-body-actions" ng-controller="VoteController" ng-init="check"><span href="" class="button btn btn-material-lime btn-flat btn-primary" id="action_{{report.id}}" ng-click="vote(report.id)">CONFIRM</span>
+				<div class="card-body-actions" >
+					<button class="vote-button" id="action_{{report.id}}"  ng-controller="VoteController" ng-init="check" ng-click="vote(report.id)">
+						<span class="glyphicon glyphicon-star icon-action"></span><span>{{report.nb_vote}}</span> 
+					</button>
+
+<!-- 					<span href="" class="button btn btn-material-lime btn-flat btn-primary" id="action_{{report.id}}" ng-click="vote(report.id)">CONFIRM</span> -->
 				</div>
 			</div>
 		</div>

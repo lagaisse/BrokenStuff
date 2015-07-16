@@ -47,18 +47,20 @@ app.controller("VoteController", function($scope, $document, localstorageservice
     angular.element(document).ready(function () {
         if ($scope.votes.indexOf($scope.report.id)!=-1){
             console.log("prout");
-            $("#action_"+$scope.report.id).addClass("disabled");
+            $("#action_"+$scope.report.id).addClass("disabled voted");
         }
         });
 
     $scope.vote = function(report_id) {
-        Report.vote(report_id).then(function(data){
+        if ($scope.votes.indexOf($scope.report.id)==-1){
+            Report.vote(report_id).then(function(data){
             localstorageservice.add("votes",report_id);
             $scope.$parent.report.nb_vote++;
-            $("#action_"+report_id).addClass("disabled");
-        }, function(reason) {
-            console.log("bug");
-        })
+            $("#action_"+report_id).addClass("disabled voted");
+            }, function(reason) {
+                console.log("bug");
+            })
+        }
        }
 
     });

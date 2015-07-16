@@ -8,45 +8,45 @@
 </nav>
 
 <div class="container ">
-<div class="card unic-card shadow-z-1">
-	<div class="navbar-50" ng-controller="PictureController">
-		<form ng-submit="addPicture()" role="form2" name="addform">
-		<div class="item-full edit material-lime-300">
-			<i class="mdi-image-panorama picto" style="line-height:30px;" ng-hide="newReport.b64pic"></i>
-			<div class="img-item edit" id="touch">
-				<img class="test" ng-hide="newReport.b64pic"></img>
-				<img  picture-tool class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" id="pic" ></img>
+	<div class="card unic-card shadow-z-1">
+		<div class="navbar-50" ng-controller="PictureController">
+			<form ng-submit="addPicture()" role="form2" name="addform">
+			<div class="item-full edit material-lime-300">
+				<i class="mdi-image-panorama picto" style="line-height:30px;" ng-hide="newReport.b64pic"></i>
+				<div class="img-item edit" id="touch">
+					<img class="test" ng-hide="newReport.b64pic"></img>
+					<img  picture-tool class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" id="pic" ></img>
+				</div>
+			</div>
+			<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
+		</div>
+		<input type="hidden" ng-model="newPicture.idReport"/>
+		<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
+		</form>
+
+		<div class="row">
+
+				<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
+					<div class="field"><label class="field-label">Intitulé de l'incident</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
+					<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
+					<div class="field"><label class="field-label">Ligne</label>
+					<select name="line" ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess" required>
+	<!--     				<option value="">Lieu 1</option>
+	 -->				</select>
+	 				</div>
+					<div class="field" ><label class="field-label">Gare</label>
+					<select ng-model="newReport.location2" ng-options="item.id as item.name for item in sublocations" class="field-input" ng-disabled="newReport.endOfProcess" required>
+	<!--     				<option value="">Lieu 2</option>
+	 -->				</select>
+	 				</div>
+					<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
+					<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
+					<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
+					<div class="right">
+						<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="ENREGISTRER"/>
+					</div>
+				<form>
 			</div>
 		</div>
-		<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
 	</div>
-	<input type="hidden" ng-model="newPicture.idReport"/>
-	<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
-	</form>
-
-	<div class="row">
-
-			<form ng-locations ng-show="newReport.reportForm" ng-init="newReport.reportForm = true" ng-submit="addReport()" role="form">
-				<div class="field"><label class="field-label">Intitulé de l'incident</label><input ng-disabled="newReport.endOfProcess" class="field-input " type="text" ng-model="newReport.name" required /></div>
-				<div class="field"><label class="field-label">Commentaire</label><textarea rows="3" ng-disabled="newReport.endOfProcess" class="field-input field-textarea" ng-model="newReport.description"/></textarea></div>
-				<div class="field"><label class="field-label">Ligne</label>
-				<select name="line" ng-model="newReport.location1" ng-change="populateSub(newReport.location1)" ng-options="item.id as item.name for item in locations" class="field-input" ng-disabled="newReport.endOfProcess" required>
-<!--     				<option value="">Lieu 1</option>
- -->				</select>
- 				</div>
-				<div class="field" ><label class="field-label">Gare</label>
-				<select ng-model="newReport.location2" ng-options="item.id as item.name for item in sublocations" class="field-input" ng-disabled="newReport.endOfProcess" required>
-<!--     				<option value="">Lieu 2</option>
- -->				</select>
- 				</div>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.coords"/>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.datetime"/>
-				<input ng-disabled="newReport.endOfProcess" type="hidden" ng-model="newReport.id"/>
-				<div class="right">
-					<input ng-hide="newReport.endOfProcess" class="btn btn-material-lime btn-primary" type="submit" value="ENREGISTRER"/>
-				</div>
-			<form>
-		</div>
-	</div>
-</div>
 </div>
