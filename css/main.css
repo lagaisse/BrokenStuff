@@ -144,18 +144,13 @@ height: 100%;
 .row {
 margin-left:0px;
 margin-right:0px;
-padding-left:16px;
-padding-right:16px;
+padding-left:15px;
+padding-right:15px;
 }
 
-.col-xs-*, {
-padding-left:0px;
-padding-right:0px;
-  }
-
-.col-md-*, .col-sm-*{
-padding-left:10px;
-padding-right:10px;
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .bottom {
@@ -260,6 +255,46 @@ right:16px;
 .card-body-actions {
   padding-left:8px;
   padding-right:8px;
+  padding-top:8px;
+  padding-bottom: 8px
+}
+
+.vote-button {
+  border-top-color: transparent;
+  border-top-style: outset;
+  border-top-width: 2px;
+  border-right-color: transparent;
+  border-right-style: outset;
+  border-right-width: 2px;
+  border-bottom-color: transparent;
+  border-bottom-style: outset;
+  border-bottom-width: 2px;
+  border-left-color: transparent;
+  border-left-style: outset;
+  border-left-width: 2px;
+
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-width: initial;
+  border-image-outset: initial;
+  border-image-repeat: initial;
+  background-color: transparent;
+  box-sizing: border-box;
+
+  background-image: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-repeat-x: initial;
+  background-repeat-y: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: transparent;
+}
+
+.vote-button:hover , .voted {
+  color: #ffac33;
 }
 
 .card hr {
@@ -452,8 +487,8 @@ position: relative;
 }
 
 .item {
-max-height:10em;
-min-height: 10em;
+/*max-height:10em;
+min-height: 10em;*/
 overflow: hidden;
 }
 
@@ -480,7 +515,7 @@ width:100%;
 
 .text {
 position: absolute;
-top:0.5em;
+top:1em;
 left: 0.5em;
 z-index: 2;
 color : #FFF;
