@@ -1,4 +1,4 @@
-app.controller("SearchController", function($scope,$rootScope, Report, geolocation,localstorageservice) {
+app.controller("SearchController", function($scope,$rootScope, Report, geolocation,localstorageservice, progress) {
     var count=30; // search reeport count 
     var radius=30; // search reports inside this radius area 
     var lsvotes;
@@ -15,17 +15,23 @@ app.controller("SearchController", function($scope,$rootScope, Report, geolocati
         }
     }
 
+    $('.advice').hide(0).delay(3000).show(300);
+
+    progress.start();
     geolocation.getLocation().then(function(data,scope){
+        progress.stop();
         $scope.coords= {longitude:data.coords.longitude, latitude:data.coords.latitude};
         $scope.reports=Report.getReportsByGeoloc(count,$scope.coords.longitude,$scope.coords.latitude,radius).then(function(reports){
             $scope.reports=reports;
             $scope.lastid=reports[reports.length-1].id;
             $scope.go=true;
             }, function(reason) {
+                progress.stop();
                 $scope.go=false;
                 $rootScope.$broadcast("FlashStatus","error : "+reason);
         })
     } , function(reason,scope){
+        progress.stop();
         $rootScope.$broadcast("ACKStatus",{status:reason , actionName:"OK" , action:"close();"});
         
     });

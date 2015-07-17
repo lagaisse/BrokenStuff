@@ -215,6 +215,9 @@ position:fixed;
 transition: opacity .2s ;
 }
 
+.advice {
+  
+}
 /***************************************/
 /* Icones */
 i {
@@ -291,8 +294,12 @@ right:16px;
   background-origin: initial;
   background-clip: initial;
   background-color: transparent;
+  color: #999;
 }
 
+.icon-action {
+  padding-right:2px;
+}
 .vote-button:hover , .voted {
   color: #ffac33;
 }
