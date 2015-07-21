@@ -32,9 +32,7 @@ class Apiv1 extends REST_Controller
   protected function validate_data($group='')
   {
       $this->load->library('form_validation');
-      // $_POST=$this->_args;
-      // $_POST[]=uniqid();
-      $this->_args['form_validation_uniqid']=uniqid();
+      $this->_args['form_validation_uniqid'] = uniqid();
       $this->form_validation->set_data($this->_args);
       if ($this->form_validation->run($group) == FALSE)
       {
@@ -44,12 +42,13 @@ class Apiv1 extends REST_Controller
 
   function reports_get()
   {
-    if($this->get('id')==null)
+    if($this->get('id') == null)
     {
-      if(!$this->get('latitude') && !$this->get('longitude') && !$this->get('distance')) {
+      if(! $this->get('latitude') && ! $this->get('longitude') && ! $this->get('distance')) {
         $this->reports_list_get();
       }
-      else {
+      else
+      {
         $this->reports_geo_get();
       }
 
@@ -100,8 +99,8 @@ class Apiv1 extends REST_Controller
   {
     $this->validate_data('apiv1/reports_list_get');
 
-    $since_id  = (($this->get('since_id')!=null)?$this->get('since_id'):null);
-    $reports_count = (($this->get('count')!=null)?(int)$this->get('count'):30);
+    $since_id  = (($this->get('since_id') != null)? $this->get('since_id'):null);
+    $reports_count = (($this->get('count') != null)? (int)$this->get('count'):30);
 
     $this->load->model('Report');
     $reports=$this->Report->get_reports($since_id,$reports_count);
@@ -126,7 +125,7 @@ class Apiv1 extends REST_Controller
     $reports=$this->Report->get_reports_bygeo($this->get('latitude'),
                                               $this->get('longitude'),
                                               $this->get('distance'),
-                                              $this->get('start'), 
+                                              $this->get('start'),
                                               $this->get('count'));
     $results= ['metadata' => ['resultset' => ['count'=>count($reports)]],
                'results'  => $reports ];
@@ -149,7 +148,7 @@ class Apiv1 extends REST_Controller
     $reports=$this->Report->get_reports_bygeo($this->get('latitude'),
                                               $this->get('longitude'),
                                               $this->get('distance'),
-                                              $this->get('start'), 
+                                              $this->get('start'),
                                               $this->get('count'),
                                               'geojson');
     $results= ['type'     => 'FeatureCollection',
@@ -179,7 +178,7 @@ class Apiv1 extends REST_Controller
 
     $this->load->model('Report');
     $report=[];
-    
+
     foreach ($this->request->body as $key => $value) {
       switch ($key) {
         case 'name':
@@ -202,13 +201,13 @@ class Apiv1 extends REST_Controller
         case 'picture': //not reached
          // $report['picture']=$this->_process_picture($value);
           break;
-        
+
         default:
           # code...
           break;
       }
     }
-    
+
     $the_id=false;
     if (isset($report['name'])) {
       $the_id=$this->Report->new_report($report['name'],
@@ -221,18 +220,16 @@ class Apiv1 extends REST_Controller
     }
     if ($the_id!=null)
     {
-      $this->response(['success' => $the_id], 200);      
+      $this->response(['success' => $the_id], 200);
     }
     else
     {
       $this->response(['error' => 'insert failed'], 500);
     }
-
-
   }
 
-  function pictures_post() 
-  { 
+  function pictures_post()
+  {
 
     $this->validate_data('apiv1/pictures_post');
     $data = $this->post('picture', false);
@@ -248,13 +245,13 @@ class Apiv1 extends REST_Controller
       //print_r($matches);
       $this->response(['error' => 'Not a picture', 'picture' => $this->post('picture')], 403);
     }
-    
+
     log_message('debug', 'Payload mime : ' . $matches[1][0]);
     $data = $matches[2][0];
 // FIN DE A supprimer au passage à CodeIgniter 3 de form_validation
 
     $picture = @imagecreatefromstring(base64_decode($data)); //remove error
-    if ($picture !== false) 
+    if ($picture !== false)
     {
       $this->load->model('Report');
       //check if reports exists
@@ -271,11 +268,11 @@ class Apiv1 extends REST_Controller
       }
       //@imagedestroy($picture); //done in the model processing
     }
-    else 
+    else
     {
       $this->response(['error' => 'Cannot manage the picture', 'picture' => $this->post('picture')], 500);
     }
-    
+
   }
 
   function locations_get()
@@ -335,7 +332,7 @@ class Apiv1 extends REST_Controller
     $locations=$this->Location->get_locations_bygeo($this->get('latitude'),
                                                     $this->get('longitude'),
                                                     $this->get('distance'),
-                                                    $this->get('start'), 
+                                                    $this->get('start'),
                                                     $this->get('count'));
     $results= ['metadata' => ['resultset' => ['count'=>count($locations)]],
                'results'  => $locations ];
@@ -351,10 +348,10 @@ class Apiv1 extends REST_Controller
 
 
     /****************************************************\
-      OVERRIDE REST_Controller API_KEY management 
+      OVERRIDE REST_Controller API_KEY management
       system in order to add a per-IP limit on api calls
-      _detect_api_key : if no API_KEY is detected, register 
-                        the client IP address as 
+      _detect_api_key : if no API_KEY is detected, register
+                        the client IP address as
                         an API_KEY
 
     \*****************************************************/

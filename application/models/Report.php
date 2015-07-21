@@ -23,7 +23,7 @@ class Report extends CI_Model {
         // Call the Model constructor
         parent::__construct();
     }
-    
+
     function get_reports($since_id, $reports_count)
     {
         $this->load->database();
@@ -39,13 +39,14 @@ class Report extends CI_Model {
         $results = $query->result_array();
         foreach ($results as $row) {
             $reports[] = $this->report_format($row);
-        }        
+        }
         return $reports;
     }
 
     function new_report($name,$desc,$add_date,$geoloc_lat,$geoloc_long,$status,$place)
     {
         $this->load->database();
+        $signature = sha1($name .':'. $desc .':'. $status .':'. $place);
         $data = array(
                'r_name'         => $name ,
                'r_desc'         => $desc,
@@ -54,11 +55,30 @@ class Report extends CI_Model {
                'r_geoloc_long'  => $geoloc_long,
                'r_status'       => $status,
                'lo_path'        => $place,
-               'r_nb_vote'      => 1
+               'r_nb_vote'      => 1,
+               'r_signature'    => $signature
             );
+          //check if the report does not already exist
+        if (($the_id = $this->get_duplicate_id($signature)) !== FALSE)
+        {
+          return $the_id;
+        }
         $sql = $this->db->insert_string('report', $data);
         $this->db->query($sql);
         return $this->db->insert_id();
+    }
+    function get_duplicate_id($signature)
+    {
+      $this->load->database();
+      $report = null;
+
+      $query = $this->db->query('select r_id from '.$this->db->dbprefix("report").' where r_signature=?', $signature);
+      if($query->num_rows()>0)
+      {
+          $row = $query->first_row('array');
+          return $row['r_id'];
+      }
+      return FALSE;
     }
 
     function get_report($id)
@@ -88,7 +108,7 @@ class Report extends CI_Model {
         $reports= null;
 
         $rayon_terre= 6371; //km
-        //$lat_orig= deg2rad(49); //49 degré, Paris latitude 
+        //$lat_orig= deg2rad(49); //49 degré, Paris latitude
         $lat_deg_len= 2 * pi() * $rayon_terre / 360; //360 degré
         //$lon_deg_len= $lat_deg_len * cos($lat_orig);
 
@@ -110,15 +130,15 @@ class Report extends CI_Model {
 
         $sql=<<<SQL
                 SELECT rep.*,
-                        {$rayon_terre} * 2 * ASIN(SQRT( 
+                        {$rayon_terre} * 2 * ASIN(SQRT(
                                 POWER(SIN(({$latitude} -abs(loc.lo_geoloc_lat)) * pi()/180 / 2), 2) +
-                                COS({$latitude} * pi()/180) * COS(abs(loc.lo_geoloc_lat) * pi()/180) * 
-                                POWER(SIN(({$longitude} -loc.lo_geoloc_long) * pi()/180 / 2), 2) 
-                            )) as distance 
+                                COS({$latitude} * pi()/180) * COS(abs(loc.lo_geoloc_lat) * pi()/180) *
+                                POWER(SIN(({$longitude} -loc.lo_geoloc_long) * pi()/180 / 2), 2)
+                            )) as distance
                 FROM {$this->db->dbprefix("location")} loc, {$this->db->dbprefix("report")} rep
                 WHERE 1
                 and rep.lo_path = loc.lo_path
-                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
+                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r}
                 and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r}
                 having distance < {$distance} ORDER BY distance {$sql_count};
 SQL;
@@ -133,7 +153,7 @@ SQL;
                 FROM location loc, report
                 WHERE 1
                 and report.lo_path = loc.lo_path
-                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r} 
+                and loc.lo_geoloc_long between {$lon_bound_l} and {$lon_bound_r}
                 and loc.lo_geoloc_lat between {$lat_bound_l} and {$lat_bound_r};
 XQL;*/
 
@@ -141,7 +161,7 @@ XQL;*/
         $results = $query->result_array();
         foreach ($results as $row) {
             $reports[] = $this->report_format($row,$style);
-        }        
+        }
         return $reports;
     }
 
@@ -153,19 +173,19 @@ XQL;*/
         if ($this->db->affected_rows() > 0) //report exists
         {
             return $this->get_report($id);
-        } 
+        }
     }
 
     function report_format($row, $style='list')
     {
-        if ($style=='geojson') 
+        if ($style=='geojson')
         {
 
             $location = $this->Location->get_locationsFromPath($row['lo_path']);
 
             return ['type'          =>  'Feature',
                     'geometry'      =>  ['type' => 'Point', 'coordinates' => [(float)$location[0]['geolocation']['longitude'], (float)$location[0]['geolocation']['latitude']]],
-                    'properties'    =>  ['id'            =>  $row['r_id'], 
+                    'properties'    =>  ['id'            =>  $row['r_id'],
                                          'name'          =>  $row['r_name'],
                                          'description'   =>  $row['r_desc'],
                                          'add_date'      =>  $row['r_add_date'],
@@ -191,7 +211,7 @@ XQL;*/
 
     function reportmap_format($row)
     {
- 
+
     }
 
     function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
@@ -214,7 +234,7 @@ XQL;*/
         }
         $dst_tbn = $this->picture_thumbnail($dst_res);
         if ($dst_tbn==false) {$dst_btn=$picture;}
-        
+
         $rets=10 * $rets + (int)@imagejpeg($dst_res, FCPATH . $dir_res );
         $rets=10 * $rets + (int)@imagejpeg($dst_tbn, FCPATH . $dir_tbn );
         $retd=1  * $retd + (int)@imagedestroy($picture);
@@ -248,7 +268,7 @@ XQL;*/
         return $path;
     }
 
-    function picture_crop($picture, $top=0, $left=0, $width=0, $height=0) 
+    function picture_crop($picture, $top=0, $left=0, $width=0, $height=0)
     {
         log_message('debug', 'Call picture_crop with crop : top : '. $top .' left : ' .$left. ' width : '. $width .' height : '. $height.'');
         if($width==0||$height==0)
@@ -258,7 +278,7 @@ XQL;*/
          //calculate thumb size
         $ow = imagesx($picture);
         $oh = imagesy($picture);
-       
+
         log_message('debug', 'Call picture_crop : picture\'s dimensions : width : '. $ow .' height : ' .$oh.'');
 
         if($top+$height>$oh||$left+$width>$ow)
@@ -268,20 +288,20 @@ XQL;*/
         }
         log_message('debug', 'Call picture_crop : cropping in progress');
         //resize and copy image
-        return imagecrop($picture, 
+        return imagecrop($picture,
                         array('x'     => $left,
                               'y'     => $top,
                               'width' => $width,
                               'height'=> $height));
     }
 
-    function picture_thumbnail($picture) 
+    function picture_thumbnail($picture)
     {
          //calculate thumb size
         $ow = imagesx($picture);
         $oh = imagesy($picture);
         $maxh = 600;
-        $maxw = 800; 
+        $maxw = 800;
         $new_h = $oh;
         $new_w = $ow;
 
@@ -292,18 +312,17 @@ XQL;*/
         //create dst image
         $dst_img = ImageCreateTrueColor($new_w,$new_h);
         //resize and copy image
-        $ret=imagecopyresampled( $dst_img  , 
-                            $picture  , 
-                            0         , 
+        $ret=imagecopyresampled( $dst_img  ,
+                            $picture  ,
                             0         ,
-                            0         , 
-                            0         , 
-                            $new_w    , 
-                            $new_h    , 
-                            $ow       , 
+                            0         ,
+                            0         ,
+                            0         ,
+                            $new_w    ,
+                            $new_h    ,
+                            $ow       ,
                             $oh       );
         return ($ret?$dst_img:false);
     }
 
 }
-
