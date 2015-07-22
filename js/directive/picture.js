@@ -9,12 +9,13 @@ app.directive('ngFileSelect',['$parse','$timeout',function($parse,$timeout){
 				files.push(fileList.item(i));
 			}
 		}
+
 		$timeout(function() {
 			fn(scope, {
 				$files : files,
 				$event : evt
 				});
-			});
+      });
 		});
 	}
 }]);
@@ -23,12 +24,10 @@ app.directive('ngFileSelect',['$parse','$timeout',function($parse,$timeout){
 
 app.directive('pictureTool', ['$document', function($document) {
   return function(scope, element, attr) {
-
     element.css({
      position: 'relative',
      cursor: 'move' 
     });
-
 
     var myElement = document.getElementById('pic');
     var picture = document.getElementById('pic');
@@ -43,18 +42,10 @@ app.directive('pictureTool', ['$document', function($document) {
         });
 
     var pinch = new Hammer.Pinch();
- //   var rotate = new Hammer.Rotate();
-
-// we want to detect both the same time
-//    pinch.recognizeWith(rotate);
-
-// add to the Manager
-//    mc.add([pinch, rotate]);
     mc.add([pinch]);
 
     mc.get('pinch').set({ enable: true });
     mc.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-//    mc.get('rotate').set({ enable: true });
 
     var scale=1, last_scale =1 , transform = "", posX = 0, posY = 0, last_posX = 0, last_posY = 0, max_pos_x = 0, max_pos_y = 0 , rotation = 0;
     var el = picture;
@@ -124,53 +115,6 @@ app.directive('pictureTool', ['$document', function($document) {
           picture.style.webkitTransform = transform;
           }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-    element.on('mousedown', function(event) {
-      // Prevent default dragging of selected content
-      event.preventDefault();
-      startX = event.pageX - x;
-      startY = event.pageY - y;
-      $document.on('mousemove', mousemove);
-      $document.on('mouseup', mouseup);
-    });
-
-    function mousemove(event) { 
-      y = event.pageY - startY;
-      bottomBorder=element[0].parentElement.clientHeight-element[0].height;
-      console.log("starty:"+startY+" top :"+y+ " bottom :"+bottomBorder);
-      //if (y>0) {y=0;}
-      //if (y<bottomBorder) {y=bottomBorder;}
-      ratio=element[0].width/element[0].naturalWidth;
-      scope.newReport.crop={};
-      scope.newReport.crop.top=-Math.round(y/ratio);
-      scope.newReport.crop.left=Math.round(x/ratio);
-      scope.newReport.crop.height=Math.round(Math.round(element[0].parentElement.clientHeight/ratio)/scale);
-      scope.newReport.crop.width=Math.round(Math.round(element[0].width/ratio)/scale);
-      //console.log("crop:{ top:("+scope.newReport.crop.top+"), left:("+scope.newReport.crop.left+"), height:("+scope.newReport.crop.height+"), width:("+scope.newReport.crop.width+") }");
-      element.css({
-        top: y + 'px',
-        left:  x + 'px'
-      });
-    }
-
-    function mouseup() {
-      $document.off('mousemove', mousemove);
-      $document.off('mouseup', mouseup);
-    }
-*/
 
   };
 }]);

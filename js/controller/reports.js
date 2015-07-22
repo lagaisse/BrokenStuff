@@ -52,7 +52,6 @@ app.controller("VoteController", function($scope, $document, localstorageservice
 
     angular.element(document).ready(function () {
         if ($scope.votes.indexOf($scope.report.id)!=-1){
-            console.log("prout");
             $("#action_"+$scope.report.id).addClass("disabled voted");
         }
         });
@@ -84,18 +83,15 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
     })
 
     $scope.addReport = function() {
-        //$rootScope.$broadcast("BeginStatus","Chargement");
         progress.start();
         $scope.newReport.geolocation=$scope.coords;
         $scope.newReport.datetime=Date.now();
         Report.add($scope.newReport).then(function(id) {
                 if ($scope.newReport.b64pic){
                     $scope.newReport.id=id;
-                    //$rootScope.$broadcast("BeginStatus","posting");
                     Report.addPicAlt($scope.newReport.id, $scope.newReport).then(function(pictureUrl) { 
                         $scope.newReport.pictureUrl=pictureUrl;
                         $scope.newReport.endOfProcess=true;
-                        //$rootScope.$broadcast("EndStatus");
                         progress.stop().then(function() {
                             $location.path("/search");
                             })
@@ -106,7 +102,6 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
                 else
                 {
                     $scope.newReport.endOfProcess=true;
-                    //$rootScope.$broadcast("EndStatus");
                     progress.stop().then(function() {
                         $location.path("/search");
                         })
@@ -166,17 +161,21 @@ app.controller("PictureController", function($scope, $rootScope, $document, $tim
                         break;
                     }
                 });
+
+                element=document.getElementById("pic");
+                ratio=element.width/element.naturalWidth;
+                $scope.newReport.crop={};
+                $scope.newReport.crop.height=Math.round(element.parentElement.clientHeight/ratio);
+                $scope.newReport.crop.width=Math.round(element.width/ratio);
+                $scope.newReport.crop.top=0;
+                $scope.newReport.crop.left=0;
+                console.log("crop:{ top:("+$scope.newReport.crop.top+"), left:("+$scope.newReport.crop.left+"), height:("+$scope.newReport.crop.height+"), width:("+$scope.newReport.crop.width+") }");
             };
             reader.readAsDataURL(file);
             reader.onload = function() {
                 $timeout(function() {
                     $scope.newReport.b64pic = reader.result;
-
-//var bin = atob($scope.newReport.b64pic.split(',')[1]);
-//var bin = atob($scope.newReport.b64pic.replace(/^.*?,/,''));
-//var exif = EXIF.readFromBinaryFile(new BinaryFile(bin));
                     image.src =$scope.newReport.b64pic;
-
                     console.log($scope.newReport);
                 }, 0);
             }
