@@ -1089,7 +1089,7 @@ abstract class REST_Controller extends CI_Controller {
         {
             // Create a new row for the following key
             $this->rest->db->insert($this->config->item('rest_limits_table'), [
-                'uri' => $this->uri->uri_string(),
+                'uri' => $uri_noext,
                 'api_key' => isset($this->rest->key) ? $this->rest->key : '',
                 'count' => 1,
                 'hour_started' => time()
