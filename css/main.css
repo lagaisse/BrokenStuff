@@ -300,8 +300,43 @@ right:16px;
 .icon-action {
   padding-right:2px;
 }
+
 .vote-button:hover , .voted {
   color: #ffac33;
+}
+
+.instant-vote {
+  -webkit-animation-name: goandback;
+  -webkit-animation-duration:0.4s;
+  -webkit-animation-timing-function:cubic-bezier(0,.56,.65,1);
+
+  animation-name: goandback;
+  animation-duration:0.4s;
+  animation-timing-function:cubic-bezier(0,.56,.65,1);
+}
+
+@-webkit-keyframes goandback{
+    0% {
+        -webkit-transform:scale(1);
+    }
+    50% {
+        -webkit-transform:scale(1.2);
+    }
+    100% {
+        -webkit-transform:scale(1);
+    }
+}
+
+@keyframes goandback{
+    0% {
+        transform:scale(1);
+    }
+    50% {
+        transform:scale(1.2);
+    }
+    100% {
+        transform:scale(1);
+    }
 }
 
 .card hr {

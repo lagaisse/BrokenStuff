@@ -63,7 +63,8 @@ app.controller("VoteController", function($scope, $document, localstorageservice
             localstorageservice.add("votes",report_id);
             $scope.$parent.report.nb_vote++;
             $("#action_"+report_id).addClass("disabled voted");
-            }, function(reason) {
+            $("#action_"+report_id+" > span:first-child").addClass("instant-vote");
+             }, function(reason) {
                 console.log("bug");
             })
         }
