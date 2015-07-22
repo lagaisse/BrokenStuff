@@ -36,7 +36,7 @@ angular.module('geolocation')
                 });
                 break;
             }
-          }, opts);
+          }, {timeout:10000});
         }
         else
         {

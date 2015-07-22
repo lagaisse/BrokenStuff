@@ -82,16 +82,16 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
                                   clickable: false       };
         
         leafletData.getMap().then(function(map) {
+
+        $scope.$on('$locationChangeStart', function(event, next, current) {
+            map.stopLocate();
+           });
+
             if (!geoloc) {
-                map.locate({watch:true, setView:false});
+               map.locate({watch:true, setView:false});
                 geoloc=true;
             }
         });
-/*
-        leafletData.marker(event.latlng).addTo(leafletData.map)
-                    .bindPopup('you are within '+radiuts + " meters from here").openPopup();
-        leafletData.circle(event.latlng,radius).addTo(map);
-        */
 
     }); 
     $scope.$on('leafletDirectiveMap.locationerror', function(event, args){
