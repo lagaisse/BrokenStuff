@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Format class
  * Help convert between various formats such as XML, JSON, CSV, etc.
  *
- * @author    Phil Sturgeon, Chris Kacerguis
+ * @author    Phil Sturgeon, Chris Kacerguis, @softwarespot
  * @license   http://www.dbad-license.org/
  */
 class Format {
@@ -222,13 +222,13 @@ class Format {
                     $attributes = get_object_vars($attributes);
                 }
 
-                foreach ($attributes as $attributeName => $attributeValue)
+                foreach ($attributes as $attribute_name => $attribute_value)
                 {
-                    $structure->addAttribute($attributeName, $attributeValue);
+                    $structure->addAttribute($attribute_name, $attribute_value);
                 }
             }
             // if there is another array found recursively call this function
-            else if (is_array($value) || is_object($value))
+            elseif (is_array($value) || is_object($value))
             {
                 $node = $structure->addChild($key);
 
@@ -269,15 +269,15 @@ class Format {
             $data = (array) $data;
         }
 
-        // Multi-dimensional array
-        if (isset($data[0]) && is_array($data[0]))
+        // Check if it's a multi-dimensional array
+        if (isset($data[0]) && count($data) !== count($data, COUNT_RECURSIVE))
         {
+            // Multi-dimensional array
             $headings = array_keys($data[0]);
         }
-
-        // Single array
         else
         {
+            // Single array
             $headings = array_keys($data);
             $data = [$data];
         }
@@ -287,9 +287,12 @@ class Format {
 
         $this->_ci->table->set_heading($headings);
 
-        // Should row used as a reference?
-        foreach ($data as &$row)
+        foreach ($data as $row)
         {
+            // Suppressing the "array to string conversion" notice.
+            // Keep the "evil" @ here.
+            $row = @ array_map('strval', $row);
+
             $this->_ci->table->add_row($row);
         }
 
@@ -358,6 +361,17 @@ class Format {
 
         foreach ($data as $record)
         {
+            // If the record is not an array, then break. This is because the 2nd param of
+            // fputcsv() should be an array
+            if (is_array($record) === FALSE)
+            {
+                break;
+            }
+
+            // Suppressing the "array to string conversion" notice.
+            // Keep the "evil" @ here.
+            $record = @ array_map('strval', $record);
+
             // Returns the length of the string written or FALSE
             fputcsv($handle, $record, $delimiter, $enclosure);
         }
@@ -399,7 +413,7 @@ class Format {
         }
 
         // We only honour a jsonp callback which are valid javascript identifiers
-        else if (preg_match('/^[a-z_\$][a-z0-9\$_]*(\.[a-z_\$][a-z0-9\$_]*)*$/i', $callback))
+        elseif (preg_match('/^[a-z_\$][a-z0-9\$_]*(\.[a-z_\$][a-z0-9\$_]*)*$/i', $callback))
         {
             // Return the data as encoded json with a callback
             return $callback . '(' . json_encode($data) . ');';
