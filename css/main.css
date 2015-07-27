@@ -16,7 +16,9 @@ html, body, #view, .navbar-50 , form {
 }
 
 .display1 {
-  font-size: 34px;
+  /*font-size: 34px;
+  */
+  font-size: 24px;
   font-weight: 400;
 }
 
@@ -558,13 +560,10 @@ width:100%;
 
 .text {
 position: absolute;
-top:1em;
+bottom: 0.25em;
 left: 0.5em;
 z-index: 2;
 color : #FFF;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
 width: 100%;
 padding-right: 0.5em;
 }
