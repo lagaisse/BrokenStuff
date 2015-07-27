@@ -9,16 +9,18 @@
 
 <div class="container ">
 	<div class="card unic-card shadow-z-1">
-		<div class="navbar-50" ng-controller="PictureController">
-			<form ng-submit="addPicture()" role="form2" name="addform">
-			<div class="item-full edit material-lime-300">
-				<i class="mdi-image-panorama picto" style="line-height:30px;" ng-hide="newReport.b64pic"></i>
-				<div class="img-item edit" id="touch">
-					<img class="test" ng-hide="newReport.b64pic"></img>
-					<img  picture-tool class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" id="pic" ></img>
+		<div class="ratio-169">
+			<div class="navbar-50" ng-controller="PictureController">
+				<form ng-submit="addPicture()" role="form2" name="addform">
+				<div class="item-full edit material-lime-300">
+					<i class="mdi-image-panorama picto" style="line-height:30px;" ng-hide="newReport.b64pic"></i>
+					<div class="img-item edit " id="touch">
+						<img class="test" ng-hide="newReport.b64pic"></img>
+						<img  picture-tool class="test" ng-show="newReport.b64pic" ng-src="{{newReport.b64pic}}" id="pic" ></img>
+					</div>
 				</div>
+				<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
 			</div>
-			<span class="btn btn-fab btn-raised btn-middle btn-material-purple mdi-image-camera-alt" ng-click="selectFile()"></span>
 		</div>
 		<input type="hidden" ng-model="newPicture.idReport"/>
 		<input type="file" ng-hide="true" ng-file-select="onFileSelect($files)" id="cameraInput" name="cameraInput" accept="image/*" ng-model="newPicture.picture">
