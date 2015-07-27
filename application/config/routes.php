@@ -79,6 +79,7 @@ $route['api/v([0-9]+)/locations([/.]*)(format/)*([^/]*)'] = 'apiv$1/locations/fo
 //-------------------MIGRATION------------------- \\
 $route['migrate/(.*)'] = 'migrate/$1'; //(futur POST) GET a list of location
 
-$route['(.*)'] = '404'; //(futur POST) GET a list of location
+//-------------------404------------------- \\
+$route['(.*)'] = 'apiv1/erreur/'; //tout envoyer sur du erreur_get ou _post
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

@@ -346,6 +346,15 @@ class Apiv1 extends REST_Controller
     }
   }
 
+  function erreur_post()
+  {
+      throw new Exception('erreur interne');
+  }
+
+  function erreur_get()
+  {
+      throw new Exception('erreur interne');
+  }
 
     /****************************************************\
       OVERRIDE REST_Controller API_KEY management
