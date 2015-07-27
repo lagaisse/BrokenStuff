@@ -98,7 +98,7 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
         b64picimg.onload = function() {
             canvas.getContext("2d").scale(scale,scale);   
             canvas.getContext("2d").drawImage(b64picimg, $scope.newReport.crop.left, $scope.newReport.crop.top, $scope.newReport.crop.width, $scope.newReport.crop.height, 0, 0, $scope.newReport.crop.width, $scope.newReport.crop.height );
-            var res=canvas.toDataURL('image/jpg', 90);
+            var res=canvas.toDataURL('image/jpeg', 90);
             $scope.newReport.b64pic=res;
 
                     $scope.newReport.id=id;
