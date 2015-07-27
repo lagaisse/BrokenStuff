@@ -92,8 +92,8 @@ app.controller("AddController", function($scope,$rootScope, $timeout, $location,
         b64picimg = new Image();
         var canvas = document.createElement("canvas");      
         var scale = 1;
-        canvas.width  = $scope.newReport.crop.width*scale;
-        canvas.height = $scope.newReport.crop.height*scale;
+        canvas.width  = Math.round($scope.newReport.crop.width*scale);
+        canvas.height = Math.round($scope.newReport.crop.height*scale);
 
         b64picimg.onload = function() {
             canvas.getContext("2d").scale(scale,scale);   
