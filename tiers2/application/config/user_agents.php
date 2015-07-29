@@ -207,5 +207,10 @@ $robots = array(
 	'CRAZYWEBCRAWLER'	=> 'Crazy Webcrawler',
 	'adsbot-google'		=> 'AdsBot Google',
 	'feedfetcher-google'	=> 'Feedfetcher Google',
-	'curious george'	=> 'Curious George'
+	'curious george'	=> 'Curious George',
+    'facebookexternalhit' => 'Facebook',
+    'twitterbot'  => 'Twitter',
+    'Pinterest' => 'pinterest',
+    'Google.' => 'Google plus',
+    'Google-StructuredDataTestingTool' => 'Google structured data'
 );

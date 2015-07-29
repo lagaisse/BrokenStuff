@@ -224,7 +224,7 @@ XQL;*/
         $dst_res = $picture;
         $rets=0;
         $retd=0;
-        $rets=1  * $rets + (int)@imagejpeg($picture, FCPATH . $dir_orig );
+        $rets=1  * $rets + (int)@imagejpeg($picture, FCPATH . '../' . $dir_orig );
 
         //orientate picture from smartphone and other exif supported devices
         $picture = $this->picture_orientate($picture, $orientation);
@@ -237,8 +237,8 @@ XQL;*/
         $dst_tbn = $this->picture_thumbnail($dst_res);
         if ($dst_tbn==false) {$dst_btn=$picture;}
 
-        $rets=10 * $rets + (int)@imagejpeg($dst_res, FCPATH . $dir_res );
-        $rets=10 * $rets + (int)@imagejpeg($dst_tbn, FCPATH . $dir_tbn );
+        $rets=10 * $rets + (int)@imagejpeg($dst_res, FCPATH . '../' . $dir_res );
+        $rets=10 * $rets + (int)@imagejpeg($dst_tbn, FCPATH . '../' . $dir_tbn );
         $retd=1  * $retd + (int)@imagedestroy($picture);
         $retd=10 * $retd + (int)@imagedestroy($dst_res); //fails if no crop
         $retd=10 * $retd + (int)@imagedestroy($dst_tbn);

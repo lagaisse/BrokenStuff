@@ -82,7 +82,12 @@ $route['migrate/(.*)'] = 'migrate/$1';
 $route['migrate.(.*)'] = 'migrate/index/format/$1'; 
 $route['migrate(.*)'] = 'migrate$1'; 
 
+//-------------------Static------------------- \\
+$route['(.*)'] = 'application/$1'; 
+
+
+
 //-------------------404------------------- \\
-$route['(.*)'] = 'apiv1/erreur/'; //tout envoyer sur du erreur_get ou _post
+//$route['(.*)'] = 'apiv1/erreur/'; //tout envoyer sur du erreur_get ou _post
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
