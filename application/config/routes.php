@@ -77,7 +77,10 @@ $route['api/v([0-9]+)/locations/([^/.]*)([/.]*)(format/)*([^/]*)'] = 'apiv$1/loc
 $route['api/v([0-9]+)/locations([/.]*)(format/)*([^/]*)'] = 'apiv$1/locations/format/$4'; //(futur POST) GET a list of location
 
 //-------------------MIGRATION------------------- \\
-$route['migrate/(.*)'] = 'migrate/$1'; //(futur POST) GET a list of location
+//-------------------not stable------------------- \\
+$route['migrate/(.*)'] = 'migrate/$1'; 
+$route['migrate.(.*)'] = 'migrate/index/format/$1'; 
+$route['migrate(.*)'] = 'migrate$1'; 
 
 //-------------------404------------------- \\
 $route['(.*)'] = 'apiv1/erreur/'; //tout envoyer sur du erreur_get ou _post

@@ -214,7 +214,7 @@ XQL;*/
 
     }
 
-    function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0)
+    function update_report_picture($id, $picture, $top=0, $left=0, $width=0, $height=0, $orientation=1)
     {
         $image_name = uniqid() ;
         $path=$this->picture_build_path($image_name);
@@ -226,7 +226,9 @@ XQL;*/
         $retd=0;
         $rets=1  * $rets + (int)@imagejpeg($picture, FCPATH . $dir_orig );
 
-        //log_message('debug', 'Image resize toussa : ' . '');
+        //orientate picture from smartphone and other exif supported devices
+        $picture = $this->picture_orientate($picture, $orientation);
+
         if($width!=0&&$height!=0)
         {
            $dst_res = $this->picture_crop($picture, $top, $left, $width, $height);
@@ -267,6 +269,36 @@ XQL;*/
                         'thumbnail' => 'uploads/'. $image_name .'_tn.jpeg');
         return $path;
     }
+
+    function picture_orientate(&$picture, $orientation=1)
+    {
+        switch($orientation) {
+            case 2:
+                imageflip($picture, IMG_FLIP_HORIZONTAL);
+                break;
+            case 3:
+                $picture = imagerotate($picture, 180, 0);
+                break;
+            case 4:
+                imageflip($picture, IMG_FLIP_VERTICAL);
+                break;
+            case 5:
+                $picture = imagerotate($picture, -90, 0);
+                imageflip($picture, IMG_FLIP_HORIZONTAL);
+                break;
+            case 6:
+                $picture = imagerotate($picture, -90, 0);
+                break;
+            case 7:
+                $picture = imagerotate($picture, 90, 0);
+                imageflip($picture, IMG_FLIP_HORIZONTAL);
+                break;
+            case 8:
+                $picture = imagerotate($picture, 90, 0);
+                break;
+        }
+        return $picture;
+    }       
 
     function picture_crop($picture, $top=0, $left=0, $width=0, $height=0)
     {

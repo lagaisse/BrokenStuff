@@ -251,6 +251,13 @@ class Apiv1 extends REST_Controller
 // FIN DE A supprimer au passage à CodeIgniter 3 de form_validation
 
     $picture = @imagecreatefromstring(base64_decode($data)); //remove error
+    $exif_data = read_exif_data($this->post('picture', false));
+    $exif_orientation = 1;
+    if ( ($exif_data !== FALSE) && isset($exif_data['Orientation']))
+    {
+        $exif_orientation = $exif_data['Orientation'];
+    }
+
     if ($picture !== false)
     {
       $this->load->model('Report');
@@ -259,7 +266,7 @@ class Apiv1 extends REST_Controller
       if ($report)
       {
         log_message('debug', 'Call update_report_picture with : id_reports '. $this->get('id_reports') .' crop : top : '. $top .' left : ' .$left. ' width : '. $width .' height : '. $height.'');
-        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'), $picture, $top, $left, $width, $height);
+        $url = $this->config->base_url() . $this->Report->update_report_picture($this->get('id_reports'), $picture, $top, $left, $width, $height, $exif_orientation);
         $this->response(['success' => $url], 200);
       }
       else
