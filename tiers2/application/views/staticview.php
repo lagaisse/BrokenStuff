@@ -34,7 +34,7 @@
                 <img itemprop="image" src="<?php echo $site_url . $picture['proceeded']; ?>">
              </div>
         
-        <div itemscope itemtype="http://schema.org/Place">
+        <div itemprop="location" itemscope itemtype="http://schema.org/Place">
             Lieu : <span itemprop="name"><?php echo $location[0]['name'] ?> - <?php echo $location[0]['parent'] ?></span>
           <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
             Latitude: <?php echo $location[0]['geolocation']['latitude'] ?>

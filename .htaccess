@@ -668,13 +668,11 @@ FileETag None
 # ------------------------------------------------------------------------
 # Addition to remove index.php from url
 <IfModule mod_rewrite.c>
-    RewriteCond $1 ^(api) [OR]
-    RewriteCond $1 ^!(tier2/index\.php)
-    RewriteRule ^(.*)$ ./tiers2/index.php?$1 [L]
-
 # allow social media crawlers to work by redirecting them to a server-rendered static version on the page
-# RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google.*snippet)
+ RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google.*snippet)
     RewriteRule ^report/(.*)$ ./tiers2/index.php?report/$1 [L]
 
+    RewriteCond $1 ^(api) 
+    RewriteRule ^(.*)$ ./tiers2/index.php?$1 [L]
 
 </IfModule>

@@ -1,6 +1,5 @@
 {
-	"exclude":["system/", 
-				"application/",
+	"exclude":[	"tiers2/",
 				"uploads/", 
 				"sql/", 
 				".git/",
@@ -9,7 +8,8 @@
 				"license.txt",
 				".htaccess", 
 				"*.php", 
-				"*.map"],
+				"*.map",
+                ".DS_Store"],
 	"include":["/",
 				"http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css",
 				"https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.js",
