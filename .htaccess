@@ -669,7 +669,7 @@ FileETag None
 # Addition to remove index.php from url
 <IfModule mod_rewrite.c>
 # allow social media crawlers to work by redirecting them to a server-rendered static version on the page
- RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google.*snippet)
+ RewriteCond %{HTTP_USER_AGENT} (facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google)
     RewriteRule ^report/(.*)$ ./tiers2/index.php?report/$1 [L]
 
     RewriteCond $1 ^(api) 
