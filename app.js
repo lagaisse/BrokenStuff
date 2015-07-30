@@ -1,7 +1,7 @@
 var app = angular.module('brokenstuff', ['ngRoute','geolocation','leaflet-directive']);
 
-app.config(['$routeProvider',
-        function($routeProvider) {
+app.config(['$routeProvider',  '$locationProvider',
+        function($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/search', {
                     templateUrl: 'template/search.html',
@@ -29,6 +29,7 @@ app.config(['$routeProvider',
                 })
 				.otherwise({redirectTo : "/"})
 				;
+            $locationProvider.html5Mode(true);
         }]);
 
 app.controller("IndexController", function($scope) {
