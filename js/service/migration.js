@@ -3,7 +3,7 @@ var host = apiHost;
 
 this.start = function() {
         var deferred = $q.defer();
-        var endpoint = '/migrate';
+        var endpoint = '/api/migrate';
 
         endpoint=host+endpoint;
         $http.get(endpoint)
@@ -18,7 +18,7 @@ this.start = function() {
 
 this.next = function() {
         var deferred = $q.defer();
-        var endpoint = '/migrate/next';
+        var endpoint = '/api/migrate/next';
 
         endpoint=host+endpoint;
         $http.get(endpoint)

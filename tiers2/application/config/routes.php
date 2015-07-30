@@ -78,9 +78,9 @@ $route['api/v([0-9]+)/locations([/.]*)(format/)*([^/]*)'] = 'apiv$1/locations/fo
 
 //-------------------MIGRATION------------------- \\
 //-------------------not stable------------------- \\
-$route['migrate/(.*)'] = 'migrate/$1'; 
-$route['migrate.(.*)'] = 'migrate/index/format/$1'; 
-$route['migrate(.*)'] = 'migrate$1'; 
+$route['api/migrate/(.*)'] = 'migrate/$1'; 
+$route['api/migrate.(.*)'] = 'migrate/index/format/$1'; 
+$route['api/migrate(.*)'] = 'migrate$1'; 
 
 //-------------------Static------------------- \\
 $route['(.*)'] = 'application/$1'; 
