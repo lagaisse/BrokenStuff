@@ -13,8 +13,6 @@
         <meta property="og:description" content="<?php echo $description; ?>" />
         <meta property="og:image" content="<?php echo $site_url . $picture['proceeded']; ?>" />
         <meta property="og:locale" content="fr_FR" />
-        <meta property="article:author" content="https://www.facebook.com/kevin.lagaisse" />
-        <meta property="article:publisher" content="https://www.facebook.com/kevin.lagaisse" />
 
         <!-- twitter large card -->
         <meta name="twitter:card" content="summary_large_image">
