@@ -668,16 +668,18 @@ FileETag None
 # ------------------------------------------------------------------------
 # Addition to remove index.php from url
 <IfModule mod_rewrite.c>
-# allow social media crawlers to work by redirecting them to a server-rendered static version on the page
- RewriteCond "%{HTTP_USER_AGENT}" "(facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google)"
+    # allow social media crawlers to work by redirecting them to a server-rendered static version of the page
+    RewriteCond "%{HTTP_USER_AGENT}" "(facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google)"
     RewriteRule "^report/(.*)$" "./tiers2/index.php?report/$1" [L]
 
- RewriteCond "%{HTTP_USER_AGENT}" "(facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google)"
+    RewriteCond "%{HTTP_USER_AGENT}" "(facebookexternalhit/[0-9]|Twitterbot|Pinterest|Google)"
     RewriteRule "^$" "./tiers2/index.php?index"  [L]
 
+    # api access
     RewriteCond "$1" "^(api)" 
     RewriteRule "^(.*)$" "./tiers2/index.php?$1" [L]
 
-    RewriteCond "$1" "!^(api|tiers2|index\.php|index\.html|js|dist|bootstrap|css|angular|template|uploads|robots\.txt|app\.js|manifest\.appcache|favicon\.ico)"
+    # static ressources access : html, js, images...
+    RewriteCond "$1" "!^(api|tiers2|index\.php|index\.html|images|js|dist|bootstrap|css|angular|template|uploads|robots\.txt|app\.js|manifest\.appcache|favicon\.ico)"
     RewriteRule "^(.*)$" "./index.html" [L]
 </IfModule>

@@ -21,7 +21,7 @@ class Application extends CI_Controller {
         $data['site_url'] =  $this->uri_canonicalize(base_url() . '../' );   
         $data['name'] = "BrokenStuff - Signalez les incidents";
         $data['description'] = "BrokenStuff est un service qui permet d'enregistrer tous les problèmes de materiel de la RATP et de la SNCF"; 
-        $data['picture']['proceeded'] = "uploads/55b64b5863256_tn.jpeg";
+        $data['picture']['proceeded'] = "images/brokenstuff.jpeg";
         //echo '<pre>'; print_r($data); echo '</pre>'; die();
         $this->load->view('index_staticview', $data);
     }
@@ -51,8 +51,7 @@ class Application extends CI_Controller {
         else
         {
             $this->index();
-        }
-        
+        }   
     }
 
     function uri_canonicalize($url)
