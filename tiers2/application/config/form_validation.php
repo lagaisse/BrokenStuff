@@ -5,14 +5,14 @@ $config = array(
         array(
             'field' => 'id',
             'label' => 'identifier',
-            'rules' => 'required|is_natural'
+            'rules' => 'required|is_natural_no_zero'
             )
         ),
     'apiv1/reports_list_get' => array(
         array(
             'field' => 'since_id',
             'label' => 'Identifier',
-            'rules' => 'is_natural'
+            'rules' => 'is_natural_no_zero'
             ),
         array(
             'field' => 'count',
@@ -83,7 +83,7 @@ $config = array(
         array(
             'field' => 'id_reports',
             'label' => 'id',
-            'rules' => 'required|is_natural'
+            'rules' => 'required|is_natural_no_zero'
             ),
         array(
             'field' => 'picture',
