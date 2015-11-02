@@ -69,7 +69,7 @@ class Location extends CI_Model {
         // si 001001001 >> 001001001(xxx)
         $path_offset = "".str_pad("",(strlen($path)/$this->grp_size - $this->get_depth($path)-1) * ($this->grp_size),"0", STR_PAD_RIGHT);
         $query_sublocation = $this->db->query('SELECT * FROM '.$this->db->dbprefix("location").' where lo_path like ? and lo_path>? order by lo_name', 
-                                    array(rtrim($path,"0") . str_pad("",$this->grp_size,"_"). $path_offset , $path));
+                                    array(str_pad(rtrim($path,"0"),$this->get_depth($path) * $this->grp_size, "0",STR_PAD_RIGHT) . str_pad("",$this->grp_size,"_"). $path_offset , $path));
         log_message('debug', 'query sublocation : ' . $this->db->last_query());
         $results_sublocations = $query_sublocation->result_array();
         $sublocation=null;
