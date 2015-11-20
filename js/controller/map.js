@@ -8,12 +8,14 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
             distance=Math.ceil(bounds.getNorthEast().distanceTo(bounds.getSouthWest())/2000)
 
             MapService.getGeoJson(bounds.getCenter().lng, bounds.getCenter().lat, distance).then(function() {
+
                  //$scope.geojson={};
                 angular.extend($scope, {
                     geojson: {
                         data: this.geojson
                     }
                 });
+            console.log($scope.geojson.data.features[0].properties);
             }, function(reason) {                
                 $rootScope.$broadcast("FlashStatus","error : "+reason);
             });
