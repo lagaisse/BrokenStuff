@@ -276,7 +276,7 @@ right:16px;
   border-bottom-width: 2px;
   border-left-color: transparent;
   border-left-style: outset;
-  border-left-width: 2px;
+  border-left-width: 0px;
 
   border-image-source: initial;
   border-image-slice: initial;
@@ -344,6 +344,13 @@ right:16px;
 .card hr {
   margin-top:0px;
   margin-bottom:0px;
+  color: 000;
+}
+
+.card .mini-card-body {
+  height: auto;
+  box-sizing: border-box;
+  display: flex;
 }
 
 .card .card-text {
@@ -624,4 +631,24 @@ width: 100%
 }
 .navbar-material-lime.navbar {
 color:white;
+}
+
+
+.mini-img {
+overflow: hidden;
+}
+
+.mini-img img{
+  width: 100%;
+}
+
+.mini-card-left {
+  width:70%;
+    display: inline-block;
+}
+
+.mini-card-right {
+  width:30%;
+      position: relative;
+
 }

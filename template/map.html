@@ -11,52 +11,34 @@
 	    <ul style="display:none;"> 
 	        <li><strong ng-bind="eventDetected"></strong></li>
 	    </ul> 
-	    <leaflet geojson="geojson"  markers="markers" paths="paths" defaults="defaults" center="center" width="100%" height="40%"></leaflet>
+	    <leaflet geojson="geojson"  markers="markers" paths="paths" defaults="defaults" center="center" width="100%" height="35%">
+	    </leaflet>
     </div>
-	<div class="list-item" id="map-list">
 
-	<div ng-show="true" class="">
-		<div ng-repeat ="geo in geojson.data.features" class="col-xs-12 col-sm-6 ">
-			<div class="card shadow-z-1">
-				<div class="list-item">
-					<a href="report/{{report.id}}">
-					<div class="item material-lime-300">
-						<div class="text display1">{{geo.properties.name}}</div>
-						<div class="img-item">
-							<img ng-show="geo.properties.picture" ng-src="{{geo.properties.picture.thumbnail}}"></img>
-						</div>
-					</div>
-					</a>
-				</div>
-
-				<div class="card-body">
-					<div class="card-body-info subhead">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
-					</div>
+	<div class="card unic-card shadow-z-1">
+		<div ng-repeat ="geo in geojson.data.features">
+<!-- 		<a href="report/{{report.id}}">
+ -->		<div class="card-body mini-card-body">
+		<div class="mini-card-left">
+			{{geo.properties.name}}
+			<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
+			</div>
 <!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
 					</div> -->
-					<div  class="card-body-desc">{{geo.properties.description}}
-					</div>
-				</div>
-
-				<hr>
-				
-				<div class="card-body-actions" >
-					<button class="vote-button" id="action_{{report.id}}"  ng-controller="VoteController" ng-init="check" ng-click="vote(report.id)">
-						<span class="glyphicon glyphicon-star icon-action"></span><span>{{geo.properties.nb_vote}}</span> 
-					</button>
-
-<!-- 					<span href="" class="button btn btn-material-lime btn-flat btn-primary" id="action_{{report.id}}" ng-click="vote(report.id)">CONFIRM</span> -->
-				</div>
+			<div  class="card-body-desc">{{geo.properties.description}}
+			</div>
+			<div class="vote-button disabled voted" id="action_{{report.id}}" >
+				<span class="glyphicon glyphicon-star icon-action"></span><span>{{geo.properties.nb_vote}}</span> 
 			</div>
 		</div>
-<!-- 	<div ng-click="moreReports(lastid)" id="more" class="more btn btn-default btn-lg">Plus d'incidents</div>
- -->	
-	</div>
-
-
-
-
-
+		<div class="mini-card-right">
+			<div ng-show="geo.properties.picture" class="mini-img">
+				<img ng-src="{{geo.properties.picture.thumbnail}}"></img>
+			</div>
+		</div>
+		</div>
+<!-- 		</a> -->
+		<hr>
+		</div>
 	</div>
 </div>
-
