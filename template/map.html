@@ -14,31 +14,30 @@
 	    <leaflet geojson="geojson"  markers="markers" paths="paths" defaults="defaults" center="center" width="100%" height="35%">
 	    </leaflet>
     </div>
-
 	<div class="card unic-card shadow-z-1">
-		<div ng-repeat ="geo in geojson.data.features">
-<!-- 		<a href="report/{{report.id}}">
- -->		<div class="card-body mini-card-body">
-		<div class="mini-card-left">
-			{{geo.properties.name}}
-			<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
-			</div>
+		<div ng-repeat ="geo in geojson.data.features" class="mini-card">
+			<a href="report/{{geo.properties.id}}">
+			<div class="card-body mini-card-body">
+				<div class="mini-card-left">
+					{{geo.properties.name}}
+					<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
+					</div>
 <!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
 					</div> -->
-			<div  class="card-body-desc">{{geo.properties.description}}
+					<div  class="card-body-desc">{{geo.properties.description}}
+					</div>
+					<div class="vote-button disabled voted" id="action_{{report.id}}" ng-controller="VoteController" ng-init="check" ng-click="vote(report.id)" >
+						<span class="glyphicon glyphicon-star icon-action"></span><span>{{geo.properties.nb_vote}}</span> 
+					</div>
+				</div>
+				<div class="mini-card-right">
+					<div ng-show="geo.properties.picture" class="mini-img">
+						<img ng-src="{{geo.properties.picture.thumbnail}}"></img>
+					</div>
+				</div>
 			</div>
-			<div class="vote-button disabled voted" id="action_{{report.id}}" >
-				<span class="glyphicon glyphicon-star icon-action"></span><span>{{geo.properties.nb_vote}}</span> 
-			</div>
-		</div>
-		<div class="mini-card-right">
-			<div ng-show="geo.properties.picture" class="mini-img">
-				<img ng-src="{{geo.properties.picture.thumbnail}}"></img>
-			</div>
-		</div>
-		</div>
-<!-- 		</a> -->
-		<hr>
+			</a>
+			<hr>
 		</div>
 	</div>
 </div>

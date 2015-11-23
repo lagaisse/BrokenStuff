@@ -353,6 +353,10 @@ right:16px;
   display: flex;
 }
 
+.mini-card:hover{
+  background-color: #f6f6f6;
+}
+
 .card .card-text {
   padding-top: 16px;
   padding-bottom: 16px;
@@ -646,6 +650,16 @@ overflow: hidden;
   width:70%;
     display: inline-block;
 }
+
+.mini-card-left  {
+  font-weight: bold;
+  color: #333;
+  font-weight: 400;
+  }
+
+ .mini-card-left  :hover, a, a:hover, a:focus {
+    text-decoration: none;
+ }
 
 .mini-card-right {
   width:30%;
