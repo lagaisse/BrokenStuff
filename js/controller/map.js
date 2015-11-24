@@ -8,9 +8,8 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
             distance=Math.ceil(bounds.getNorthEast().distanceTo(bounds.getSouthWest())/2000)
 
             MapService.getGeoJson(bounds.getCenter().lng, bounds.getCenter().lat, distance).then(function() {
-
-                 //$scope.geojson={};
-                angular.extend($scope, {
+                    $("#content").addClass("something"); // ajout de la classz 'something' lorsqu'il y a un resultat
+                    angular.extend($scope, {
                     geojson: {
                         data: this.geojson
                     }

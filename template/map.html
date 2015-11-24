@@ -14,7 +14,7 @@
 	    <leaflet geojson="geojson"  markers="markers" paths="paths" defaults="defaults" center="center" width="100%" height="35%">
 	    </leaflet>
     </div>
-	<div class="card unic-card shadow-z-1">
+	<div id="content" class="card unic-card opacity-transition shadow-z-1 ">
 		<div ng-repeat ="geo in geojson.data.features" class="mini-card">
 			<a href="report/{{geo.properties.id}}">
 			<div class="card-body mini-card-body">
@@ -25,15 +25,8 @@
 					</div>
 					<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
 					</div>
-<!-- 					</div> -->
-<!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
-					</div> -->
-<!-- 					<div  class="card-body-desc body1"> -->
 					<div class="card-body-info body1">{{geo.properties.description}}</div>
-<!-- 					</div> -->
-
 					<div class="card-body-info body1">Identifié le {{"2015-11-24T09:56:33.851Z" | date:"dd MMMM yyyy"}}</div>
-					
 				</div>
 				<div class="mini-card-right">
 					<div ng-show="geo.properties.picture" class="mini-img">

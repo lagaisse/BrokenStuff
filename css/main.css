@@ -252,6 +252,17 @@ right:16px;
 .unic-card {
   margin-top:0px;
   margin-bottom:8px;
+
+  opacity: 0;
+  -webkit-transition: opacity 0.8s ease-in;
+  -moz-transition: opacity 0.8s ease-in;
+  -ms-transition: opacity 0.8s ease-in;
+  -o-transition: opacity 0.8s ease-in;
+  transition: opacity 0.8s ease-in;
+}
+
+.something  {
+  opacity: 1;
 }
 
 .card-body-info {
