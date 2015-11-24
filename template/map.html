@@ -20,15 +20,20 @@
 			<div class="card-body mini-card-body">
 				<div class="mini-card-left">
 					{{geo.properties.name}}
-					<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
-					</div>
-<!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
-					</div> -->
-					<div  class="card-body-desc">{{geo.properties.description}}
-					</div>
 					<div class="vote-button disabled voted" id="action_{{report.id}}" ng-controller="VoteController" ng-init="check" ng-click="vote(report.id)" >
 						<span class="glyphicon glyphicon-star icon-action"></span><span>{{geo.properties.nb_vote}}</span> 
 					</div>
+					<div class="card-body-info body1">{{geo.properties.location[0].parent}} - {{geo.properties.location[0].name}}
+					</div>
+<!-- 					</div> -->
+<!-- 					<div class="card-body-info subhead">{{report.nb_vote}} votes
+					</div> -->
+<!-- 					<div  class="card-body-desc body1"> -->
+					<div class="card-body-info body1">{{geo.properties.description}}</div>
+<!-- 					</div> -->
+
+					<div class="card-body-info body1">Identifié le {{"2015-11-24T09:56:33.851Z" | date:"dd MMMM yyyy"}}</div>
+					
 				</div>
 				<div class="mini-card-right">
 					<div ng-show="geo.properties.picture" class="mini-img">
