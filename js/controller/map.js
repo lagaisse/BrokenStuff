@@ -1,8 +1,8 @@
-app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService", "$location", function($scope, $log, leafletData, MapService, $location) {
+app.controller("MapController", [ "$scope","$rootScope", "$log", "leafletData", "MapService", "$location", "progress", function($scope, $rootScope , $log, leafletData, MapService, $location, progress) {
  var host = apiHost;
  var geoloc=false;
 
-    this.refreshGeoJson = function(event) {
+    $scope.refreshGeoJson = function(event) {
             leafletData.getMap().then(function(map) {
             bounds=map.getBounds();
             distance=Math.ceil(bounds.getNorthEast().distanceTo(bounds.getSouthWest())/2000)
@@ -14,7 +14,7 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
                         data: this.geojson
                     }
                 });
-            console.log($scope.geojson.data.features[0].properties);
+            progress.stop();
             }, function(reason) {                
                 $rootScope.$broadcast("FlashStatus","error : "+reason);
             });
@@ -47,15 +47,14 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
     $scope.markers = {};
     $scope.paths = {};
 
-
+    progress.start();
     $scope.eventDetected = "No events yet...";
 
     $scope.$on('leafletDirectiveMap.zoomstart', function(event){
-        //$scope.eventDetected = "ZoomStart";
     });
 
-    $scope.$on('leafletDirectiveMap.zoomend',  this.refreshGeoJson);
-    $scope.$on('leafletDirectiveMap.dragend', this.refreshGeoJson);
+    $scope.$on('leafletDirectiveMap.zoomend',  $scope.refreshGeoJson);
+    $scope.$on('leafletDirectiveMap.dragend', $scope.refreshGeoJson);
 
     $scope.$on('leafletDirectiveMap.click', function(event, args){
 
@@ -97,6 +96,7 @@ app.controller("MapController", [ "$scope", "$log", "leafletData", "MapService",
     }); 
     $scope.$on('leafletDirectiveMap.locationerror', function(event, args){
         $scope.eventDetected = "location error";
+        $rootScope.$broadcast("FlashStatus","error : "+ "Erreur de géolocalisation.");
     });    
 
     $scope.$on('leafletDirectiveMap.load', function(event, args) {

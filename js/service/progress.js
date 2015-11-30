@@ -4,7 +4,7 @@ app.service('progress', function($q, $timeout){
       parent: '#progress' // this option will insert bar HTML into this parent Element 
     };
     var indeterminateProgress = new Mprogress(intObj);
-
+    console.log("init progress");
     this.start = function(){
         var deferred = $q.defer();
         indeterminateProgress.start();

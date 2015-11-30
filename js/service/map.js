@@ -3,7 +3,7 @@ app.service('MapService', function($http, $q, $timeout){
     this.geojson=false;
 
     this.getGeoJson = function(longitude,latitude,radius) {
-               var firstattr=true;
+        var firstattr=true;
         var separation='';
         var deferred = $q.defer();
         var endpoint = '/api/v1/map.json';
