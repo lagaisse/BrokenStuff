@@ -4,8 +4,8 @@ app.config(['$routeProvider',  '$locationProvider',
         function($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/search', {
-                    templateUrl: 'template/search.html',
-                    controller: 'SearchController'
+                    templateUrl: 'template/map.html',
+                    controller: 'MapController'
                 })
                 .when('/add', {
                     templateUrl: 'template/add.html',
